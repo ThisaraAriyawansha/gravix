@@ -56,7 +56,7 @@ export default function CustomerDashboard() {
           
           <div className="card p-6 text-center">
             <div className="text-2xl font-light mb-2">
-              ${orders.reduce((total, order) => total + order.total_amount, 0).toFixed(2)}
+              ${orders.reduce((total, order) => total + Number(order.total_amount || 0), 0).toFixed(2)}
             </div>
             <div className="text-gravix-gray-600">Total Spent</div>
           </div>
