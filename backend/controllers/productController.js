@@ -3,13 +3,33 @@ import pool from '../config/database.js';
 // Get all products
 export const getProducts = async (req, res) => {
   try {
-    const [products] = await pool.execute(`
+    const { category, featured, search, minPrice, maxPrice } = req.query;
+    
+    let query = `
       SELECT p.*, c.name as category_name 
       FROM products p 
       LEFT JOIN categories c ON p.category_id = c.id 
       WHERE p.is_active = true
-      ORDER BY p.created_at DESC
-    `);
+    `;
+    let params = [];
+
+    if (category) {
+      query += ' AND c.slug = ?';
+      params.push(category);
+    }
+
+    if (featured === 'true') {
+      query += ' AND p.is_featured = true';
+    }
+
+    if (search) {
+      query += ' AND (p.name LIKE ? OR p.description LIKE ?)';
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    query += ' ORDER BY p.created_at DESC';
+
+    const [products] = await pool.execute(query, params);
     
     // Get variants for each product
     for (let product of products) {
@@ -72,6 +92,19 @@ export const getProduct = async (req, res) => {
   }
 };
 
+// Get categories
+export const getCategories = async (req, res) => {
+  try {
+    const [categories] = await pool.execute(`
+      SELECT * FROM categories WHERE is_active = true
+    `);
+    
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Admin: Create product
 export const createProduct = async (req, res) => {
   try {
@@ -85,6 +118,37 @@ export const createProduct = async (req, res) => {
     `, [name, slug, description, category_id, is_featured || false]);
     
     res.json({ id: result.insertId, message: 'Product created successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Admin: Update product
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description, category_id, is_featured, is_active } = req.body;
+    
+    await pool.execute(`
+      UPDATE products 
+      SET name = ?, description = ?, category_id = ?, is_featured = ?, is_active = ?
+      WHERE id = ?
+    `, [name, description, category_id, is_featured, is_active, id]);
+    
+    res.json({ message: 'Product updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Admin: Delete product
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    await pool.execute('DELETE FROM products WHERE id = ?', [id]);
+    
+    res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
