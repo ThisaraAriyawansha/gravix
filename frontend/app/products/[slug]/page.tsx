@@ -152,8 +152,8 @@ export default function ProductDetailPage() {
   const displayPrice = selectedVariant?.discount_price || selectedVariant?.price || 0
   const originalPrice = selectedVariant?.discount_price ? selectedVariant.price : null
 
-  const availableSizes = [...new Set(product.variants.map(v => v.size))]
-  const availableColors = [...new Set(product.variants.map(v => v.color))]
+  const availableSizes = product.variants.map(v => v.size).filter((s, i, arr) => arr.indexOf(s) === i)
+  const availableColors = product.variants.map(v => v.color).filter((c, i, arr) => arr.indexOf(c) === i)
 
   return (
     <div className="min-h-screen bg-white">
