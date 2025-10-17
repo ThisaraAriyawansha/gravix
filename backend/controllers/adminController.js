@@ -372,3 +372,5 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+

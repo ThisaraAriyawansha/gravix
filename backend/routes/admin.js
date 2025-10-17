@@ -10,8 +10,10 @@ import {
   deleteProductVariant,
   getAllProducts,
   createProductWithImages,
-  uploadVariantImages
+  uploadVariantImages,
+  
 } from '../controllers/adminController.js';
+import {getAdminProducts } from '../controllers/productController.js';
 import { authenticate, requireAdmin } from '../middleware/auth.js';
 import { uploadMultiple } from '../middleware/upload.js';
 
@@ -42,5 +44,8 @@ router.delete('/variants/:id', deleteProductVariant);
 
 // Variant Images
 router.post('/variants/images', uploadMultiple, uploadVariantImages);
+
+router.get('/products', getAdminProducts); 
+
 
 export default router;

@@ -65,10 +65,7 @@ export const createProduct = async (productData: any) => {
   return response.data
 }
 
-export const updateProduct = async (id: number, productData: any) => {
-  const response = await api.put(`/products/${id}`, productData)
-  return response.data
-}
+
 
 export const deleteProduct = async (id: number) => {
   const response = await api.delete(`/products/${id}`)
@@ -143,37 +140,7 @@ export const updateOrderStatus = async (orderId: number, statusData: any) => {
   return response.data
 }
 
-export const updateProductVariant = async (id: number, variantData: any) => {
-  const response = await api.put(`/products/variants/${id}`, variantData);
-  return response.data;
-};
 
-// Get product by ID (for admin edit)
-export const getProductById = async (id: number) => {
-  const response = await api.get(`/products/id/${id}`);
-  return response.data;
-};
-
-
-// Product Variants API
-export const createProductVariant = async (variantData: any) => {
-  const response = await api.post('/admin/variants', variantData);
-  return response.data;
-};
-
-
-
-export const deleteProductVariant = async (id: number) => {
-  const response = await api.delete(`/admin/variants/${id}`);
-  return response.data;
-};
-
-
-// Admin Products API
-export const getAllProducts = async () => {
-  const response = await api.get('/admin/products');
-  return response.data;
-};
 
 // Admin Orders API
 export const getAllOrders = async () => {
@@ -222,6 +189,38 @@ export const uploadVariantImages = async (formData: FormData) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+  return response.data;
+};
+
+
+// Admin Products API
+export const getAllProducts = async () => {
+  const response = await api.get('/admin/products');
+  return response.data;
+};
+
+export const getProductById = async (id: number) => {
+  const response = await api.get(`/products/id/${id}`);
+  return response.data;
+};
+
+export const updateProduct = async (id: number, productData: any) => {
+  const response = await api.put(`/products/${id}`, productData);
+  return response.data;
+};
+
+export const createProductVariant = async (variantData: any) => {
+  const response = await api.post('/admin/variants', variantData);
+  return response.data;
+};
+
+export const updateProductVariant = async (id: number, variantData: any) => {
+  const response = await api.put(`/admin/variants/${id}`, variantData);
+  return response.data;
+};
+
+export const deleteProductVariant = async (id: number) => {
+  const response = await api.delete(`/admin/variants/${id}`);
   return response.data;
 };
 

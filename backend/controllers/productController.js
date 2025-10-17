@@ -294,7 +294,45 @@ export const getProductImages = async (req, res) => {
 };
 
 
-// Get product by ID (for admin editing)
+
+
+// Get all products for admin (with variants)
+export const getAdminProducts = async (req, res) => {
+  try {
+    const [products] = await pool.execute(`
+      SELECT p.*, c.name as category_name 
+      FROM products p 
+      LEFT JOIN categories c ON p.category_id = c.id 
+      ORDER BY p.created_at DESC
+    `);
+    
+    // Get variants for each product
+    for (let product of products) {
+      const [variants] = await pool.execute(`
+        SELECT pv.* 
+        FROM product_variants pv 
+        WHERE pv.product_id = ?
+      `, [product.id]);
+      
+      // Get images for each variant
+      for (let variant of variants) {
+        const [images] = await pool.execute(`
+          SELECT * FROM product_images 
+          WHERE product_variant_id = ?
+        `, [variant.id]);
+        variant.images = images;
+      }
+      
+      product.variants = variants;
+    }
+    
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get product by ID for admin (with full details)
 export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -335,8 +373,5 @@ export const getProductById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-
 
 

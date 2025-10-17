@@ -25,7 +25,7 @@ interface VariantFormData {
 interface ProductFormProps {
   initialData?: ProductFormData
   initialVariants?: VariantFormData[]
-  onSubmit: (productData: ProductFormData, variants: VariantFormData[]) => void
+  onSubmit: (productData: ProductFormData, variants: VariantFormData[]) => Promise<void>
   loading: boolean
   isEdit?: boolean
 }
@@ -77,9 +77,9 @@ export default function ProductForm({
 
   const [activeVariantIndex, setActiveVariantIndex] = useState<number | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(formData, variants)
+    await onSubmit(formData, variants)
   }
 
   const handleAddVariant = () => {

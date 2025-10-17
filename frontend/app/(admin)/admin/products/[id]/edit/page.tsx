@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import ProductForm from '../../../../../../components/forms/ProductForm'
-import { getProduct, updateProduct, createProductVariant, updateProductVariant } from '@/lib/api'
+import ProductForm from '@/components/forms/ProductForm'
+import { getProductById, updateProduct, createProductVariant, updateProductVariant, deleteProductVariant } from '@/lib/api'
 
 interface ProductFormData {
   name: string
@@ -21,6 +21,7 @@ interface VariantFormData {
   price: number
   discount_price: number
   stock_quantity: number
+  images?: any[]
 }
 
 export default function EditProductPage() {
@@ -33,16 +34,18 @@ export default function EditProductPage() {
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    loadProduct()
+    if (productId) {
+      loadProduct()
+    }
   }, [productId])
 
   const loadProduct = async () => {
     try {
-      const productData = await getProduct(productId)
+      const productData = await getProductById(parseInt(productId))
       setProduct(productData)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading product:', error)
-      alert('Product not found')
+      alert(error.response?.data?.error || 'Product not found')
       router.push('/admin/products')
     } finally {
       setLoading(false)
@@ -56,16 +59,30 @@ export default function EditProductPage() {
       // Update the main product
       await updateProduct(parseInt(productId), productData)
 
-      // Update or create variants
+      // Handle variants - this is a simplified version
+      // In a real app, you'd need more sophisticated logic to handle
+      // created, updated, and deleted variants
       for (const variant of variants) {
         if (variant.id) {
           // Update existing variant
-          await updateProductVariant(variant.id, variant)
+          await updateProductVariant(variant.id, {
+            size: variant.size,
+            color: variant.color,
+            color_hex: variant.color_hex,
+            price: variant.price,
+            discount_price: variant.discount_price > 0 ? variant.discount_price : null,
+            stock_quantity: variant.stock_quantity
+          })
         } else {
           // Create new variant
           await createProductVariant({
             product_id: parseInt(productId),
-            ...variant
+            size: variant.size,
+            color: variant.color,
+            color_hex: variant.color_hex,
+            price: variant.price,
+            discount_price: variant.discount_price > 0 ? variant.discount_price : null,
+            stock_quantity: variant.stock_quantity
           })
         }
       }
@@ -82,8 +99,8 @@ export default function EditProductPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-gray-50 p-8">
+        <div className="max-w-6xl mx-auto">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
             <div className="space-y-4">
@@ -98,7 +115,7 @@ export default function EditProductPage() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-light mb-4">Product not found</h1>
           <button onClick={() => router.push('/admin/products')} className="btn-primary">
@@ -109,7 +126,7 @@ export default function EditProductPage() {
     )
   }
 
-  const initialData = {
+  const initialData: ProductFormData = {
     name: product.name,
     description: product.description,
     category_id: product.category_id,
@@ -117,41 +134,40 @@ export default function EditProductPage() {
     is_active: product.is_active
   }
 
-  const initialVariants = product.variants.map((variant: any) => ({
+  const initialVariants: VariantFormData[] = product.variants.map((variant: any) => ({
     id: variant.id,
     size: variant.size,
     color: variant.color,
     color_hex: variant.color_hex,
     price: variant.price,
     discount_price: variant.discount_price || 0,
-    stock_quantity: variant.stock_quantity
+    stock_quantity: variant.stock_quantity,
+    images: variant.images || []
   }))
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl font-light mb-2">Edit Product</h1>
-              <p className="text-gray-600">Update product details and variants</p>
-            </div>
-            <button
-              onClick={() => router.push('/admin/products')}
-              className="btn-secondary"
-            >
-              Back to Products
-            </button>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-light mb-2">Edit Product</h1>
+            <p className="text-gray-600">Update product details and variants</p>
           </div>
-
-          <ProductForm 
-            initialData={initialData}
-            initialVariants={initialVariants}
-            onSubmit={handleSubmit}
-            loading={saving}
-            isEdit={true}
-          />
+          <button
+            onClick={() => router.push('/admin/products')}
+            className="btn-secondary"
+          >
+            Back to Products
+          </button>
         </div>
+
+        <ProductForm 
+          initialData={initialData}
+          initialVariants={initialVariants}
+          onSubmit={handleSubmit as any}
+          loading={saving}
+          isEdit={true}
+        />
       </div>
     </div>
   )
