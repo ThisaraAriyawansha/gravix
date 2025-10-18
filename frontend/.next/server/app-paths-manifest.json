@@ -1,9 +1,8 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/products/page": "app/products/page.js",
   "/products/[slug]/page": "app/products/[slug]/page.js",
-  "/page": "app/page.js",
-  "/(admin)/admin/dashboard/page": "app/(admin)/admin/dashboard/page.js",
   "/(admin)/admin/products/page": "app/(admin)/admin/products/page.js",
-  "/(admin)/admin/products/[id]/edit/page": "app/(admin)/admin/products/[id]/edit/page.js"
+  "/(admin)/admin/products/[id]/edit/page": "app/(admin)/admin/products/[id]/edit/page.js",
+  "/(admin)/admin/products/new/page": "app/(admin)/admin/products/new/page.js",
+  "/(admin)/admin/dashboard/page": "app/(admin)/admin/dashboard/page.js"
 }
