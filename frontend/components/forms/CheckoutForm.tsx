@@ -79,6 +79,9 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
     }))
   }
 
+
+  
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
       {/* Shipping Information */}
