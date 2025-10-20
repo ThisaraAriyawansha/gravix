@@ -4,6 +4,7 @@ interface Filters {
   category: string
   search: string
   sort: string
+  priceRange: string
 }
 
 interface ProductFilterProps {
@@ -26,11 +27,31 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
     { value: 'name', label: 'Name: A to Z' }
   ]
 
+  const priceRanges = [
+    { value: '', label: 'All Prices' },
+    { value: '0-50', label: 'Under $50' },
+    { value: '50-100', label: '$50 - $100' },
+    { value: '100-', label: 'Over $100' }
+  ]
+
+  const handlePriceRangeChange = (value: string) => {
+    onFilterChange({ priceRange: value })
+  }
+
+  const clearFilters = () => {
+    onFilterChange({ 
+      category: '', 
+      search: '', 
+      sort: 'newest',
+      priceRange: '' 
+    })
+  }
+
   return (
     <div className="space-y-6">
       {/* Search */}
       <div>
-        <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="search" className="block mb-2 text-sm font-medium text-gray-700">
           Search
         </label>
         <input
@@ -39,20 +60,20 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
           value={filters.search}
           onChange={(e) => onFilterChange({ search: e.target.value })}
           placeholder="Search products..."
-          className="input-field"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Category Filter */}
       <div>
-        <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-700">
           Category
         </label>
         <select
           id="category"
           value={filters.category}
           onChange={(e) => onFilterChange({ category: e.target.value })}
-          className="input-field"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {categories.map(category => (
             <option key={category.value} value={category.value}>
@@ -64,14 +85,14 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
 
       {/* Sort Options */}
       <div>
-        <label htmlFor="sort" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="sort" className="block mb-2 text-sm font-medium text-gray-700">
           Sort By
         </label>
         <select
           id="sort"
           value={filters.sort}
           onChange={(e) => onFilterChange({ sort: e.target.value })}
-          className="input-field"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {sortOptions.map(option => (
             <option key={option.value} value={option.value}>
@@ -81,33 +102,30 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
         </select>
       </div>
 
-      {/* Price Range */}
+      {/* Price Range - Fixed */}
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Price Range</h3>
+        <h3 className="mb-3 text-sm font-medium text-gray-700">Price Range</h3>
         <div className="space-y-2">
-          <label className="flex items-center">
-            <input type="radio" name="price" className="mr-2" />
-            <span className="text-sm">All Prices</span>
-          </label>
-          <label className="flex items-center">
-            <input type="radio" name="price" className="mr-2" />
-            <span className="text-sm">Under $50</span>
-          </label>
-          <label className="flex items-center">
-            <input type="radio" name="price" className="mr-2" />
-            <span className="text-sm">$50 - $100</span>
-          </label>
-          <label className="flex items-center">
-            <input type="radio" name="price" className="mr-2" />
-            <span className="text-sm">Over $100</span>
-          </label>
+          {priceRanges.map(range => (
+            <label key={range.value} className="flex items-center">
+              <input 
+                type="radio" 
+                name="price"
+                value={range.value}
+                checked={filters.priceRange === range.value}
+                onChange={(e) => handlePriceRangeChange(e.target.value)}
+                className="mr-2"
+              />
+              <span className="text-sm">{range.label}</span>
+            </label>
+          ))}
         </div>
       </div>
 
       {/* Clear Filters */}
       <button
-        onClick={() => onFilterChange({ category: '', search: '', sort: 'newest' })}
-        className="w-full btn-secondary text-sm"
+        onClick={clearFilters}
+        className="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         Clear All Filters
       </button>

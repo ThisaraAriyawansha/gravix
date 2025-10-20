@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 // Get all products
 export const getProducts = async (req, res) => {
   try {
-    const { category, featured, search, minPrice, maxPrice } = req.query;
+    const { category, search, sort, price_range } = req.query;
     
     let query = `
       SELECT p.*, c.name as category_name 
@@ -19,39 +19,77 @@ export const getProducts = async (req, res) => {
     `;
     let params = [];
 
+    // Category filter
     if (category) {
       query += ' AND c.slug = ?';
       params.push(category);
     }
 
-    if (featured === 'true') {
-      query += ' AND p.is_featured = true';
-    }
-
+    // Search filter
     if (search) {
       query += ' AND (p.name LIKE ? OR p.description LIKE ?)';
       params.push(`%${search}%`, `%${search}%`);
     }
 
-    query += ' ORDER BY p.created_at DESC';
+    // Sort options
+    if (sort) {
+      switch (sort) {
+        case 'price-low':
+          query += ' ORDER BY (SELECT MIN(price) FROM product_variants pv WHERE pv.product_id = p.id) ASC';
+          break;
+        case 'price-high':
+          query += ' ORDER BY (SELECT MAX(price) FROM product_variants pv WHERE pv.product_id = p.id) DESC';
+          break;
+        case 'name':
+          query += ' ORDER BY p.name ASC';
+          break;
+        case 'newest':
+        default:
+          query += ' ORDER BY p.created_at DESC';
+          break;
+      }
+    } else {
+      query += ' ORDER BY p.created_at DESC';
+    }
 
     const [products] = await pool.execute(query, params);
     
     // Get variants for each product
     for (let product of products) {
-      const [variants] = await pool.execute(`
+      let variantQuery = `
         SELECT pv.*, 
                (SELECT image_url FROM product_images 
                 WHERE product_variant_id = pv.id AND is_primary = true LIMIT 1) as primary_image
         FROM product_variants pv 
         WHERE pv.product_id = ? AND pv.stock_quantity > 0
-      `, [product.id]);
-      
+      `;
+      let variantParams = [product.id];
+
+      // Price range filter - apply to variants
+      if (price_range) {
+        switch (price_range) {
+          case '0-50':
+            variantQuery += ' AND pv.price < 50';
+            break;
+          case '50-100':
+            variantQuery += ' AND pv.price >= 50 AND pv.price <= 100';
+            break;
+          case '100-':
+            variantQuery += ' AND pv.price > 100';
+            break;
+        }
+      }
+
+      const [variants] = await pool.execute(variantQuery, variantParams);
       product.variants = variants;
     }
+
+    // Filter out products that have no variants after price filtering
+    const filteredProducts = products.filter(product => product.variants.length > 0);
     
-    res.json(products);
+    res.json(filteredProducts);
   } catch (error) {
+    console.error('Error fetching products:', error);
     res.status(500).json({ error: error.message });
   }
 };

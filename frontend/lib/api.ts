@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+interface Filters {
+  category?: string
+  search?: string
+  sort?: string
+  priceRange?: string
+}
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
 
 const api = axios.create({
@@ -45,9 +52,16 @@ export const register = async (userData: any) => {
 }
 
 // Products API
-export const getProducts = async (filters?: any) => {
-  const response = await api.get('/products', { params: filters })
-  return response.data
+export const getProducts = async (filters: Filters) => {
+  const params = new URLSearchParams()
+  
+  if (filters.category) params.append('category', filters.category)
+  if (filters.search) params.append('search', filters.search)
+  if (filters.sort) params.append('sort', filters.sort)
+  if (filters.priceRange) params.append('price_range', filters.priceRange)
+  
+  const response = await fetch(`http://localhost:5000/api/products?${params}`)
+  return response.json()
 }
 
 export const getProduct = async (slug: string) => {
