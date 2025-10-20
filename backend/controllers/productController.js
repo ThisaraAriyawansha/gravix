@@ -12,7 +12,9 @@ export const getProducts = async (req, res) => {
     const { category, search, sort, price_range } = req.query;
     
     let query = `
-      SELECT p.*, c.name as category_name 
+      SELECT DISTINCT p.*, c.name as category_name,
+             (SELECT MIN(price) FROM product_variants pv WHERE pv.product_id = p.id AND pv.stock_quantity > 0) as min_price,
+             (SELECT MAX(price) FROM product_variants pv WHERE pv.product_id = p.id AND pv.stock_quantity > 0) as max_price
       FROM products p 
       LEFT JOIN categories c ON p.category_id = c.id 
       WHERE p.is_active = true
@@ -31,14 +33,29 @@ export const getProducts = async (req, res) => {
       params.push(`%${search}%`, `%${search}%`);
     }
 
+    // Price range filter
+    if (price_range) {
+      switch (price_range) {
+        case '0-50':
+          query += ' AND (SELECT MIN(price) FROM product_variants pv WHERE pv.product_id = p.id AND pv.stock_quantity > 0) < 50';
+          break;
+        case '50-100':
+          query += ' AND (SELECT MIN(price) FROM product_variants pv WHERE pv.product_id = p.id AND pv.stock_quantity > 0) >= 50 AND (SELECT MAX(price) FROM product_variants pv WHERE pv.product_id = p.id AND pv.stock_quantity > 0) <= 100';
+          break;
+        case '100-':
+          query += ' AND (SELECT MIN(price) FROM product_variants pv WHERE pv.product_id = p.id AND pv.stock_quantity > 0) > 100';
+          break;
+      }
+    }
+
     // Sort options
     if (sort) {
       switch (sort) {
         case 'price-low':
-          query += ' ORDER BY (SELECT MIN(price) FROM product_variants pv WHERE pv.product_id = p.id) ASC';
+          query += ' ORDER BY min_price ASC';
           break;
         case 'price-high':
-          query += ' ORDER BY (SELECT MAX(price) FROM product_variants pv WHERE pv.product_id = p.id) DESC';
+          query += ' ORDER BY max_price DESC';
           break;
         case 'name':
           query += ' ORDER BY p.name ASC';
@@ -56,38 +73,18 @@ export const getProducts = async (req, res) => {
     
     // Get variants for each product
     for (let product of products) {
-      let variantQuery = `
+      const [variants] = await pool.execute(`
         SELECT pv.*, 
                (SELECT image_url FROM product_images 
                 WHERE product_variant_id = pv.id AND is_primary = true LIMIT 1) as primary_image
         FROM product_variants pv 
         WHERE pv.product_id = ? AND pv.stock_quantity > 0
-      `;
-      let variantParams = [product.id];
-
-      // Price range filter - apply to variants
-      if (price_range) {
-        switch (price_range) {
-          case '0-50':
-            variantQuery += ' AND pv.price < 50';
-            break;
-          case '50-100':
-            variantQuery += ' AND pv.price >= 50 AND pv.price <= 100';
-            break;
-          case '100-':
-            variantQuery += ' AND pv.price > 100';
-            break;
-        }
-      }
-
-      const [variants] = await pool.execute(variantQuery, variantParams);
+      `, [product.id]);
+      
       product.variants = variants;
     }
-
-    // Filter out products that have no variants after price filtering
-    const filteredProducts = products.filter(product => product.variants.length > 0);
     
-    res.json(filteredProducts);
+    res.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).json({ error: error.message });
