@@ -226,7 +226,7 @@ export default function AdminProductsPage() {
               <div className="relative mb-4 overflow-hidden bg-gray-100 rounded-lg aspect-square">
                 {primaryImage ? (
                   <img
-                    src={`http://localhost:5000${primaryImage}`}
+                    src={`http://localhost:5000/${primaryImage}`}
                     alt={product.name}
                     className="object-cover w-full h-full"
                   />
