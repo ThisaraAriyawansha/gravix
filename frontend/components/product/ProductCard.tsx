@@ -30,30 +30,30 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="group">
       <Link href={`/products/${product.slug}`}>
-        <div className="aspect-square bg-gravix-gray-100 mb-4 overflow-hidden relative">
+        <div className="relative mb-4 overflow-hidden aspect-square bg-gravix-gray-100">
           {primaryVariant.primary_image && (
             <Image
               src={primaryVariant.primary_image}
               alt={product.name}
               width={400}
               height={400}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
             />
           )}
           {originalPrice && (
-            <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 text-sm">
+            <div className="absolute px-2 py-1 text-sm text-white bg-red-600 top-2 left-2">
               Sale
             </div>
           )}
         </div>
         
         <div className="text-center">
-          <h3 className="font-light text-lg mb-2 group-hover:text-gravix-gray-600 transition-colors">
+          <h3 className="mb-2 text-lg font-light transition-colors group-hover:text-gravix-gray-600">
             {product.name}
           </h3>
           <div className="flex items-center justify-center space-x-2">
             {originalPrice && (
-              <span className="text-gravix-gray-500 line-through text-sm">
+              <span className="text-sm line-through text-gravix-gray-500">
                 ${originalPrice}
               </span>
             )}
