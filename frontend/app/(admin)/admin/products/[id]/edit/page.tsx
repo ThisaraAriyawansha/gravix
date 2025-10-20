@@ -97,7 +97,7 @@ export default function EditProductPage() {
       setAlert({ show: true, message: error.response?.data?.error || 'Product not found', isSuccess: false })
       setTimeout(() => {
         setAlert({ show: false, message: '', isSuccess: false })
-        router.push('/admin/products')
+        //router.push('/admin/products')
       }, 3000)
     } finally {
       setLoading(false)
@@ -140,7 +140,7 @@ export default function EditProductPage() {
       setAlert({ show: true, message: 'Product updated successfully!', isSuccess: true })
       setTimeout(() => {
         setAlert({ show: false, message: '', isSuccess: false })
-        router.push('/admin/products')
+        //router.push('/admin/products')
       }, 2000)
     } catch (error: any) {
       console.error('Error updating product:', error)
