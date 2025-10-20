@@ -24,7 +24,7 @@ interface Order {
   payment_method: string
   payment_status: string
   created_at: string
-  shipping_address: string | ShippingAddress // Can be string or parsed object
+  shipping_address: string | ShippingAddress
   items_count?: number
 }
 
@@ -84,7 +84,7 @@ export default function AdminOrdersPage() {
         status: newStatus,
         notes: `Status updated to ${newStatus}`
       })
-      loadOrders() // Refresh the list
+      loadOrders()
     } catch (error) {
       console.error('Error updating order status:', error)
     }
@@ -110,7 +110,6 @@ export default function AdminOrdersPage() {
     setSelectedOrder(null)
   }
 
-  // Helper function to parse shipping address
   const parseShippingAddress = (address: string | ShippingAddress): ShippingAddress | null => {
     if (typeof address === 'string') {
       try {
@@ -123,7 +122,6 @@ export default function AdminOrdersPage() {
     return address
   }
 
-  // Helper function to format shipping address for display
   const formatShippingAddress = (address: string | ShippingAddress): string => {
     const parsed = parseShippingAddress(address)
     if (!parsed) return 'Invalid address format'
@@ -175,12 +173,12 @@ export default function AdminOrdersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen p-8 bg-gray-50">
+      <div className="min-h-screen p-4 bg-gray-50 sm:p-6">
         <div className="animate-pulse">
-          <div className="w-1/4 h-8 mb-8 bg-gray-200 rounded"></div>
-          <div className="space-y-4">
+          <div className="w-1/3 h-6 mb-6 bg-gray-200 rounded sm:w-1/4 sm:h-8"></div>
+          <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-20 bg-gray-200 rounded"></div>
+              <div key={i} className="h-16 bg-gray-200 rounded sm:h-20"></div>
             ))}
           </div>
         </div>
@@ -189,26 +187,26 @@ export default function AdminOrdersPage() {
   }
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
-      <div className="mb-8">
-        <h1 className="mb-2 text-3xl font-light">Order Management</h1>
-        <p className="text-gray-600">Process and track customer orders</p>
+    <div className="min-h-screen p-4 bg-gray-50 sm:p-6">
+      <div className="mb-6">
+        <h1 className="mb-1 text-xl font-light sm:text-2xl sm:mb-2">Order Management</h1>
+        <p className="text-sm text-gray-600 sm:text-base">Process and track customer orders</p>
       </div>
 
       {/* Filters */}
-      <div className="p-6 mb-6 card">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="p-4 mb-4 card sm:p-5 sm:mb-5">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
           <input
             type="text"
-            placeholder="Search orders by number, customer name or email..."
+            placeholder="Search orders..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="input-field"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:px-4 sm:py-2.5"
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="input-field"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:px-4 sm:py-2.5"
           >
             {statusOptions.map(option => (
               <option key={option.value} value={option.value}>
@@ -221,72 +219,112 @@ export default function AdminOrdersPage() {
 
       {/* Orders Table */}
       <div className="card">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-light">
+        <div className="p-4 border-b border-gray-200 sm:p-5">
+          <h2 className="text-lg font-light sm:text-xl">
             Orders ({filteredOrders.length})
           </h2>
         </div>
         
-        <div className="p-6">
+        <div className="p-4 sm:p-5">
           {filteredOrders.length === 0 ? (
-            <div className="py-8 text-center text-gray-500">
+            <div className="py-6 text-sm text-center text-gray-500 sm:py-8 sm:text-base">
               No orders found
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              {/* Mobile Cards View */}
+              <div className="space-y-3 sm:hidden">
+                {filteredOrders.map((order) => (
+                  <div key={order.id} className="p-3 bg-white border border-gray-200 rounded-lg">
+                    <div className="flex justify-between mb-2">
+                      <div className="font-medium text-gray-900">#{order.order_number}</div>
+                      <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(order.status)}`}>
+                        {order.status}
+                      </span>
+                    </div>
+                    <div className="mb-2 space-y-1 text-xs text-gray-600">
+                      <div>{order.customer_name}</div>
+                      <div>{order.customer_email}</div>
+                    </div>
+                    <div className="flex justify-between mb-3 text-xs">
+                      <span>${order.total_amount}</span>
+                      <span>{new Date(order.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {nextStatusMap[order.status]?.map((nextStatus) => (
+                        <button
+                          key={nextStatus}
+                          onClick={() => handleStatusUpdate(order.id, nextStatus)}
+                          className="px-2 py-1 text-xs text-white transition-colors bg-blue-600 rounded hover:bg-blue-700"
+                        >
+                          {nextStatus}
+                        </button>
+                      ))}
+                      <button 
+                        onClick={() => handleViewDetails(order)}
+                        className="px-2 py-1 text-xs text-white transition-colors bg-gray-600 rounded hover:bg-gray-700"
+                      >
+                        Details
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table View */}
+              <table className="hidden w-full sm:table">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="p-4 font-medium text-left">Order</th>
-                    <th className="p-4 font-medium text-left">Customer</th>
-                    <th className="p-4 font-medium text-left">Amount</th>
-                    <th className="p-4 font-medium text-left">Status</th>
-                    <th className="p-4 font-medium text-left">Date</th>
-                    <th className="p-4 font-medium text-left">Actions</th>
+                    <th className="p-3 text-xs font-medium text-left text-gray-700 sm:p-4 sm:text-sm">Order</th>
+                    <th className="p-3 text-xs font-medium text-left text-gray-700 sm:p-4 sm:text-sm">Customer</th>
+                    <th className="p-3 text-xs font-medium text-left text-gray-700 sm:p-4 sm:text-sm">Amount</th>
+                    <th className="p-3 text-xs font-medium text-left text-gray-700 sm:p-4 sm:text-sm">Status</th>
+                    <th className="p-3 text-xs font-medium text-left text-gray-700 sm:p-4 sm:text-sm">Date</th>
+                    <th className="p-3 text-xs font-medium text-left text-gray-700 sm:p-4 sm:text-sm">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredOrders.map((order) => (
                     <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="p-4">
-                        <div className="font-medium">#{order.order_number}</div>
-                        <div className="text-sm text-gray-600 capitalize">
+                      <td className="p-3 sm:p-4">
+                        <div className="text-sm font-medium sm:text-base">#{order.order_number}</div>
+                        <div className="text-xs text-gray-600 capitalize sm:text-sm">
                           {order.payment_method} • {order.payment_status}
                         </div>
                       </td>
-                      <td className="p-4">
+                      <td className="p-3 sm:p-4">
                         <div>
-                          <div className="font-medium">{order.customer_name}</div>
-                          <div className="text-sm text-gray-600">{order.customer_email}</div>
+                          <div className="text-sm font-medium sm:text-base">{order.customer_name}</div>
+                          <div className="text-xs text-gray-600 sm:text-sm">{order.customer_email}</div>
                         </div>
                       </td>
-                      <td className="p-4 font-medium">
+                      <td className="p-3 text-sm font-medium sm:p-4 sm:text-base">
                         ${order.total_amount}
                       </td>
-                      <td className="p-4">
+                      <td className="p-3 sm:p-4">
                         <span className={`inline-block px-2 py-1 text-xs rounded-full ${getStatusColor(order.status)}`}>
                           {order.status}
                         </span>
                       </td>
-                      <td className="p-4 text-sm text-gray-600">
+                      <td className="p-3 text-xs text-gray-600 sm:p-4 sm:text-sm">
                         {new Date(order.created_at).toLocaleDateString()}
                       </td>
-                      <td className="p-4">
-                        <div className="flex flex-wrap gap-2">
+                      <td className="p-3 sm:p-4">
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
                           {nextStatusMap[order.status]?.map((nextStatus) => (
                             <button
                               key={nextStatus}
                               onClick={() => handleStatusUpdate(order.id, nextStatus)}
-                              className="px-3 py-1 text-sm text-white transition-colors bg-blue-600 rounded hover:bg-blue-700"
+                              className="px-2 py-1 text-xs text-white transition-colors bg-blue-600 rounded hover:bg-blue-700 sm:px-3 sm:text-sm"
                             >
-                              Mark as {nextStatus}
+                              {nextStatus}
                             </button>
                           ))}
                           <button 
                             onClick={() => handleViewDetails(order)}
-                            className="px-3 py-1 text-sm text-white transition-colors bg-gray-600 rounded hover:bg-gray-700"
+                            className="px-2 py-1 text-xs text-white transition-colors bg-gray-600 rounded hover:bg-gray-700 sm:px-3 sm:text-sm"
                           >
-                            View Details
+                            Details
                           </button>
                         </div>
                       </td>
@@ -301,12 +339,12 @@ export default function AdminOrdersPage() {
 
       {/* Order Details Modal */}
       {showDetailsModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black bg-opacity-50 sm:p-4">
+          <div className="bg-white rounded-lg w-full max-w-4xl max-h-[95vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-200 sm:p-5">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-light">
-                  Order Details - #{selectedOrder?.order_number}
+                <h3 className="text-lg font-light sm:text-xl">
+                  Order #{selectedOrder?.order_number}
                 </h3>
                 <button
                   onClick={closeModal}
@@ -317,30 +355,30 @@ export default function AdminOrdersPage() {
               </div>
             </div>
 
-            <div className="p-6">
+            <div className="p-4 sm:p-5">
               {itemsLoading ? (
-                <div className="py-8 text-center">
-                  <div className="w-8 h-8 mx-auto border-b-2 border-blue-600 rounded-full animate-spin"></div>
-                  <p className="mt-2 text-gray-600">Loading order details...</p>
+                <div className="py-6 text-center sm:py-8">
+                  <div className="w-6 h-6 mx-auto border-b-2 border-blue-600 rounded-full animate-spin sm:w-8 sm:h-8"></div>
+                  <p className="mt-2 text-sm text-gray-600">Loading order details...</p>
                 </div>
               ) : !selectedOrder ? (
-                <div className="py-8 text-center text-gray-500">
+                <div className="py-6 text-sm text-center text-gray-500 sm:py-8">
                   Error loading order details
                 </div>
               ) : (
                 <>
                   {/* Order Information */}
-                  <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2">
-                    <div className="space-y-4">
+                  <div className="grid grid-cols-1 gap-4 mb-6 sm:gap-6 sm:mb-8 sm:grid-cols-2">
+                    <div className="space-y-3 sm:space-y-4">
                       <div>
-                        <h4 className="mb-3 text-lg font-medium">Customer Information</h4>
-                        <div className="p-4 space-y-2 text-sm text-gray-600 rounded-lg bg-gray-50">
+                        <h4 className="mb-2 text-base font-medium sm:text-lg sm:mb-3">Customer Information</h4>
+                        <div className="p-3 space-y-1 text-xs text-gray-600 rounded-lg bg-gray-50 sm:p-4 sm:space-y-2 sm:text-sm">
                           <div><strong className="text-gray-800">Name:</strong> {selectedOrder.customer_name}</div>
                           <div><strong className="text-gray-800">Email:</strong> {selectedOrder.customer_email}</div>
                           {selectedOrder.customer_phone && (
                             <div><strong className="text-gray-800">Phone:</strong> {selectedOrder.customer_phone}</div>
                           )}
-                          <div className="mt-3">
+                          <div className="mt-2 sm:mt-3">
                             <strong className="text-gray-800">Shipping Address:</strong> 
                             <div className="mt-1 text-gray-600">
                               {formatShippingAddress(selectedOrder.shipping_address)}
@@ -350,10 +388,10 @@ export default function AdminOrdersPage() {
                       </div>
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div>
-                        <h4 className="mb-3 text-lg font-medium">Order Information</h4>
-                        <div className="p-4 space-y-2 text-sm text-gray-600 rounded-lg bg-gray-50">
+                        <h4 className="mb-2 text-base font-medium sm:text-lg sm:mb-3">Order Information</h4>
+                        <div className="p-3 space-y-1 text-xs text-gray-600 rounded-lg bg-gray-50 sm:p-4 sm:space-y-2 sm:text-sm">
                           <div className="flex justify-between">
                             <strong className="text-gray-800">Status:</strong>
                             <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(selectedOrder.status)}`}>
@@ -373,8 +411,8 @@ export default function AdminOrdersPage() {
                             <span>{new Date(selectedOrder.created_at).toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between pt-2 mt-2 border-t border-gray-200">
-                            <strong className="text-base text-gray-800">Total Amount:</strong>
-                            <span className="text-lg font-bold">${selectedOrder.total_amount}</span>
+                            <strong className="text-gray-800">Total Amount:</strong>
+                            <span className="font-bold">${selectedOrder.total_amount}</span>
                           </div>
                         </div>
                       </div>
@@ -383,45 +421,47 @@ export default function AdminOrdersPage() {
 
                   {/* Order Items */}
                   <div>
-                    <h4 className="mb-4 text-lg font-medium">Order Items ({selectedOrder.items?.length || 0})</h4>
+                    <h4 className="mb-3 text-base font-medium sm:text-lg sm:mb-4">
+                      Order Items ({selectedOrder.items?.length || 0})
+                    </h4>
                     {!selectedOrder.items || selectedOrder.items.length === 0 ? (
-                      <div className="py-8 text-center text-gray-500 rounded-lg bg-gray-50">
+                      <div className="py-6 text-sm text-center text-gray-500 rounded-lg bg-gray-50 sm:py-8">
                         No items found for this order
                       </div>
                     ) : (
                       <div className="overflow-x-auto border border-gray-200 rounded-lg">
-                        <table className="w-full">
+                        <table className="w-full min-w-[500px]">
                           <thead className="bg-gray-50">
                             <tr>
-                              <th className="p-4 font-medium text-left text-gray-700">Product</th>
-                              <th className="p-4 font-medium text-left text-gray-700">Size</th>
-                              <th className="p-4 font-medium text-left text-gray-700">Color</th>
-                              <th className="p-4 font-medium text-left text-gray-700">Unit Price</th>
-                              <th className="p-4 font-medium text-left text-gray-700">Quantity</th>
-                              <th className="p-4 font-medium text-left text-gray-700">Total</th>
+                              <th className="p-2 text-xs font-medium text-left text-gray-700 sm:p-3 sm:text-sm">Product</th>
+                              <th className="p-2 text-xs font-medium text-left text-gray-700 sm:p-3 sm:text-sm">Size</th>
+                              <th className="p-2 text-xs font-medium text-left text-gray-700 sm:p-3 sm:text-sm">Color</th>
+                              <th className="p-2 text-xs font-medium text-left text-gray-700 sm:p-3 sm:text-sm">Price</th>
+                              <th className="p-2 text-xs font-medium text-left text-gray-700 sm:p-3 sm:text-sm">Qty</th>
+                              <th className="p-2 text-xs font-medium text-left text-gray-700 sm:p-3 sm:text-sm">Total</th>
                             </tr>
                           </thead>
                           <tbody>
                             {selectedOrder.items.map((item) => (
                               <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-                                <td className="p-4">
-                                  <div className="font-medium text-gray-900">{item.product_name}</div>
-                                  <div className="text-sm text-gray-600">Variant ID: {item.product_variant_id}</div>
+                                <td className="p-2 sm:p-3">
+                                  <div className="text-xs font-medium text-gray-900 sm:text-sm">{item.product_name}</div>
+                                  <div className="text-xs text-gray-600">ID: {item.product_variant_id}</div>
                                 </td>
-                                <td className="p-4 text-gray-700 capitalize">{item.size}</td>
-                                <td className="p-4 text-gray-700 capitalize">{item.color}</td>
-                                <td className="p-4 text-gray-700">${item.unit_price}</td>
-                                <td className="p-4 text-gray-700">{item.quantity}</td>
-                                <td className="p-4 font-medium text-gray-900">${item.total_price}</td>
+                                <td className="p-2 text-xs text-gray-700 capitalize sm:p-3 sm:text-sm">{item.size}</td>
+                                <td className="p-2 text-xs text-gray-700 capitalize sm:p-3 sm:text-sm">{item.color}</td>
+                                <td className="p-2 text-xs text-gray-700 sm:p-3 sm:text-sm">${item.unit_price}</td>
+                                <td className="p-2 text-xs text-gray-700 sm:p-3 sm:text-sm">{item.quantity}</td>
+                                <td className="p-2 text-xs font-medium text-gray-900 sm:p-3 sm:text-sm">${item.total_price}</td>
                               </tr>
                             ))}
                           </tbody>
                           <tfoot className="bg-gray-50">
                             <tr>
-                              <td colSpan={5} className="p-4 font-medium text-right text-gray-700">
+                              <td colSpan={5} className="p-2 text-xs font-medium text-right text-gray-700 sm:p-3 sm:text-sm">
                                 Order Total:
                               </td>
-                              <td className="p-4 text-lg font-bold text-gray-900">
+                              <td className="p-2 text-sm font-bold text-gray-900 sm:p-3 sm:text-base">
                                 ${selectedOrder.total_amount}
                               </td>
                             </tr>
@@ -434,10 +474,10 @@ export default function AdminOrdersPage() {
               )}
             </div>
 
-            <div className="flex justify-end p-6 border-t border-gray-200">
+            <div className="flex justify-end p-4 border-t border-gray-200 sm:p-5">
               <button
                 onClick={closeModal}
-                className="px-6 py-2 font-medium text-white transition-colors bg-gray-600 rounded-lg hover:bg-gray-700"
+                className="px-4 py-2 text-sm font-medium text-white transition-colors bg-gray-600 rounded-lg hover:bg-gray-700 sm:px-6 sm:text-base"
               >
                 Close
               </button>
