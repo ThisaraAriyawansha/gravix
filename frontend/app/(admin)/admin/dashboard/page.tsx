@@ -37,9 +37,9 @@ export default function AdminDashboard() {
       ])
       
       setStats(statsData)
-      setProducts(productsData.slice(0, 5)) // Recent products
-      setOrders(ordersData.slice(0, 5)) // Recent orders
-      setUsers(usersData.slice(0, 5)) // Recent users
+      setProducts(productsData.slice(0, 5))
+      setOrders(ordersData.slice(0, 5))
+      setUsers(usersData.slice(0, 5))
     } catch (error) {
       console.error('Error loading dashboard data:', error)
     } finally {
@@ -61,12 +61,12 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen p-4 bg-gray-50 sm:p-6">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="w-1/3 h-6 mb-4 bg-gray-200 rounded"></div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-32 bg-gray-200 rounded"></div>
+              <div key={i} className="h-24 bg-gray-200 rounded"></div>
             ))}
           </div>
         </div>
@@ -76,22 +76,22 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="p-8">
+      <div className="p-4 sm:p-6">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col items-start justify-between mb-6 sm:flex-row sm:items-center">
           <div>
-            <h1 className="text-3xl font-light mb-2">Admin Dashboard</h1>
-            <p className="text-gray-600">Welcome to your store management panel</p>
+            <h1 className="mb-1 text-xl font-light sm:text-2xl">Admin Dashboard</h1>
+            <p className="text-sm text-gray-600">Welcome to your store management panel</p>
           </div>
-          <div className="flex space-x-4">
-            <Link href="/admin/products/new" className="btn-primary">
+          <div className="mt-2 sm:mt-0">
+            <Link href="/admin/products/new" className="px-4 py-2 text-sm btn-primary">
               Add Product
             </Link>
           </div>
         </div>
         
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 lg:grid-cols-4">
           <StatsCard
             title="Total Sales"
             value={`$${stats?.stats.totalSales.toLocaleString() || '0'}`}
@@ -121,34 +121,33 @@ export default function AdminDashboard() {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {/* Recent Orders */}
           <div className="card">
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="text-xl font-light">Recent Orders</h2>
-              <Link href="/admin/orders" className="text-sm text-blue-600 hover:text-blue-800">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <h2 className="text-lg font-light">Recent Orders</h2>
+              <Link href="/admin/orders" className="text-xs text-blue-600 hover:text-blue-800">
                 View All
               </Link>
             </div>
             
-            <div className="p-6">
+            <div className="p-4">
               {orders.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="py-6 text-sm text-center text-gray-500">
                   No recent orders
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {orders.map((order) => (
-                    <div key={order.id} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-0">
+                    <div key={order.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                       <div>
-                        <div className="font-medium">#{order.order_number}</div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm font-medium">#{order.order_number}</div>
+                        <div className="text-xs text-gray-600">
                           {order.full_name || 'Guest'} • {new Date(order.created_at).toLocaleDateString()}
                         </div>
                       </div>
-                      
                       <div className="text-right">
-                        <div className="font-medium">${order.total_amount}</div>
+                        <div className="text-sm font-medium">${order.total_amount}</div>
                         <span className={`inline-block px-2 py-1 text-xs rounded-full ${getStatusColor(order.status)}`}>
                           {order.status}
                         </span>
@@ -162,31 +161,30 @@ export default function AdminDashboard() {
 
           {/* Recent Products */}
           <div className="card">
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="text-xl font-light">Recent Products</h2>
-              <Link href="/admin/products" className="text-sm text-blue-600 hover:text-blue-800">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <h2 className="text-lg font-light">Recent Products</h2>
+              <Link href="/admin/products" className="text-xs text-blue-600 hover:text-blue-800">
                 View All
               </Link>
             </div>
             
-            <div className="p-6">
+            <div className="p-4">
               {products.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="py-6 text-sm text-center text-gray-500">
                   No products yet
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {products.map((product) => (
-                    <div key={product.id} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-0">
+                    <div key={product.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                       <div>
-                        <div className="font-medium">{product.name}</div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm font-medium">{product.name}</div>
+                        <div className="text-xs text-gray-600">
                           {product.category_name} • {product.variants?.length || 0} variants
                         </div>
                       </div>
-                      
                       <div className="text-right">
-                        <div className="font-medium">
+                        <div className="text-sm font-medium">
                           ${product.variants?.[0]?.price || '0'}
                         </div>
                         <span className={`inline-block px-2 py-1 text-xs rounded-full ${
@@ -204,47 +202,47 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-8">
-          <h2 className="text-xl font-light mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link href="/admin/products/new" className="card p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="mt-6">
+          <h2 className="mb-4 text-lg font-light">Quick Actions</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            <Link href="/admin/products/new" className="p-4 transition-shadow card hover:shadow-lg">
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-medium">Add Product</h3>
-                  <p className="text-sm text-gray-600">Create new product with variants</p>
+                  <h3 className="text-sm font-medium">Add Product</h3>
+                  <p className="text-xs text-gray-600">Create new product with variants</p>
                 </div>
               </div>
             </Link>
 
-            <Link href="/admin/orders" className="card p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Link href="/admin/orders" className="p-4 transition-shadow card hover:shadow-lg">
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg">
+                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-medium">Manage Orders</h3>
-                  <p className="text-sm text-gray-600">Process and track orders</p>
+                  <h3 className="text-sm font-medium">Manage Orders</h3>
+                  <p className="text-xs text-gray-600">Process and track orders</p>
                 </div>
               </div>
             </Link>
 
-            <Link href="/admin/users" className="card p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Link href="/admin/users" className="p-4 transition-shadow card hover:shadow-lg">
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center w-10 h-10 bg-purple-100 rounded-lg">
+                  <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-medium">Manage Users</h3>
-                  <p className="text-sm text-gray-600">View and manage customers</p>
+                  <h3 className="text-sm font-medium">Manage Users</h3>
+                  <p className="text-xs text-gray-600">View and manage customers</p>
                 </div>
               </div>
             </Link>

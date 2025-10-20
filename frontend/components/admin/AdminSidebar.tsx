@@ -2,9 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 
 export default function AdminSidebar() {
   const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
 
   const menuItems = [
     {
@@ -46,42 +48,81 @@ export default function AdminSidebar() {
   ]
 
   return (
-    <div className="w-64 bg-black text-white min-h-screen">
-      <div className="p-6">
-        <h2 className="text-2xl font-light mb-8">GRAVIX Admin</h2>
-        
-        <nav className="space-y-2">
-          {menuItems.map((item) => {
-            const isActive = pathname === item.href
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                  isActive 
-                    ? 'bg-white text-black' 
-                    : 'hover:bg-gray-800'
-                }`}
-              >
-                {item.icon}
-                <span className="font-medium">{item.name}</span>
-              </Link>
-            )
-          })}
-        </nav>
+    <>
+      {/* Hamburger Button for Mobile */}
+      <button
+        className="fixed z-50 p-2 text-black bg-gray-100 rounded-r-lg top-2.8 left-0 md:hidden"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle sidebar"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
 
-        <div className="mt-8 pt-8 border-t border-gray-700">
-          <Link
-            href="/"
-            className="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span>Back to Store</span>
-          </Link>
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-100 text-black transition-transform duration-300 ease-in-out transform md:translate-x-0 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:static md:min-h-screen`}
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-light">GRAVIX Admin</h2>
+            <button
+              className="md:hidden"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <nav className="space-y-2">
+            {menuItems.map((item) => {
+              const isActive = pathname === item.href
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                    isActive 
+                      ? 'bg-black text-white' 
+                      : 'hover:bg-gray-300'
+                  }`}
+                >
+                  {item.icon}
+                  <span className="font-medium">{item.name}</span>
+                </Link>
+              )
+            })}
+          </nav>
+
+          <div className="pt-8 mt-8 border-t border-gray-700">
+            <Link
+              href="/"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center px-4 py-3 space-x-3 text-gray-700 transition-colors hover:text-gray-500"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>Back to Store</span>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Overlay for Mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black bg-opacity-50 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+    </>
   )
 }
