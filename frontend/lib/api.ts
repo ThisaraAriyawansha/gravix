@@ -204,10 +204,6 @@ export const getProductById = async (id: number) => {
   return response.data;
 };
 
-export const updateProduct = async (id: number, productData: any) => {
-  const response = await api.put(`/products/${id}`, productData);
-  return response.data;
-};
 
 export const createProductVariant = async (variantData: any) => {
   const response = await api.post('/admin/variants', variantData);
@@ -221,6 +217,33 @@ export const updateProductVariant = async (id: number, variantData: any) => {
 
 export const deleteProductVariant = async (id: number) => {
   const response = await api.delete(`/admin/variants/${id}`);
+  return response.data;
+};
+
+
+// Product Status Management
+export const toggleProductFeatured = async (productId: number) => {
+  const response = await api.patch(`/products/${productId}/featured`);
+  return response.data;
+};
+
+export const toggleProductActive = async (productId: number) => {
+  const response = await api.patch(`/products/${productId}/active`);
+  return response.data;
+};
+
+// Enhanced update function with validation
+export const updateProduct = async (id: number, productData: any) => {
+  // Validate data before sending
+  const validatedData = {
+    name: productData.name || '',
+    description: productData.description || '',
+    category_id: productData.category_id || 1,
+    is_featured: Boolean(productData.is_featured),
+    is_active: productData.is_active !== false // Default to true
+  };
+  
+  const response = await api.put(`/products/${id}`, validatedData);
   return response.data;
 };
 

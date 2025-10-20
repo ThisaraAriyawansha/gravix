@@ -10,7 +10,9 @@ import {
   uploadProductImages,
   setPrimaryImage,
   deleteProductImage,
-  getProductImages
+  getProductImages,
+  toggleProductFeatured,  // ADD THIS
+  toggleProductActive     // ADD THIS
 } from '../controllers/productController.js';
 import { authenticate, requireAdmin } from '../middleware/auth.js';
 import { uploadMultiple } from '../middleware/upload.js';
@@ -28,6 +30,10 @@ router.get('/images/:product_variant_id', getProductImages);
 router.post('/images/upload', authenticate, requireAdmin, uploadMultiple, uploadProductImages);
 router.put('/images/:imageId/primary', authenticate, requireAdmin, setPrimaryImage);
 router.delete('/images/:imageId', authenticate, requireAdmin, deleteProductImage);
+
+// Status toggle routes - ADD THESE
+router.patch('/:id/featured', authenticate, requireAdmin, toggleProductFeatured);
+router.patch('/:id/active', authenticate, requireAdmin, toggleProductActive);
 
 // Admin routes
 router.post('/', authenticate, requireAdmin, createProduct);

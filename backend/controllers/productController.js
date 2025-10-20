@@ -129,23 +129,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// Admin: Update product
-export const updateProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, description, category_id, is_featured, is_active } = req.body;
-    
-    await pool.execute(`
-      UPDATE products 
-      SET name = ?, description = ?, category_id = ?, is_featured = ?, is_active = ?
-      WHERE id = ?
-    `, [name, description, category_id, is_featured, is_active, id]);
-    
-    res.json({ message: 'Product updated successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+
 
 // Admin: Delete product
 export const deleteProduct = async (req, res) => {
@@ -375,3 +359,115 @@ export const getProductById = async (req, res) => {
 };
 
 
+
+
+// Admin: Update product - FIXED VERSION
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description, category_id, is_featured, is_active } = req.body;
+    
+    console.log('Update product data:', { id, name, description, category_id, is_featured, is_active });
+    
+    // Validate required fields
+    if (!name || !description || category_id === undefined) {
+      return res.status(400).json({ error: 'Name, description, and category are required' });
+    }
+    
+    let slug;
+    if (name) {
+      slug = name.toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '');
+    }
+    
+    // Ensure boolean values
+    const featured = Boolean(is_featured);
+    const active = is_active !== false; // Default to true if not provided
+    
+    if (slug) {
+      await pool.execute(`
+        UPDATE products 
+        SET name = ?, slug = ?, description = ?, category_id = ?, is_featured = ?, is_active = ?
+        WHERE id = ?
+      `, [name, slug, description, category_id, featured, active, id]);
+    } else {
+      await pool.execute(`
+        UPDATE products 
+        SET description = ?, category_id = ?, is_featured = ?, is_active = ?
+        WHERE id = ?
+      `, [description, category_id, featured, active, id]);
+    }
+    
+    res.json({ message: 'Product updated successfully' });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Toggle product featured status - NEW FUNCTION
+export const toggleProductFeatured = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Get current featured status
+    const [products] = await pool.execute(
+      'SELECT is_featured FROM products WHERE id = ?',
+      [id]
+    );
+    
+    if (products.length === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    
+    const currentFeatured = products[0].is_featured;
+    
+    // Toggle featured status
+    await pool.execute(
+      'UPDATE products SET is_featured = ? WHERE id = ?',
+      [!currentFeatured, id]
+    );
+    
+    res.json({ 
+      message: `Product ${!currentFeatured ? 'added to' : 'removed from'} featured`,
+      is_featured: !currentFeatured 
+    });
+  } catch (error) {
+    console.error('Error toggling featured status:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Toggle product active status - NEW FUNCTION
+export const toggleProductActive = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Get current active status
+    const [products] = await pool.execute(
+      'SELECT is_active FROM products WHERE id = ?',
+      [id]
+    );
+    
+    if (products.length === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    
+    const currentActive = products[0].is_active;
+    
+    // Toggle active status
+    await pool.execute(
+      'UPDATE products SET is_active = ? WHERE id = ?',
+      [!currentActive, id]
+    );
+    
+    res.json({ 
+      message: `Product ${!currentActive ? 'activated' : 'deactivated'}`,
+      is_active: !currentActive 
+    });
+  } catch (error) {
+    console.error('Error toggling active status:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
