@@ -29,7 +29,7 @@ interface Product {
 export default function ProductDetailPage() {
   const params = useParams()
   const slug = params.slug as string
-
+  
   const [product, setProduct] = useState<Product | null>(null)
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null)
   const [selectedSize, setSelectedSize] = useState('')
@@ -37,7 +37,7 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(true)
   const [addingToCart, setAddingToCart] = useState(false)
-
+  
   const addItem = useCartStore(state => state.addItem)
 
   useEffect(() => {
@@ -67,27 +67,11 @@ export default function ProductDetailPage() {
 
   const updateSelectedVariant = (size: string, color: string) => {
     if (!product) return
-
+    
     const variant = product.variants.find(
       v => v.size === size && v.color === color
     )
     setSelectedVariant(variant || null)
-
-    // If no valid variant is found, try to select a valid color for the current size
-    if (!variant && product.variants.length > 0) {
-      const validVariant = product.variants.find(v => v.size === size)
-      if (validVariant) {
-        setSelectedColor(validVariant.color)
-        setSelectedVariant(validVariant)
-      } else {
-        // If no valid variant for the size, try a valid size for the current color
-        const validSizeVariant = product.variants.find(v => v.color === color)
-        if (validSizeVariant) {
-          setSelectedSize(validSizeVariant.size)
-          setSelectedVariant(validSizeVariant)
-        }
-      }
-    }
   }
 
   const handleSizeChange = (size: string) => {
@@ -102,13 +86,13 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return
-
+    
     try {
       setAddingToCart(true)
-
+      
       // Add to backend cart
       await addToCart(selectedVariant.id, quantity)
-
+      
       // Add to local state
       addItem({
         id: Date.now(), // Temporary ID
@@ -122,7 +106,7 @@ export default function ProductDetailPage() {
         product_slug: product?.slug || '',
         image: selectedVariant.images[0]?.image_url || ''
       })
-
+      
       // Show success message
       alert('Product added to cart!')
     } catch (error) {
@@ -168,8 +152,8 @@ export default function ProductDetailPage() {
   const displayPrice = selectedVariant?.discount_price || selectedVariant?.price || 0
   const originalPrice = selectedVariant?.discount_price ? selectedVariant.price : null
 
-  const availableSizes = Array.from(new Set(product.variants.map(v => v.size)))
-  const availableColors = Array.from(new Set(product.variants.map(v => v.color)))
+  const availableSizes = product.variants.map(v => v.size).filter((s, i, arr) => arr.indexOf(s) === i)
+  const availableColors = product.variants.map(v => v.color).filter((c, i, arr) => arr.indexOf(c) === i)
 
   return (
     <div className="min-h-screen bg-white">
@@ -195,7 +179,7 @@ export default function ProductDetailPage() {
             <div>
               <h1 className="mb-2 text-3xl font-light">{product.name}</h1>
               <p className="mb-4 text-gravix-gray-600">{product.category_name}</p>
-
+              
               <div className="flex items-center mb-4 space-x-2">
                 {originalPrice && (
                   <span className="text-lg line-through text-gravix-gray-500">
@@ -212,23 +196,19 @@ export default function ProductDetailPage() {
             <div>
               <h3 className="mb-3 text-sm font-medium">Size</h3>
               <div className="flex flex-wrap gap-2">
-                {availableSizes.map(size => {
-                  const variant = product.variants.find(v => v.size === size && v.color === selectedColor)
-                  return (
-                    <button
-                      key={size}
-                      onClick={() => handleSizeChange(size)}
-                      disabled={!variant}
-                      className={`px-4 py-2 border ${
-                        selectedSize === size
-                          ? 'border-gravix-black bg-gravix-black text-white'
-                          : 'border-gravix-gray-300 hover:border-gravix-black'
-                      } ${!variant ? 'opacity-50 cursor-not-allowed' : ''} transition-colors`}
-                    >
-                      {size}
-                    </button>
-                  )
-                })}
+                {availableSizes.map(size => (
+                  <button
+                    key={size}
+                    onClick={() => handleSizeChange(size)}
+                    className={`px-4 py-2 border ${
+                      selectedSize === size
+                        ? 'border-gravix-black bg-gravix-black text-white'
+                        : 'border-gravix-gray-300 hover:border-gravix-black'
+                    } transition-colors`}
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -272,7 +252,7 @@ export default function ProductDetailPage() {
                   ))}
                 </select>
               </div>
-
+              
               <div className="flex-1">
                 <button
                   onClick={handleAddToCart}
@@ -287,7 +267,7 @@ export default function ProductDetailPage() {
             {/* Stock Info */}
             {selectedVariant && (
               <div className="text-sm text-gravix-gray-600">
-                {selectedVariant.stock_quantity > 0
+                {selectedVariant.stock_quantity > 0 
                   ? `${selectedVariant.stock_quantity} in stock`
                   : 'Out of stock'
                 }

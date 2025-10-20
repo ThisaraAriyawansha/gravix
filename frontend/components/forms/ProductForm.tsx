@@ -36,7 +36,6 @@ const categories = [
   { id: 3, name: 'Kids' }
 ]
 
-const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 const colors = [
   { name: 'Black', hex: '#000000' },
   { name: 'White', hex: '#FFFFFF' },
@@ -66,7 +65,7 @@ export default function ProductForm({
 
   const [variants, setVariants] = useState<VariantFormData[]>(initialVariants)
   const [newVariant, setNewVariant] = useState<Omit<VariantFormData, 'id'>>({
-    size: 'M',
+    size: '',
     color: 'Black',
     color_hex: '#000000',
     price: 0,
@@ -83,10 +82,10 @@ export default function ProductForm({
   }
 
   const handleAddVariant = () => {
-    if (newVariant.price > 0 && newVariant.stock_quantity >= 0) {
+    if (newVariant.price > 0 && newVariant.stock_quantity >= 0 && newVariant.size.trim() !== '') {
       setVariants(prev => [...prev, { ...newVariant }])
       setNewVariant({
-        size: 'M',
+        size: '',
         color: 'Black',
         color_hex: '#000000',
         price: 0,
@@ -224,16 +223,15 @@ export default function ProductForm({
           <h3 className="mb-3 text-sm font-medium">Add New Variant</h3>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-5">
             <div>
-              <label className="block mb-1 text-xs font-medium text-gray-700">Size</label>
-              <select
+              <label className="block mb-1 text-xs font-medium text-gray-700">Size *</label>
+              <input
+                type="text"
                 value={newVariant.size}
                 onChange={(e) => setNewVariant(prev => ({ ...prev, size: e.target.value }))}
                 className="text-sm input-field"
-              >
-                {sizes.map(size => (
-                  <option key={size} value={size}>{size}</option>
-                ))}
-              </select>
+                placeholder="Enter size (e.g., S, M, L)"
+                
+              />
             </div>
 
             <div>
@@ -256,7 +254,7 @@ export default function ProductForm({
                 min="0"
                 step="0.01"
                 value={newVariant.price}
-                onChange={(e) => setNewVariant(prev => ({ ...prev, price: parseFloat(e.target.value) }))}
+                onChange={(e) => setNewVariant(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
                 className="text-sm input-field"
               />
             </div>
@@ -268,7 +266,7 @@ export default function ProductForm({
                 min="0"
                 step="0.01"
                 value={newVariant.discount_price}
-                onChange={(e) => setNewVariant(prev => ({ ...prev, discount_price: parseFloat(e.target.value) }))}
+                onChange={(e) => setNewVariant(prev => ({ ...prev, discount_price: parseFloat(e.target.value) || 0 }))}
                 className="text-sm input-field"
               />
             </div>
@@ -279,7 +277,7 @@ export default function ProductForm({
                 type="number"
                 min="0"
                 value={newVariant.stock_quantity}
-                onChange={(e) => setNewVariant(prev => ({ ...prev, stock_quantity: parseInt(e.target.value) }))}
+                onChange={(e) => setNewVariant(prev => ({ ...prev, stock_quantity: parseInt(e.target.value) || 0 }))}
                 className="text-sm input-field"
               />
             </div>
@@ -289,7 +287,7 @@ export default function ProductForm({
             type="button"
             onClick={handleAddVariant}
             className="px-4 py-2 mt-3 text-sm btn-primary"
-            disabled={newVariant.price <= 0}
+            disabled={newVariant.price <= 0 || newVariant.size.trim() === ''}
           >
             Add Variant
           </button>
@@ -343,7 +341,7 @@ export default function ProductForm({
                         min="0"
                         step="0.01"
                         value={variant.price}
-                        onChange={(e) => handleUpdateVariant(index, 'price', parseFloat(e.target.value))}
+                        onChange={(e) => handleUpdateVariant(index, 'price', parseFloat(e.target.value) || 0)}
                         className="text-sm input-field"
                       />
                     </div>
@@ -355,7 +353,7 @@ export default function ProductForm({
                         min="0"
                         step="0.01"
                         value={variant.discount_price}
-                        onChange={(e) => handleUpdateVariant(index, 'discount_price', parseFloat(e.target.value))}
+                        onChange={(e) => handleUpdateVariant(index, 'discount_price', parseFloat(e.target.value) || 0)}
                         className="text-sm input-field"
                       />
                     </div>
@@ -366,7 +364,7 @@ export default function ProductForm({
                         type="number"
                         min="0"
                         value={variant.stock_quantity}
-                        onChange={(e) => handleUpdateVariant(index, 'stock_quantity', parseInt(e.target.value))}
+                        onChange={(e) => handleUpdateVariant(index, 'stock_quantity', parseInt(e.target.value) || 0)}
                         className="text-sm input-field"
                       />
                     </div>
