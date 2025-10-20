@@ -19,6 +19,7 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [updatingId, setUpdatingId] = useState<number | null>(null)
 
   useEffect(() => {
     loadUsers()
@@ -36,20 +37,28 @@ export default function AdminUsersPage() {
   }
 
   const handleToggleStatus = async (userId: number, currentStatus: boolean) => {
+    setUpdatingId(userId)
     try {
       await updateUser(userId, { is_active: !currentStatus })
-      loadUsers() // Refresh the list
+      await loadUsers() // Refresh the list
     } catch (error) {
       console.error('Error updating user status:', error)
+      alert('Failed to update user status')
+    } finally {
+      setUpdatingId(null)
     }
   }
 
   const handleRoleChange = async (userId: number, newRole: 'admin' | 'customer') => {
+    setUpdatingId(userId)
     try {
       await updateUser(userId, { role: newRole })
-      loadUsers() // Refresh the list
+      await loadUsers() // Refresh the list
     } catch (error) {
       console.error('Error updating user role:', error)
+      alert('Failed to update user role')
+    } finally {
+      setUpdatingId(null)
     }
   }
 
@@ -60,9 +69,9 @@ export default function AdminUsersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen p-8 bg-gray-50">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
+          <div className="w-1/4 h-8 mb-8 bg-gray-200 rounded"></div>
           <div className="space-y-4">
             {[...Array(5)].map((_, i) => (
               <div key={i} className="h-20 bg-gray-200 rounded"></div>
@@ -74,14 +83,14 @@ export default function AdminUsersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen p-8 bg-gray-50">
       <div className="mb-8">
-        <h1 className="text-3xl font-light mb-2">User Management</h1>
+        <h1 className="mb-2 text-3xl font-light">User Management</h1>
         <p className="text-gray-600">Manage customer accounts and permissions</p>
       </div>
 
       {/* Search */}
-      <div className="card p-6 mb-6">
+      <div className="p-6 mb-6 card">
         <input
           type="text"
           placeholder="Search users by email or name..."
@@ -101,7 +110,7 @@ export default function AdminUsersPage() {
         
         <div className="p-6">
           {filteredUsers.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="py-8 text-center text-gray-500">
               No users found
             </div>
           ) : (
@@ -109,11 +118,11 @@ export default function AdminUsersPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left p-4 font-medium">User</th>
-                    <th className="text-left p-4 font-medium">Role</th>
-                    <th className="text-left p-4 font-medium">Status</th>
-                    <th className="text-left p-4 font-medium">Joined</th>
-                    <th className="text-left p-4 font-medium">Actions</th>
+                    <th className="p-4 font-medium text-left">User</th>
+                    <th className="p-4 font-medium text-left">Role</th>
+                    <th className="p-4 font-medium text-left">Status</th>
+                    <th className="p-4 font-medium text-left">Joined</th>
+                    <th className="p-4 font-medium text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -130,22 +139,28 @@ export default function AdminUsersPage() {
                         <select
                           value={user.role}
                           onChange={(e) => handleRoleChange(user.id, e.target.value as 'admin' | 'customer')}
-                          className="input-field text-sm"
+                          disabled={updatingId === user.id}
+                          className={`input-field text-sm ${updatingId === user.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                           <option value="customer">Customer</option>
                           <option value="admin">Admin</option>
                         </select>
+                        {updatingId === user.id && (
+                          <div className="mt-1 text-xs text-blue-600">Updating...</div>
+                        )}
                       </td>
                       <td className="p-4">
                         <button
                           onClick={() => handleToggleStatus(user.id, user.is_active)}
+                          disabled={updatingId === user.id}
                           className={`px-3 py-1 rounded-full text-sm font-medium ${
                             user.is_active
                               ? 'bg-green-100 text-green-800 hover:bg-green-200'
                               : 'bg-red-100 text-red-800 hover:bg-red-200'
-                          }`}
+                          } ${updatingId === user.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                           {user.is_active ? 'Active' : 'Inactive'}
+                          {updatingId === user.id && '...'}
                         </button>
                       </td>
                       <td className="p-4 text-sm text-gray-600">
@@ -155,7 +170,12 @@ export default function AdminUsersPage() {
                         <div className="flex space-x-2">
                           <button
                             onClick={() => handleToggleStatus(user.id, user.is_active)}
-                            className="text-sm text-blue-600 hover:text-blue-800"
+                            disabled={updatingId === user.id}
+                            className={`text-sm ${
+                              user.is_active 
+                                ? 'text-red-600 hover:text-red-800' 
+                                : 'text-green-600 hover:text-green-800'
+                            } ${updatingId === user.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                           >
                             {user.is_active ? 'Deactivate' : 'Activate'}
                           </button>

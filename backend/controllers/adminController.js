@@ -79,19 +79,69 @@ export const getUsers = async (req, res) => {
 };
 
 // Update user
+// Update user - with better error handling
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { role, is_active } = req.body;
     
-    await pool.execute(`
-      UPDATE users SET role = ?, is_active = ? 
-      WHERE id = ?
-    `, [role, is_active, id]);
+    //console.log('Update user request:', { id, role, is_active }); // Debug log
     
-    res.json({ message: 'User updated successfully' });
+    // Validate input
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid user ID' });
+    }
+    
+    if (role && !['admin', 'customer'].includes(role)) {
+      return res.status(400).json({ error: 'Invalid role' });
+    }
+    
+    if (is_active !== undefined && typeof is_active !== 'boolean') {
+      return res.status(400).json({ error: 'Invalid is_active value' });
+    }
+    
+    // Build update query dynamically based on provided fields
+    const updates = [];
+    const params = [];
+    
+    if (role !== undefined) {
+      updates.push('role = ?');
+      params.push(role);
+    }
+    
+    if (is_active !== undefined) {
+      updates.push('is_active = ?');
+      params.push(is_active);
+    }
+    
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'No fields to update' });
+    }
+    
+    params.push(id);
+    
+    const query = `UPDATE users SET ${updates.join(', ')} WHERE id = ?`;
+    //console.log('Executing query:', query, params); // Debug log
+    
+    const [result] = await pool.execute(query, params);
+    
+    //console.log('Update result:', result); // Debug log
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    res.json({ 
+      message: 'User updated successfully',
+      affectedRows: result.affectedRows 
+    });
+    
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error in updateUser:', error);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      details: error.message 
+    });
   }
 };
 

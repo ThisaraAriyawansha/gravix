@@ -247,4 +247,12 @@ export const updateProduct = async (id: number, productData: any) => {
   return response.data;
 };
 
+
+export const getOrderItems = async (orderId: number) => {
+  const response = await api.get(`/orders/${orderId}`)
+  return response.data.items || []; // Assuming the order details include items array
+}
+
+
+
 export default api
