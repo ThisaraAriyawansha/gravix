@@ -23,7 +23,6 @@ interface CheckoutFormProps {
 export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }: CheckoutFormProps) {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    // Shipping Address
     firstName: '',
     lastName: '',
     email: '',
@@ -32,12 +31,8 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
     city: '',
     state: '',
     postalCode: '',
-    country: 'United States',
-    
-    // Payment
+    country: '',
     paymentMethod: 'card',
-    
-    // Card Details
     cardNumber: '',
     expiryDate: '',
     cvv: '',
@@ -85,14 +80,14 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
       {/* Shipping Information */}
-      <div className="card p-6">
-        <h2 className="text-xl font-light mb-6">Shipping Information</h2>
+      <div className="p-4 bg-white border border-gray-300">
+        <h2 className="mb-3 text-base font-medium text-black">Shipping Information</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="firstName" className="block mb-1 text-xs font-medium text-black">
               First Name *
             </label>
             <input
@@ -102,12 +97,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               required
               value={formData.firstName}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div>
-            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="lastName" className="block mb-1 text-xs font-medium text-black">
               Last Name *
             </label>
             <input
@@ -117,12 +112,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               required
               value={formData.lastName}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block mb-1 text-xs font-medium text-black">
               Email Address *
             </label>
             <input
@@ -132,12 +127,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               required
               value={formData.email}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="phone" className="block mb-1 text-xs font-medium text-black">
               Phone Number
             </label>
             <input
@@ -146,12 +141,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div className="md:col-span-2">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="address" className="block mb-1 text-xs font-medium text-black">
               Street Address *
             </label>
             <input
@@ -161,12 +156,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               required
               value={formData.address}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div>
-            <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="city" className="block mb-1 text-xs font-medium text-black">
               City *
             </label>
             <input
@@ -176,12 +171,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               required
               value={formData.city}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div>
-            <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="state" className="block mb-1 text-xs font-medium text-black">
               State *
             </label>
             <input
@@ -191,12 +186,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               required
               value={formData.state}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div>
-            <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="postalCode" className="block mb-1 text-xs font-medium text-black">
               ZIP/Postal Code *
             </label>
             <input
@@ -206,55 +201,54 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
               required
               value={formData.postalCode}
               onChange={handleChange}
-              className="input-field"
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
           </div>
           
           <div>
-            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="country" className="block mb-1 text-xs font-medium text-black">
               Country *
             </label>
-            <select
+            <input
+              type="text"
               id="country"
               name="country"
               required
               value={formData.country}
               onChange={handleChange}
-              className="input-field"
-            >
-              <option value="United States">United States</option>
-              <option value="Canada">Canada</option>
-              <option value="United Kingdom">United Kingdom</option>
-            </select>
+              className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
+              placeholder="Enter your country"
+            />
           </div>
+
         </div>
       </div>
 
       {/* Payment Method */}
-      <div className="card p-6">
-        <h2 className="text-xl font-light mb-6">Payment Method</h2>
+      <div className="p-4 bg-white border border-gray-300">
+        <h2 className="mb-3 text-base font-medium text-black">Payment Method</h2>
         
-        <div className="space-y-4">
-          <label className="flex items-center">
+        <div className="space-y-2">
+          <label className="flex items-center text-sm">
             <input
               type="radio"
               name="paymentMethod"
               value="card"
               checked={formData.paymentMethod === 'card'}
               onChange={handleChange}
-              className="mr-3"
+              className="mr-2"
             />
             <span>Credit/Debit Card</span>
           </label>
           
-          <label className="flex items-center">
+          <label className="flex items-center text-sm">
             <input
               type="radio"
               name="paymentMethod"
               value="paypal"
               checked={formData.paymentMethod === 'paypal'}
               onChange={handleChange}
-              className="mr-3"
+              className="mr-2"
             />
             <span>PayPal</span>
           </label>
@@ -262,9 +256,9 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
 
         {/* Card Details */}
         {formData.paymentMethod === 'card' && (
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-3 mt-3 md:grid-cols-2">
             <div className="md:col-span-2">
-              <label htmlFor="nameOnCard" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="nameOnCard" className="block mb-1 text-xs font-medium text-black">
                 Name on Card *
               </label>
               <input
@@ -274,12 +268,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
                 required
                 value={formData.nameOnCard}
                 onChange={handleChange}
-                className="input-field"
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
             
             <div className="md:col-span-2">
-              <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="cardNumber" className="block mb-1 text-xs font-medium text-black">
                 Card Number *
               </label>
               <input
@@ -290,12 +284,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
                 placeholder="1234 5678 9012 3456"
                 value={formData.cardNumber}
                 onChange={handleChange}
-                className="input-field"
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
             
             <div>
-              <label htmlFor="expiryDate" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="expiryDate" className="block mb-1 text-xs font-medium text-black">
                 Expiry Date *
               </label>
               <input
@@ -306,12 +300,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
                 placeholder="MM/YY"
                 value={formData.expiryDate}
                 onChange={handleChange}
-                className="input-field"
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
             
             <div>
-              <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="cvv" className="block mb-1 text-xs font-medium text-black">
                 CVV *
               </label>
               <input
@@ -322,7 +316,7 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
                 placeholder="123"
                 value={formData.cvv}
                 onChange={handleChange}
-                className="input-field"
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
           </div>
@@ -330,27 +324,27 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
       </div>
 
       {/* Order Summary */}
-      <div className="card p-6">
-        <h2 className="text-xl font-light mb-4">Order Summary</h2>
+      <div className="p-4 bg-white border border-gray-300 lg:col-span-2">
+        <h2 className="mb-2 text-base font-medium text-black">Order Summary</h2>
         
-        <div className="space-y-3 mb-6">
-          <div className="flex justify-between text-sm">
+        <div className="mb-3 space-y-2">
+          <div className="flex justify-between text-xs">
             <span>Subtotal</span>
             <span>${totalAmount.toFixed(2)}</span>
           </div>
           
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-xs">
             <span>Shipping</span>
             <span>{totalAmount > 100 ? 'FREE' : '$10.00'}</span>
           </div>
           
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-xs">
             <span>Tax</span>
             <span>${(totalAmount * 0.08).toFixed(2)}</span>
           </div>
           
-          <div className="border-t border-gravix-gray-200 pt-3">
-            <div className="flex justify-between font-medium text-lg">
+          <div className="pt-2 border-t border-gray-300">
+            <div className="flex justify-between text-sm font-medium">
               <span>Total</span>
               <span>
                 ${(totalAmount + (totalAmount > 100 ? 0 : 10) + (totalAmount * 0.08)).toFixed(2)}
@@ -362,7 +356,7 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
         <button
           type="submit"
           disabled={loading}
-          className="btn-primary w-full py-4 disabled:bg-gravix-gray-400 disabled:cursor-not-allowed"
+          className="w-full px-3 py-2 text-sm font-medium text-white transition-colors bg-black hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {loading ? 'Processing...' : `Complete Order - $${(
             totalAmount + 
@@ -371,7 +365,7 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
           ).toFixed(2)}`}
         </button>
         
-        <p className="text-xs text-gravix-gray-500 text-center mt-4">
+        <p className="mt-2 text-xs text-center text-black">
           By completing your purchase, you agree to our Terms of Service and Privacy Policy.
         </p>
       </div>

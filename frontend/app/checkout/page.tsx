@@ -17,10 +17,12 @@ export default function CheckoutPage() {
 
   if (items.length === 0 && !orderComplete) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="text-center">
-          <h1 className="text-2xl font-light mb-4">Your cart is empty</h1>
-          <a href="/products" className="btn-primary">Shop Now</a>
+          <h1 className="mb-2 text-lg font-medium text-black">Your cart is empty</h1>
+          <a href="/products" className="inline-block px-4 py-1.5 text-sm font-medium text-white bg-black hover:bg-gray-800 transition-colors">
+            Shop Now
+          </a>
         </div>
       </div>
     )
@@ -28,19 +30,23 @@ export default function CheckoutPage() {
 
   if (orderComplete) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="max-w-xs text-center">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto mb-2 bg-black">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-3xl font-light mb-4">Order Confirmed!</h1>
-          <p className="text-gravix-gray-600 mb-2">Thank you for your purchase</p>
-          <p className="text-gravix-gray-600 mb-6">Order #: {orderNumber}</p>
-          <div className="space-x-4">
-            <a href="/orders" className="btn-primary">View Orders</a>
-            <a href="/products" className="btn-secondary">Continue Shopping</a>
+          <h1 className="mb-2 text-xl font-medium text-black">Order Confirmed!</h1>
+          <p className="mb-1 text-xs text-black">Thank you for your purchase</p>
+          <p className="mb-3 text-xs text-black">Order #: {orderNumber}</p>
+          <div className="flex justify-center gap-2">
+            <a href="/orders" className="inline-block px-4 py-1.5 text-sm font-medium text-white bg-black hover:bg-gray-800 transition-colors">
+              View Orders
+            </a>
+            <a href="/products" className="inline-block px-4 py-1.5 text-sm font-medium text-black bg-white border border-black hover:bg-gray-200 transition-colors">
+              Continue Shopping
+            </a>
           </div>
         </div>
       </div>
@@ -49,10 +55,10 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-light mb-8">Checkout</h1>
+      <div className="container px-3 py-4 mx-auto">
+        <h1 className="mb-4 text-xl font-medium text-black">Checkout</h1>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 gap-4">
           <CheckoutForm 
             cartItems={items}
             totalAmount={getTotalPrice()}
