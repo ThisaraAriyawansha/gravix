@@ -128,14 +128,14 @@ export default function ProductForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {/* Basic Information */}
-      <div className="card p-6">
-        <h2 className="text-xl font-light mb-6">Basic Information</h2>
+      <div className="p-4 card">
+        <h2 className="mb-4 text-lg font-light">Basic Information</h2>
         
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 gap-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="name" className="block mb-1 text-xs font-medium text-gray-700">
               Product Name *
             </label>
             <input
@@ -144,29 +144,29 @@ export default function ProductForm({
               required
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className="input-field"
+              className="text-sm input-field"
               placeholder="Enter product name"
             />
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="description" className="block mb-1 text-xs font-medium text-gray-700">
               Description *
             </label>
             <textarea
               id="description"
               required
-              rows={4}
+              rows={3}
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              className="input-field resize-none"
+              className="text-sm resize-none input-field"
               placeholder="Enter product description"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="category" className="block mb-1 text-xs font-medium text-gray-700">
                 Category *
               </label>
               <select
@@ -174,7 +174,7 @@ export default function ProductForm({
                 required
                 value={formData.category_id}
                 onChange={(e) => setFormData(prev => ({ ...prev, category_id: parseInt(e.target.value) }))}
-                className="input-field"
+                className="text-sm input-field"
               >
                 {categories.map(category => (
                   <option key={category.id} value={category.id}>
@@ -192,7 +192,7 @@ export default function ProductForm({
                 onChange={(e) => setFormData(prev => ({ ...prev, is_featured: e.target.checked }))}
                 className="mr-2"
               />
-              <label htmlFor="is_featured" className="text-sm font-medium text-gray-700">
+              <label htmlFor="is_featured" className="text-xs font-medium text-gray-700">
                 Featured Product
               </label>
             </div>
@@ -206,7 +206,7 @@ export default function ProductForm({
                   onChange={(e) => setFormData(prev => ({ ...prev, is_active: e.target.checked }))}
                   className="mr-2"
                 />
-                <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
+                <label htmlFor="is_active" className="text-xs font-medium text-gray-700">
                   Active Product
                 </label>
               </div>
@@ -216,19 +216,19 @@ export default function ProductForm({
       </div>
 
       {/* Product Variants */}
-      <div className="card p-6">
-        <h2 className="text-xl font-light mb-6">Product Variants</h2>
+      <div className="p-4 card">
+        <h2 className="mb-4 text-lg font-light">Product Variants</h2>
 
         {/* Add New Variant */}
-        <div className="bg-gray-50 p-4 rounded-lg mb-6">
-          <h3 className="text-lg font-medium mb-4">Add New Variant</h3>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="p-3 mb-4 rounded-lg bg-gray-50">
+          <h3 className="mb-3 text-sm font-medium">Add New Variant</h3>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Size</label>
+              <label className="block mb-1 text-xs font-medium text-gray-700">Size</label>
               <select
                 value={newVariant.size}
                 onChange={(e) => setNewVariant(prev => ({ ...prev, size: e.target.value }))}
-                className="input-field"
+                className="text-sm input-field"
               >
                 {sizes.map(size => (
                   <option key={size} value={size}>{size}</option>
@@ -237,11 +237,11 @@ export default function ProductForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+              <label className="block mb-1 text-xs font-medium text-gray-700">Color</label>
               <select
                 value={newVariant.color}
                 onChange={(e) => handleColorChange(e.target.value)}
-                className="input-field"
+                className="text-sm input-field"
               >
                 {colors.map(color => (
                   <option key={color.name} value={color.name}>{color.name}</option>
@@ -250,37 +250,37 @@ export default function ProductForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
+              <label className="block mb-1 text-xs font-medium text-gray-700">Price ($)</label>
               <input
                 type="number"
                 min="0"
                 step="0.01"
                 value={newVariant.price}
                 onChange={(e) => setNewVariant(prev => ({ ...prev, price: parseFloat(e.target.value) }))}
-                className="input-field"
+                className="text-sm input-field"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Discount Price ($)</label>
+              <label className="block mb-1 text-xs font-medium text-gray-700">Discount Price ($)</label>
               <input
                 type="number"
                 min="0"
                 step="0.01"
                 value={newVariant.discount_price}
                 onChange={(e) => setNewVariant(prev => ({ ...prev, discount_price: parseFloat(e.target.value) }))}
-                className="input-field"
+                className="text-sm input-field"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Stock</label>
+              <label className="block mb-1 text-xs font-medium text-gray-700">Stock</label>
               <input
                 type="number"
                 min="0"
                 value={newVariant.stock_quantity}
                 onChange={(e) => setNewVariant(prev => ({ ...prev, stock_quantity: parseInt(e.target.value) }))}
-                className="input-field"
+                className="text-sm input-field"
               />
             </div>
           </div>
@@ -288,7 +288,7 @@ export default function ProductForm({
           <button
             type="button"
             onClick={handleAddVariant}
-            className="btn-primary mt-4"
+            className="px-4 py-2 mt-3 text-sm btn-primary"
             disabled={newVariant.price <= 0}
           >
             Add Variant
@@ -297,30 +297,30 @@ export default function ProductForm({
 
         {/* Variants List */}
         <div>
-          <h3 className="text-lg font-medium mb-4">
+          <h3 className="mb-3 text-sm font-medium">
             Variants ({variants.length})
           </h3>
 
           {variants.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="py-6 text-sm text-center text-gray-500">
               No variants added yet. Add your first variant above.
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {variants.map((variant, index) => (
-                <div key={index} className="border border-gray-200 p-6 rounded-lg">
+                <div key={index} className="p-4 border border-gray-200 rounded-lg">
                   {/* Variant Header */}
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="font-medium text-lg">
+                      <h4 className="text-sm font-medium">
                         {variant.size} - {variant.color}
                       </h4>
-                      <div className="flex items-center space-x-4 mt-2">
+                      <div className="flex items-center mt-1 space-x-3">
                         <div 
-                          className="w-6 h-6 border border-gray-300 rounded"
+                          className="w-5 h-5 border border-gray-300 rounded"
                           style={{ backgroundColor: variant.color_hex }}
                         ></div>
-                        <span className="text-sm text-gray-600">
+                        <span className="text-xs text-gray-600">
                           SKU: {variant.id ? `GX-${variant.id}-${variant.size}-${variant.color}`.toUpperCase() : 'Pending'}
                         </span>
                       </div>
@@ -328,52 +328,52 @@ export default function ProductForm({
                     <button
                       type="button"
                       onClick={() => handleRemoveVariant(index)}
-                      className="text-red-600 hover:text-red-800 text-sm font-medium"
+                      className="text-xs font-medium text-red-600 hover:text-red-800"
                     >
                       Remove Variant
                     </button>
                   </div>
 
                   {/* Variant Details */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                  <div className="grid grid-cols-1 gap-3 mb-3 sm:grid-cols-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                      <label className="block mb-1 text-xs font-medium text-gray-700">Price</label>
                       <input
                         type="number"
                         min="0"
                         step="0.01"
                         value={variant.price}
                         onChange={(e) => handleUpdateVariant(index, 'price', parseFloat(e.target.value))}
-                        className="input-field text-sm"
+                        className="text-sm input-field"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Discount</label>
+                      <label className="block mb-1 text-xs font-medium text-gray-700">Discount</label>
                       <input
                         type="number"
                         min="0"
                         step="0.01"
                         value={variant.discount_price}
                         onChange={(e) => handleUpdateVariant(index, 'discount_price', parseFloat(e.target.value))}
-                        className="input-field text-sm"
+                        className="text-sm input-field"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+                      <label className="block mb-1 text-xs font-medium text-gray-700">Stock</label>
                       <input
                         type="number"
                         min="0"
                         value={variant.stock_quantity}
                         onChange={(e) => handleUpdateVariant(index, 'stock_quantity', parseInt(e.target.value))}
-                        className="input-field text-sm"
+                        className="text-sm input-field"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Final Price</label>
-                      <div className="text-sm font-medium p-3 bg-gray-50 rounded">
+                      <label className="block mb-1 text-xs font-medium text-gray-700">Final Price</label>
+                      <div className="p-2 text-sm font-medium rounded bg-gray-50">
                         {variant.discount_price > 0 ? (
                           <div className="flex items-center space-x-2">
                             <span className="text-gray-500 line-through">${variant.price}</span>
@@ -388,12 +388,12 @@ export default function ProductForm({
 
                   {/* Variant Images */}
                   <div>
-                    <div className="flex justify-between items-center mb-4">
-                      <h5 className="font-medium">Variant Images</h5>
+                    <div className="flex items-center justify-between mb-3">
+                      <h5 className="text-sm font-medium">Variant Images</h5>
                       <button
                         type="button"
                         onClick={() => setActiveVariantIndex(activeVariantIndex === index ? null : index)}
-                        className="text-blue-600 hover:text-blue-800 text-sm"
+                        className="text-xs text-blue-600 hover:text-blue-800"
                       >
                         {activeVariantIndex === index ? 'Hide Images' : 'Manage Images'}
                       </button>
@@ -408,7 +408,7 @@ export default function ProductForm({
                     )}
 
                     {activeVariantIndex === index && !variant.id && (
-                      <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">
+                      <div className="py-6 text-sm text-center text-gray-500 rounded-lg bg-gray-50">
                         <p>Save the product first to upload images for this variant.</p>
                       </div>
                     )}
@@ -421,11 +421,11 @@ export default function ProductForm({
       </div>
 
       {/* Submit Button */}
-      <div className="flex justify-end space-x-4">
+      <div className="flex justify-end space-x-3">
         <button
           type="button"
           onClick={() => window.history.back()}
-          className="btn-secondary"
+          className="px-4 py-2 text-sm btn-secondary"
           disabled={loading}
         >
           Cancel
@@ -433,7 +433,7 @@ export default function ProductForm({
         <button
           type="submit"
           disabled={loading || variants.length === 0}
-          className="btn-primary disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm btn-primary disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {loading ? 'Saving...' : isEdit ? 'Update Product' : 'Create Product'}
         </button>
