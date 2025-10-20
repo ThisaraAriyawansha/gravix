@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { getProduct, addToCart } from '@/lib/api'
 import { useCartStore } from '@/store/cartStore'
+import AppleAlert from '@/components/AppleAlert'
 
 interface ProductVariant {
   id: number
@@ -37,6 +38,17 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(true)
   const [addingToCart, setAddingToCart] = useState(false)
+  const [alert, setAlert] = useState<{
+    isOpen: boolean
+    title: string
+    message: string
+    type: 'success' | 'error'
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'success'
+  })
   
   const addItem = useCartStore(state => state.addItem)
 
@@ -122,6 +134,19 @@ export default function ProductDetailPage() {
     updateSelectedVariant(newSize, color)
   }
 
+  const showAlert = (title: string, message: string, type: 'success' | 'error' = 'success') => {
+    setAlert({
+      isOpen: true,
+      title,
+      message,
+      type
+    })
+  }
+
+  const handleAlertClose = () => {
+    setAlert(prev => ({ ...prev, isOpen: false }))
+  }
+
   const handleAddToCart = async () => {
     if (!selectedVariant) return
     
@@ -146,10 +171,10 @@ export default function ProductDetailPage() {
       })
       
       // Show success message
-      alert('Product added to cart!')
+      showAlert('Added to Cart', 'Product has been added to your cart successfully!', 'success')
     } catch (error) {
       console.error('Error adding to cart:', error)
-      alert('Failed to add product to cart')
+      showAlert('Error', 'Failed to add product to cart. Please try again.', 'error')
     } finally {
       setAddingToCart(false)
     }
@@ -194,139 +219,149 @@ export default function ProductDetailPage() {
   const availableColors = product.variants.map(v => v.color).filter((c, i, arr) => arr.indexOf(c) === i)
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container px-4 py-8 mx-auto">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Product Images */}
-          <div>
-            {primaryImage && (
-              <div className="overflow-hidden aspect-square bg-gravix-gray-100">
-                <Image
-                  src={`http://localhost:5000${primaryImage.image_url}`}
-                  alt={product.name}
-                  width={600}
-                  height={600}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Product Info */}
-          <div className="space-y-6">
+    <>
+      <div className="min-h-screen bg-white">
+        <div className="container px-4 py-8 mx-auto">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+            {/* Product Images */}
             <div>
-              <h1 className="mb-2 text-3xl font-light">{product.name}</h1>
-              <p className="mb-4 text-gravix-gray-600">{product.category_name}</p>
-              
-              <div className="flex items-center mb-4 space-x-2">
-                {originalPrice && (
-                  <span className="text-lg line-through text-gravix-gray-500">
-                    ${originalPrice}
-                  </span>
-                )}
-                <span className="text-2xl font-medium">${displayPrice}</span>
-              </div>
+              {primaryImage && (
+                <div className="overflow-hidden aspect-square bg-gravix-gray-100">
+                  <Image
+                    src={`http://localhost:5000${primaryImage.image_url}`}
+                    alt={product.name}
+                    width={600}
+                    height={600}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              )}
             </div>
 
-            <p className="leading-relaxed text-gravix-gray-700">{product.description}</p>
-
-            {/* Size Selection */}
-            <div>
-              <h3 className="mb-3 text-sm font-medium">Size</h3>
-              <div className="flex flex-wrap gap-2">
-                {availableSizes.map(size => {
-                  const availableColorsForThisSize = getAvailableColorsForSize(size)
-                  const isAvailable = availableColorsForThisSize.length > 0
-                  
-                  return (
-                    <button
-                      key={size}
-                      onClick={() => handleSizeChange(size)}
-                      disabled={!isAvailable}
-                      className={`px-4 py-2 border ${
-                        selectedSize === size
-                          ? 'border-gravix-black bg-gravix-black text-white'
-                          : isAvailable
-                            ? 'border-gravix-gray-300 hover:border-gravix-black'
-                            : 'border-gravix-gray-200 text-gravix-gray-400 cursor-not-allowed'
-                      } transition-colors`}
-                    >
-                      {size}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Color Selection */}
-            <div>
-              <h3 className="mb-3 text-sm font-medium">Color</h3>
-              <div className="flex flex-wrap gap-2">
-                {availableColors.map(color => {
-                  const availableSizesForThisColor = getAvailableSizesForColor(color)
-                  const variantForSelectedSize = product.variants.find(v => v.color === color && v.size === selectedSize)
-                  const isAvailable = availableSizesForThisColor.length > 0
-                  const colorVariant = product.variants.find(v => v.color === color)
-                  
-                  return (
-                    <button
-                      key={color}
-                      onClick={() => handleColorChange(color)}
-                      disabled={!isAvailable}
-                      className={`w-10 h-10 border-2 ${
-                        selectedColor === color
-                          ? 'border-gravix-black'
-                          : isAvailable
-                            ? 'border-gravix-gray-300 hover:border-gravix-gray-500'
-                            : 'border-gravix-gray-200 opacity-30 cursor-not-allowed'
-                      } transition-colors`}
-                      style={{ backgroundColor: colorVariant?.color_hex }}
-                      title={color}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Quantity and Add to Cart */}
-            <div className="flex items-center space-x-4">
+            {/* Product Info */}
+            <div className="space-y-6">
               <div>
-                <label htmlFor="quantity" className="block mb-2 text-sm font-medium">Quantity</label>
-                <select
-                  id="quantity"
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="w-20 input-field"
-                >
-                  {[1, 2, 3, 4, 5].map(num => (
-                    <option key={num} value={num}>{num}</option>
-                  ))}
-                </select>
+                <h1 className="mb-2 text-3xl font-light">{product.name}</h1>
+                <p className="mb-4 text-gravix-gray-600">{product.category_name}</p>
+                
+                <div className="flex items-center mb-4 space-x-2">
+                  {originalPrice && (
+                    <span className="text-lg line-through text-gravix-gray-500">
+                      ${originalPrice}
+                    </span>
+                  )}
+                  <span className="text-2xl font-medium">${displayPrice}</span>
+                </div>
               </div>
-              
-              <div className="flex-1">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!selectedVariant || addingToCart || selectedVariant.stock_quantity === 0}
-                  className="w-full py-3 btn-primary disabled:bg-gravix-gray-400 disabled:cursor-not-allowed"
-                >
-                  {addingToCart ? 'Adding...' : selectedVariant?.stock_quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
-                </button>
-              </div>
-            </div>
 
-            {/* Stock Info */}
-            {selectedVariant && (
-              <div className="text-sm text-gravix-gray-600">
-                {selectedVariant.stock_quantity > 0 
-                  ? `${selectedVariant.stock_quantity} in stock`
-                  : 'Out of stock'
-                }
+              <p className="leading-relaxed text-gravix-gray-700">{product.description}</p>
+
+              {/* Size Selection */}
+              <div>
+                <h3 className="mb-3 text-sm font-medium">Size</h3>
+                <div className="flex flex-wrap gap-2">
+                  {availableSizes.map(size => {
+                    const availableColorsForThisSize = getAvailableColorsForSize(size)
+                    const isAvailable = availableColorsForThisSize.length > 0
+                    
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => handleSizeChange(size)}
+                        disabled={!isAvailable}
+                        className={`px-4 py-2 border ${
+                          selectedSize === size
+                            ? 'border-gravix-black bg-gravix-black text-white'
+                            : isAvailable
+                              ? 'border-gravix-gray-300 hover:border-gravix-black'
+                              : 'border-gravix-gray-200 text-gravix-gray-400 cursor-not-allowed'
+                        } transition-colors`}
+                      >
+                        {size}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
-            )}
+
+              {/* Color Selection */}
+              <div>
+                <h3 className="mb-3 text-sm font-medium">Color</h3>
+                <div className="flex flex-wrap gap-2">
+                  {availableColors.map(color => {
+                    const availableSizesForThisColor = getAvailableSizesForColor(color)
+                    const variantForSelectedSize = product.variants.find(v => v.color === color && v.size === selectedSize)
+                    const isAvailable = availableSizesForThisColor.length > 0
+                    const colorVariant = product.variants.find(v => v.color === color)
+                    
+                    return (
+                      <button
+                        key={color}
+                        onClick={() => handleColorChange(color)}
+                        disabled={!isAvailable}
+                        className={`w-10 h-10 border-2 ${
+                          selectedColor === color
+                            ? 'border-gravix-black'
+                            : isAvailable
+                              ? 'border-gravix-gray-300 hover:border-gravix-gray-500'
+                              : 'border-gravix-gray-200 opacity-30 cursor-not-allowed'
+                        } transition-colors`}
+                        style={{ backgroundColor: colorVariant?.color_hex }}
+                        title={color}
+                      />
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Quantity and Add to Cart */}
+              <div className="flex items-center space-x-4">
+                <div>
+                  <select
+                    id="quantity"
+                    value={quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    className="w-20 input-field"
+                  >
+                    {[1, 2, 3, 4, 5].map(num => (
+                      <option key={num} value={num}>{num}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="flex-1">
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={!selectedVariant || addingToCart || selectedVariant.stock_quantity === 0}
+                    className="w-full py-3 btn-primary disabled:bg-gravix-gray-400 disabled:cursor-not-allowed"
+                  >
+                    {addingToCart ? 'Adding...' : selectedVariant?.stock_quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Stock Info */}
+              {selectedVariant && (
+                <div className="text-sm text-gravix-gray-600">
+                  {selectedVariant.stock_quantity > 0 
+                    ? `${selectedVariant.stock_quantity} in stock`
+                    : 'Out of stock'
+                  }
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Apple-style Alert */}
+      <AppleAlert
+        isOpen={alert.isOpen}
+        title={alert.title}
+        message={alert.message}
+        type={alert.type}
+        onClose={handleAlertClose}
+      />
+    </>
   )
 }
