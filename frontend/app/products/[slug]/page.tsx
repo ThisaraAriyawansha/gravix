@@ -74,14 +74,52 @@ export default function ProductDetailPage() {
     setSelectedVariant(variant || null)
   }
 
+  const getAvailableColorsForSize = (size: string): string[] => {
+    if (!product) return []
+    return product.variants
+      .filter(v => v.size === size)
+      .map(v => v.color)
+      .filter((color, index, arr) => arr.indexOf(color) === index)
+  }
+
+  const getAvailableSizesForColor = (color: string): string[] => {
+    if (!product) return []
+    return product.variants
+      .filter(v => v.color === color)
+      .map(v => v.size)
+      .filter((size, index, arr) => arr.indexOf(size) === index)
+  }
+
   const handleSizeChange = (size: string) => {
+    if (!product) return
+    
+    const availableColorsForNewSize = getAvailableColorsForSize(size)
+    
+    // If current color is not available in the new size, switch to first available color
+    let newColor = selectedColor
+    if (!availableColorsForNewSize.includes(selectedColor) && availableColorsForNewSize.length > 0) {
+      newColor = availableColorsForNewSize[0]
+      setSelectedColor(newColor)
+    }
+    
     setSelectedSize(size)
-    updateSelectedVariant(size, selectedColor)
+    updateSelectedVariant(size, newColor)
   }
 
   const handleColorChange = (color: string) => {
+    if (!product) return
+    
+    const availableSizesForNewColor = getAvailableSizesForColor(color)
+    
+    // If current size is not available in the new color, switch to first available size
+    let newSize = selectedSize
+    if (!availableSizesForNewColor.includes(selectedSize) && availableSizesForNewColor.length > 0) {
+      newSize = availableSizesForNewColor[0]
+      setSelectedSize(newSize)
+    }
+    
     setSelectedColor(color)
-    updateSelectedVariant(selectedSize, color)
+    updateSelectedVariant(newSize, color)
   }
 
   const handleAddToCart = async () => {
@@ -196,19 +234,27 @@ export default function ProductDetailPage() {
             <div>
               <h3 className="mb-3 text-sm font-medium">Size</h3>
               <div className="flex flex-wrap gap-2">
-                {availableSizes.map(size => (
-                  <button
-                    key={size}
-                    onClick={() => handleSizeChange(size)}
-                    className={`px-4 py-2 border ${
-                      selectedSize === size
-                        ? 'border-gravix-black bg-gravix-black text-white'
-                        : 'border-gravix-gray-300 hover:border-gravix-black'
-                    } transition-colors`}
-                  >
-                    {size}
-                  </button>
-                ))}
+                {availableSizes.map(size => {
+                  const availableColorsForThisSize = getAvailableColorsForSize(size)
+                  const isAvailable = availableColorsForThisSize.length > 0
+                  
+                  return (
+                    <button
+                      key={size}
+                      onClick={() => handleSizeChange(size)}
+                      disabled={!isAvailable}
+                      className={`px-4 py-2 border ${
+                        selectedSize === size
+                          ? 'border-gravix-black bg-gravix-black text-white'
+                          : isAvailable
+                            ? 'border-gravix-gray-300 hover:border-gravix-black'
+                            : 'border-gravix-gray-200 text-gravix-gray-400 cursor-not-allowed'
+                      } transition-colors`}
+                    >
+                      {size}
+                    </button>
+                  )
+                })}
               </div>
             </div>
 
@@ -217,18 +263,23 @@ export default function ProductDetailPage() {
               <h3 className="mb-3 text-sm font-medium">Color</h3>
               <div className="flex flex-wrap gap-2">
                 {availableColors.map(color => {
-                  const variant = product.variants.find(v => v.color === color && v.size === selectedSize)
+                  const availableSizesForThisColor = getAvailableSizesForColor(color)
+                  const variantForSelectedSize = product.variants.find(v => v.color === color && v.size === selectedSize)
+                  const isAvailable = availableSizesForThisColor.length > 0
                   const colorVariant = product.variants.find(v => v.color === color)
+                  
                   return (
                     <button
                       key={color}
                       onClick={() => handleColorChange(color)}
-                      disabled={!variant}
+                      disabled={!isAvailable}
                       className={`w-10 h-10 border-2 ${
                         selectedColor === color
                           ? 'border-gravix-black'
-                          : 'border-gravix-gray-300 hover:border-gravix-gray-500'
-                      } ${!variant ? 'opacity-50 cursor-not-allowed' : ''} transition-colors`}
+                          : isAvailable
+                            ? 'border-gravix-gray-300 hover:border-gravix-gray-500'
+                            : 'border-gravix-gray-200 opacity-30 cursor-not-allowed'
+                      } transition-colors`}
                       style={{ backgroundColor: colorVariant?.color_hex }}
                       title={color}
                     />
