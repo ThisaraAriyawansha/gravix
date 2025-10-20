@@ -808,6 +808,10 @@ video {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
 }
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -873,6 +877,9 @@ video {
 }
 .ml-3 {
   margin-left: 0.75rem;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
 }
 .block {
   display: block;
@@ -1298,6 +1305,9 @@ video {
 .rounded-2xl {
   border-radius: 1rem;
 }
+.rounded-xl {
+  border-radius: 0.75rem;
+}
 .rounded-r-lg {
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
@@ -1516,6 +1526,9 @@ video {
 }
 .bg-opacity-30 {
   --tw-bg-opacity: 0.3;
+}
+.bg-opacity-40 {
+  --tw-bg-opacity: 0.4;
 }
 .object-cover {
   -o-object-fit: cover;

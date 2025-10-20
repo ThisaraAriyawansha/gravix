@@ -1,4 +1,3 @@
-// components/AppleAlert.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -55,37 +54,37 @@ export default function AppleAlert({
   if (!isVisible) return null
 
   const icon = type === 'success' ? (
-    <div className="flex items-center justify-center w-12 h-12 bg-black rounded-full">
-      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="flex items-center justify-center w-8 h-8 bg-black rounded-full">
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
       </svg>
     </div>
   ) : (
-    <div className="flex items-center justify-center w-12 h-12 bg-black rounded-full">
-      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="flex items-center justify-center w-8 h-8 bg-black rounded-full">
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
       </svg>
     </div>
   )
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
       <div 
-        className={`bg-white rounded-2xl shadow-2xl p-6 mx-4 max-w-sm w-full transform transition-all duration-150 ${
+        className={`bg-white rounded-xl shadow-xl p-4 mx-3 max-w-xs w-full transform transition-all duration-150 ${
           isAnimating ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
         }`}
       >
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           {icon}
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-900">{title}</h3>
-            <p className="mt-1 text-sm text-gray-600">{message}</p>
+            <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+            <p className="mt-0.5 text-xs text-gray-600">{message}</p>
           </div>
         </div>
-        <div className="flex justify-end mt-4 space-x-2">
+        <div className="flex justify-end mt-2 space-x-1">
           <button
             onClick={handleClose}
-            className="px-4 py-2 text-sm font-medium text-gray-900 transition-colors duration-200 bg-gray-100 rounded-lg hover:bg-gray-200"
+            className="px-3 py-1 text-xs font-medium text-gray-900 transition-colors duration-200 bg-gray-100 rounded-md hover:bg-gray-200"
           >
             OK
           </button>
