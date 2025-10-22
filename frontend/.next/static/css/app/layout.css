@@ -2421,6 +2421,10 @@ a {
     padding-top: 1rem;
   }
 
+  .sm\:text-right {
+    text-align: right;
+  }
+
   .sm\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
