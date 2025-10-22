@@ -4,6 +4,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
@@ -38,22 +39,30 @@ a {
   text-decoration: none;
 }
 
+  @font-face {
+    font-family: 'PalmSprings';
+    src: url('/assets/font/PalmspringsPersonalUseRegular-d9VDV.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
 /* Custom utility classes */
 @layer components {
   .btn-primary {
-    @apply bg-black text-white px-6 py-3 border border-black hover:bg-gray-800 hover:border-gray-800 transition-colors duration-200 font-medium;
+    @apply px-6 py-3 font-medium text-white transition-colors duration-200 bg-black border border-black hover:bg-gray-800 hover:border-gray-800;
   }
   
   .btn-secondary {
-    @apply bg-white text-black px-6 py-3 border border-black hover:bg-gray-50 transition-colors duration-200 font-medium;
+    @apply px-6 py-3 font-medium text-black transition-colors duration-200 bg-white border border-black hover:bg-gray-50;
   }
   
   .btn-outline {
-    @apply bg-transparent text-black border border-gray-300 hover:border-black hover:bg-gray-50 px-6 py-3 transition-colors duration-200;
+    @apply px-6 py-3 text-black transition-colors duration-200 bg-transparent border border-gray-300 hover:border-black hover:bg-gray-50;
   }
   
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors duration-200 bg-white;
+    @apply w-full px-4 py-3 transition-colors duration-200 bg-white border border-gray-300 focus:outline-none focus:border-black focus:ring-1 focus:ring-black;
   }
   
   .card {
@@ -61,7 +70,7 @@ a {
   }
   
   .container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
   }
 }
 

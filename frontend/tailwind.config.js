@@ -27,6 +27,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        palmsprings: ['PalmSprings', 'sans-serif'], // Add PalmSprings font
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
@@ -52,7 +53,6 @@ module.exports = {
           },
         }
       },
-      // Custom animation delays
       animationDelay: {
         '200': '200ms',
         '400': '400ms',

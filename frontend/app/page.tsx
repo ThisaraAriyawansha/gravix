@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link'
 import { Menu, X, ShoppingBag, Search, ChevronRight } from 'lucide-react';
 import HeroImage from '../public/assets/images/pexels-photo-1884584.jpeg';
 
@@ -33,41 +34,36 @@ export default function GravixHomepage() {
             src={HeroImage.src}
             alt="Hero"
             className="object-cover w-full h-full opacity-70"
-
           />
-          {/* Using Gravix gray palette for gradients */}
           <div className="absolute inset-0 bg-gradient-to-b from-gravix-black/60 via-gravix-black/30 to-gravix-black/70"></div>
         </div>
         
         <div className="relative z-10 max-w-4xl px-4 text-center">
-          {/* Animated heading with Inter font */}
-          <h2 className="mb-4 text-4xl font-light tracking-tight text-gravix-white md:text-6xl lg:text-7xl animate-fade-in-up">
+          <h2 className="mb-4 text-4xl font-light tracking-tight font-palmsprings text-gravix-white md:text-6xl lg:text-7xl animate-fade-in-up ">
             MINIMALIST<br /><span className="text-gravix-gray-200">ELEGANCE</span>
           </h2>
           
-          {/* Subtle animated paragraph */}
           <p className="mb-8 text-sm tracking-wide text-gravix-gray-300 md:text-xl lg:text-xl animate-fade-in-up animation-delay-200">
             Discover premium clothing with timeless design
           </p>
           
-          {/* Animated button */}
-          <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500 text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
-            EXPLORE COLLECTION
-            <ChevronRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={16} />
-          </button>
+          <Link href="/products">
+            <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500 text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
+              EXPLORE COLLECTION
+              <ChevronRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={16} />
+            </button>
+          </Link>
         </div>
 
-        {/* Scroll indicator */}
         <div className="absolute transform -translate-x-1/2 bottom-8 left-1/2">
           <div className="flex justify-center w-5 h-8 border rounded-full border-gravix-white animate-bounce-slow">
             <div className="w-0.5 h-2 mt-2 bg-gravix-white rounded-full animate-pulse"></div>
           </div>
         </div>
 
-          {/* Animated border elements */}
-          <div className="absolute w-20 h-20 border-t border-l top-10 left-10 border-gravix-white/30 animate-border-appear"></div>
-          <div className="absolute w-20 h-20 border-b border-r bottom-10 right-10 border-gravix-white/30 animate-border-appear animation-delay-500"></div>
-      </section>
+        <div className="absolute w-20 h-20 border-t border-l top-10 left-10 border-gravix-white/30 animate-border-appear"></div>
+        <div className="absolute w-20 h-20 border-b border-r bottom-10 right-10 border-gravix-white/30 animate-border-appear animation-delay-500"></div>
+      </section>      
 
       {/* Featured Section */}
       <section className="px-6 py-20 text-black bg-white">
