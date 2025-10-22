@@ -2003,6 +2003,11 @@ a {
   background-color: rgb(156 163 175 / var(--tw-bg-opacity, 1));
 }
 
+.disabled\:bg-gray-100:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
 .disabled\:opacity-50:disabled {
   opacity: 0.5;
 }
