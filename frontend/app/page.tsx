@@ -46,7 +46,7 @@ export default function GravixHomepage() {
           </h2>
           
           {/* Subtle animated paragraph */}
-          <p className="mb-8 text-lg tracking-wide text-gravix-gray-300 md:text-xl lg:text-2xl animate-fade-in-up animation-delay-200">
+          <p className="mb-8 text-sm tracking-wide text-gravix-gray-300 md:text-xl lg:text-xl animate-fade-in-up animation-delay-200">
             Discover premium clothing with timeless design
           </p>
           
@@ -63,6 +63,10 @@ export default function GravixHomepage() {
             <div className="w-0.5 h-2 mt-2 bg-gravix-white rounded-full animate-pulse"></div>
           </div>
         </div>
+
+          {/* Animated border elements */}
+          <div className="absolute w-20 h-20 border-t border-l top-10 left-10 border-gravix-white/30 animate-border-appear"></div>
+          <div className="absolute w-20 h-20 border-b border-r bottom-10 right-10 border-gravix-white/30 animate-border-appear animation-delay-500"></div>
       </section>
 
       {/* Featured Section */}
