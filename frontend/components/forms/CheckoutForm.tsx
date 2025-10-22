@@ -40,37 +40,44 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+  e.preventDefault()
+  setLoading(true)
 
-    try {
-      const shippingAddress = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        address: formData.address,
-        city: formData.city,
-        state: formData.state,
-        postalCode: formData.postalCode,
-        country: formData.country
-      }
+  try {
+    console.log('Submitting order with cart items:', cartItems) // Debug log
 
-      const orderData = {
-        shipping_address: shippingAddress,
-        payment_method: formData.paymentMethod,
-        customer_name: `${formData.firstName} ${formData.lastName}`,
-        customer_phone: formData.phone,
-        customer_email: formData.email
-      }
-
-      const result = await createOrder(orderData)
-      onOrderComplete(result)
-    } catch (error: any) {
-      console.error('Checkout error:', error)
-      alert(error.response?.data?.error || 'Checkout failed. Please try again.')
-    } finally {
-      setLoading(false)
+    const shippingAddress = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      postalCode: formData.postalCode,
+      country: formData.country
     }
+
+    const orderData = {
+      shipping_address: shippingAddress,
+      payment_method: formData.paymentMethod,
+      customer_name: `${formData.firstName} ${formData.lastName}`,
+      customer_phone: formData.phone || null,
+      customer_email: formData.email,
+      cart_items: cartItems // Make sure this is being sent
+    }
+
+    console.log('Sending order data:', orderData) // Debug log
+
+    const result = await createOrder(orderData)
+    console.log('Order creation result:', result) // Debug log
+    
+    onOrderComplete(result)
+  } catch (error: any) {
+    console.error('Checkout error:', error)
+    alert(error.response?.data?.error || 'Checkout failed. Please try again.')
+  } finally {
+    setLoading(false)
   }
+}
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData(prev => ({
@@ -248,12 +255,12 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
             <input
               type="radio"
               name="paymentMethod"
-              value="paypal"
-              checked={formData.paymentMethod === 'paypal'}
+              value="CashOnDelivery"
+              checked={formData.paymentMethod === 'CashOnDelivery'}
               onChange={handleChange}
               className="mr-2"
             />
-            <span>PayPal</span>
+            <span>CashOnDelivery</span>
           </label>
         </div>
 
