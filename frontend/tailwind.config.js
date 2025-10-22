@@ -28,6 +28,35 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
+      animation: {
+        'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
+        'bounce-slow': 'bounce-slow 2s infinite',
+      },
+      keyframes: {
+        'fade-in-up': {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(30px)'
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)'
+          },
+        },
+        'bounce-slow': {
+          '0%, 100%': { 
+            transform: 'translateY(0)' 
+          },
+          '50%': { 
+            transform: 'translateY(-10px)' 
+          },
+        }
+      },
+      // Custom animation delays
+      animationDelay: {
+        '200': '200ms',
+        '400': '400ms',
+      }
     },
   },
   plugins: [],

@@ -32,27 +32,35 @@ export default function GravixHomepage() {
           <img 
             src={HeroImage.src}
             alt="Hero"
-            className="object-cover w-full h-full opacity-60"
+            className="object-cover w-full h-full opacity-70"
+
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black"></div>
+          {/* Using Gravix gray palette for gradients */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gravix-black/60 via-gravix-black/30 to-gravix-black/70"></div>
         </div>
         
-        <div className="relative z-10 max-w-4xl px-6 text-center">
-          <h2 className="mb-6 text-6xl font-bold tracking-tight md:text-8xl">
-            MINIMALIST<br />ELEGANCE
+        <div className="relative z-10 max-w-4xl px-4 text-center">
+          {/* Animated heading with Inter font */}
+          <h2 className="mb-4 text-4xl font-light tracking-tight text-gravix-white md:text-6xl lg:text-7xl animate-fade-in-up">
+            MINIMALIST<br /><span className="text-gravix-gray-200">ELEGANCE</span>
           </h2>
-          <p className="mb-8 text-xl tracking-wide text-gray-300 md:text-2xl">
+          
+          {/* Subtle animated paragraph */}
+          <p className="mb-8 text-lg tracking-wide text-gravix-gray-300 md:text-xl lg:text-2xl animate-fade-in-up animation-delay-200">
             Discover premium clothing with timeless design
           </p>
-          <button className="flex items-center px-8 py-4 mx-auto text-sm font-semibold tracking-widest text-black transition-all duration-300 bg-white hover:bg-gray-200 group">
+          
+          {/* Animated button */}
+          <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500 text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
             EXPLORE COLLECTION
-            <ChevronRight className="ml-2 transition-transform group-hover:translate-x-1" size={18} />
+            <ChevronRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={16} />
           </button>
         </div>
 
-        <div className="absolute transform -translate-x-1/2 bottom-10 left-1/2 animate-bounce">
-          <div className="flex justify-center w-6 h-10 border-2 border-white rounded-full">
-            <div className="w-1 h-3 mt-2 bg-white rounded-full"></div>
+        {/* Scroll indicator */}
+        <div className="absolute transform -translate-x-1/2 bottom-8 left-1/2">
+          <div className="flex justify-center w-5 h-8 border rounded-full border-gravix-white animate-bounce-slow">
+            <div className="w-0.5 h-2 mt-2 bg-gravix-white rounded-full animate-pulse"></div>
           </div>
         </div>
       </section>
