@@ -11,7 +11,7 @@ export const authenticate = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const [users] = await pool.execute(
-      'SELECT id, email, full_name, role, is_active FROM users WHERE id = ?',
+      'SELECT id, email, full_name, phone, avatar_url, role, is_active, created_at FROM users WHERE id = ?',
       [decoded.userId]
     );
 
@@ -19,9 +19,17 @@ export const authenticate = async (req, res, next) => {
       return res.status(401).json({ error: 'Invalid token.' });
     }
 
-    req.user = users[0];
+    const user = users[0];
+    if (!user.is_active) {
+      return res.status(403).json({ error: 'Account is deactivated.' });
+    }
+
+    req.user = user;
     next();
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token has expired.' });
+    }
     res.status(401).json({ error: 'Invalid token.' });
   }
 };

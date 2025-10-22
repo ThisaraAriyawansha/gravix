@@ -9,38 +9,51 @@ interface UserProfile {
   phone: string
   avatar_url: string
   created_at: string
-  role: string
+}
+
+interface Alert {
+  id: number
+  message: string
+  type: 'success' | 'error'
 }
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
-  const [saving, setSaving] = useState(false)
   const [formData, setFormData] = useState({
     full_name: '',
     phone: '',
-    email: ''
+    email: '',
+    password: '',
   })
+  const [alerts, setAlerts] = useState<Alert[]>([])
 
   useEffect(() => {
     loadProfile()
   }, [])
 
+  const addAlert = (message: string, type: 'success' | 'error') => {
+    const id = Date.now()
+    setAlerts(prev => [...prev, { id, message, type }])
+    setTimeout(() => {
+      setAlerts(prev => prev.filter(alert => alert.id !== id))
+    }, 4000)
+  }
+
   const loadProfile = async () => {
     try {
       setLoading(true)
       const token = localStorage.getItem('token')
-      
       if (!token) {
-        // Redirect to login if no token
-        window.location.href = '/login'
-        return
+        throw new Error('No authentication token found')
       }
 
-      const response = await fetch('/api/auth/me', {
+      const response = await fetch('http://localhost:5000/api/auth/me', {
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       })
 
@@ -48,16 +61,16 @@ export default function ProfilePage() {
         throw new Error('Failed to fetch profile')
       }
 
-      const userData = await response.json()
-      setProfile(userData)
+      const user = await response.json()
+      setProfile(user)
       setFormData({
-        full_name: userData.full_name || '',
-        phone: userData.phone || '',
-        email: userData.email || ''
+        full_name: user.full_name || '',
+        phone: user.phone || '',
+        email: user.email || '',
+        password: '',
       })
-    } catch (error) {
-      console.error('Error loading profile:', error)
-      alert('Failed to load profile')
+    } catch (err: any) {
+      addAlert(err.message || 'An error occurred while loading the profile', 'error')
     } finally {
       setLoading(false)
     }
@@ -65,27 +78,29 @@ export default function ProfilePage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    
     try {
-      setSaving(true)
       const token = localStorage.getItem('token')
-      
       if (!token) {
-        alert('Please login again')
-        window.location.href = '/login'
-        return
+        throw new Error('No authentication token found')
       }
 
-      const response = await fetch('/api/auth/profile', {
+      // Prepare data for update
+      const updateData: any = {
+        full_name: formData.full_name,
+        phone: formData.phone,
+      }
+      // Only include password if it's not empty
+      if (formData.password) {
+        updateData.password = formData.password
+      }
+
+      const response = await fetch('http://localhost:5000/api/auth/profile', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          full_name: formData.full_name,
-          phone: formData.phone
-        })
+        body: JSON.stringify(updateData)
       })
 
       if (!response.ok) {
@@ -93,15 +108,23 @@ export default function ProfilePage() {
         throw new Error(errorData.error || 'Failed to update profile')
       }
 
-      // Reload profile to get updated data
-      await loadProfile()
+      const data = await response.json()
+      // Update localStorage with new token and user data
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user)) // Store user object
+
       setEditing(false)
-      alert('Profile updated successfully!')
-    } catch (error: any) {
-      console.error('Error updating profile:', error)
-      alert(error.message || 'Failed to update profile')
-    } finally {
-      setSaving(false)
+      setFormData(prev => ({ ...prev, password: '' })) // Reset password field
+      await loadProfile()
+      addAlert('Profile updated successfully', 'success');
+      
+    // ✅ Wait 2 seconds, then reload page
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+    
+    } catch (err: any) {
+      addAlert(err.message || 'An error occurred while updating the profile', 'error')
     }
   }
 
@@ -110,18 +133,6 @@ export default function ProfilePage() {
       ...prev,
       [e.target.name]: e.target.value
     }))
-  }
-
-  const handleCancel = () => {
-    // Reset form data to original profile values
-    if (profile) {
-      setFormData({
-        full_name: profile.full_name || '',
-        phone: profile.phone || '',
-        email: profile.email || ''
-      })
-    }
-    setEditing(false)
   }
 
   if (loading) {
@@ -141,25 +152,51 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
+      <div className="fixed z-50 w-full max-w-sm space-y-2 top-4 right-4">
+        {alerts.map((alert) => (
+          <div
+            key={alert.id}
+            className={`p-4 rounded-lg border transform transition-all duration-300 ease-in-out ${
+              alert.type === 'success' 
+                ? 'bg-white border-gray-300 shadow-lg' 
+                : 'bg-white border-gray-300 shadow-lg'
+            } animate-in slide-in-from-right-full`}
+          >
+            <div className="flex items-start space-x-3">
+              <div className={`w-2 h-2 mt-2 rounded-full ${
+                alert.type === 'success' ? 'bg-gray-800' : 'bg-gray-600'
+              }`}></div>
+              <div className="flex-1">
+                <p className="text-sm text-gray-900">{alert.message}</p>
+              </div>
+              <button
+                onClick={() => setAlerts(prev => prev.filter(a => a.id !== alert.id))}
+                className="text-gray-400 transition-colors hover:text-gray-600"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="container px-4 py-8 mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-light text-black">My Profile</h1>
-          {!editing && (
-            <button
-              onClick={() => setEditing(true)}
-              className="px-4 py-2 text-sm font-medium text-black transition-colors border border-black hover:bg-gray-100"
-            >
-              Edit Profile
-            </button>
-          )}
+        <div className="flex flex-col mb-8 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="mb-4 text-3xl font-light text-gray-900 sm:mb-0">Profile</h1>
+          <button
+            onClick={() => setEditing(!editing)}
+            className="px-6 py-2 text-sm font-medium text-gray-900 transition-colors duration-200 border border-gray-900 rounded-sm hover:bg-gray-50"
+          >
+            {editing ? 'Cancel' : 'Edit Profile'}
+          </button>
         </div>
 
         <div className="max-w-2xl">
           {editing ? (
             <form onSubmit={handleSave} className="space-y-6">
               <div>
-                <label htmlFor="full_name" className="block mb-2 text-sm font-medium text-black">
+                <label htmlFor="full_name" className="block mb-3 text-sm font-normal text-gray-700">
                   Full Name
                 </label>
                 <input
@@ -168,13 +205,13 @@ export default function ProfilePage() {
                   name="full_name"
                   value={formData.full_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 text-black border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
+                  className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 transition-colors duration-200 bg-white border border-gray-300 rounded-sm focus:outline-none focus:border-gray-900"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">
+                <label htmlFor="email" className="block mb-3 text-sm font-normal text-gray-700">
                   Email Address
                 </label>
                 <input
@@ -182,14 +219,16 @@ export default function ProfilePage() {
                   id="email"
                   name="email"
                   value={formData.email}
-                  className="w-full px-3 py-2 text-gray-600 bg-gray-100 border border-gray-300 cursor-not-allowed"
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 text-gray-500 transition-colors duration-200 border border-gray-300 rounded-sm cursor-not-allowed focus:outline-none focus:border-gray-900 bg-gray-50"
+                  required
                   disabled
                 />
-                <p className="mt-1 text-sm text-gray-500">Email cannot be changed</p>
+                <p className="mt-2 text-xs text-gray-500">Email address cannot be changed</p>
               </div>
 
               <div>
-                <label htmlFor="phone" className="block mb-2 text-sm font-medium text-black">
+                <label htmlFor="phone" className="block mb-3 text-sm font-normal text-gray-700">
                   Phone Number
                 </label>
                 <input
@@ -198,24 +237,37 @@ export default function ProfilePage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 text-black border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
-                  placeholder="Enter your phone number"
+                  className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 transition-colors duration-200 bg-white border border-gray-300 rounded-sm focus:outline-none focus:border-gray-900"
                 />
               </div>
 
-              <div className="flex space-x-4">
+              <div>
+                <label htmlFor="password" className="block mb-3 text-sm font-normal text-gray-700">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 transition-colors duration-200 bg-white border border-gray-300 rounded-sm focus:outline-none focus:border-gray-900"
+                  placeholder="Enter new password (optional)"
+                />
+                <p className="mt-2 text-xs text-gray-500">Leave blank to keep current password</p>
+              </div>
+
+              <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                 <button 
                   type="submit" 
-                  disabled={saving}
-                  className="px-4 py-2 text-sm font-medium text-white transition-colors bg-black hover:bg-gray-800 disabled:bg-gray-400"
+                  className="flex-1 px-6 py-3 text-sm font-medium text-white transition-colors duration-200 bg-gray-900 rounded-sm hover:bg-gray-800"
                 >
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  Save Changes
                 </button>
                 <button
                   type="button"
-                  onClick={handleCancel}
-                  disabled={saving}
-                  className="px-4 py-2 text-sm font-medium text-black transition-colors border border-black hover:bg-gray-100 disabled:bg-gray-100"
+                  onClick={() => setEditing(false)}
+                  className="flex-1 px-6 py-3 text-sm font-medium text-gray-700 transition-colors duration-200 border border-gray-300 rounded-sm hover:bg-gray-50"
                 >
                   Cancel
                 </button>
@@ -223,41 +275,34 @@ export default function ProfilePage() {
             </form>
           ) : (
             <div className="space-y-6">
-              <div className="p-6 border border-gray-300">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div>
-                    <label className="block mb-1 text-sm font-medium text-black">
+              <div className="bg-white border border-gray-200 rounded-sm">
+                <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-medium tracking-wide text-gray-500 uppercase">
                       Full Name
                     </label>
-                    <p className="text-lg text-black">{profile?.full_name || 'Not set'}</p>
+                    <p className="text-lg font-light text-gray-900">{profile?.full_name || 'Not set'}</p>
                   </div>
                   
-                  <div>
-                    <label className="block mb-1 text-sm font-medium text-black">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-medium tracking-wide text-gray-500 uppercase">
                       Email Address
                     </label>
-                    <p className="text-lg text-black">{profile?.email}</p>
+                    <p className="text-lg font-light text-gray-900">{profile?.email}</p>
                   </div>
                   
-                  <div>
-                    <label className="block mb-1 text-sm font-medium text-black">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-medium tracking-wide text-gray-500 uppercase">
                       Phone Number
                     </label>
-                    <p className="text-lg text-black">{profile?.phone || 'Not set'}</p>
+                    <p className="text-lg font-light text-gray-900">{profile?.phone || 'Not set'}</p>
                   </div>
                   
-                  <div>
-                    <label className="block mb-1 text-sm font-medium text-black">
-                      Role
-                    </label>
-                    <p className="text-lg text-black capitalize">{profile?.role || 'customer'}</p>
-                  </div>
-                  
-                  <div className="md:col-span-2">
-                    <label className="block mb-1 text-sm font-medium text-black">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-medium tracking-wide text-gray-500 uppercase">
                       Member Since
                     </label>
-                    <p className="text-lg text-black">
+                    <p className="text-lg font-light text-gray-900">
                       {profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',

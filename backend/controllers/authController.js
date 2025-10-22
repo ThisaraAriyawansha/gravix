@@ -110,15 +110,59 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { full_name, phone } = req.body;
+    const { full_name, phone, password } = req.body;
     const userId = req.user.id;
 
-    await pool.execute(
-      'UPDATE users SET full_name = ?, phone = ? WHERE id = ?',
-      [full_name, phone, userId]
+    // Validate password if provided
+    if (password && password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    }
+
+    // Prepare update query
+    let query = 'UPDATE users SET full_name = ?, phone = ?';
+    const params = [full_name, phone];
+
+    // Add password to update if provided
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      query += ', password = ?';
+      params.push(hashedPassword);
+    }
+
+    query += ' WHERE id = ?';
+    params.push(userId);
+
+    await pool.execute(query, params);
+
+    // Fetch updated user data
+    const [updatedUsers] = await pool.execute(
+      'SELECT id, email, full_name, phone, avatar_url, role, created_at FROM users WHERE id = ?',
+      [userId]
     );
 
-    res.json({ message: 'Profile updated successfully' });
+    if (updatedUsers.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const updatedUser = updatedUsers[0];
+
+    // Generate new token with updated user data
+    const token = jwt.sign(
+      { userId: updatedUser.id },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    res.json({
+      message: 'Profile updated successfully',
+      token,
+      user: {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        full_name: updatedUser.full_name,
+        role: updatedUser.role
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
