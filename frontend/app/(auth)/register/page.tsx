@@ -26,6 +26,11 @@ export default function RegisterPage() {
       localStorage.setItem('token', response.token)
       localStorage.setItem('user', JSON.stringify(response.user))
       router.push('/dashboard')
+      
+      // Optional: Refresh after navigation
+      setTimeout(() => {
+        window.location.reload()
+      }, 500)
     } catch (error: any) {
       setError(error.response?.data?.error || 'Registration failed')
     } finally {
@@ -41,21 +46,33 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center py-12">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="text-3xl font-light text-center">Create Account</h2>
+    <div className="flex items-center justify-center min-h-screen px-4 py-8 bg-white sm:py-12">
+      <div className="w-full max-w-md space-y-6 sm:space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <h2 className="text-2xl font-light sm:text-3xl lg:text-4xl">
+            Create Account
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Join GRAVIX today
+          </p>
         </div>
         
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        {/* Form */}
+        <form className="mt-6 space-y-4 sm:mt-8 sm:space-y-5" onSubmit={handleSubmit}>
+          {/* Error Message */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <div className="px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base text-red-700 border border-red-200 rounded bg-red-50">
               {error}
             </div>
           )}
           
+          {/* Full Name Field */}
           <div>
-            <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">
+            <label 
+              htmlFor="full_name" 
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Full Name
             </label>
             <input
@@ -65,13 +82,17 @@ export default function RegisterPage() {
               required
               value={formData.full_name}
               onChange={handleChange}
-              className="input-field mt-1"
+              className="w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
               placeholder="Enter your full name"
             />
           </div>
           
+          {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label 
+              htmlFor="email" 
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Email address
             </label>
             <input
@@ -81,13 +102,17 @@ export default function RegisterPage() {
               required
               value={formData.email}
               onChange={handleChange}
-              className="input-field mt-1"
+              className="w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
               placeholder="Enter your email"
             />
           </div>
           
+          {/* Phone Field */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+            <label 
+              htmlFor="phone" 
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Phone Number
             </label>
             <input
@@ -96,13 +121,17 @@ export default function RegisterPage() {
               type="tel"
               value={formData.phone}
               onChange={handleChange}
-              className="input-field mt-1"
-              placeholder="Enter your phone number"
+              className="w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+              placeholder="Enter your phone number (optional)"
             />
           </div>
           
+          {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label 
+              htmlFor="password" 
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Password
             </label>
             <input
@@ -112,25 +141,30 @@ export default function RegisterPage() {
               required
               value={formData.password}
               onChange={handleChange}
-              className="input-field mt-1"
-              placeholder="Create a password"
+              className="w-full px-3 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+              placeholder="Create a password (min. 8 characters)"
             />
           </div>
 
-          <div>
+          {/* Submit Button */}
+          <div className="pt-2">
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3"
+              className="w-full py-2.5 sm:py-3 text-sm sm:text-base font-medium text-white bg-black rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </div>
           
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
+          {/* Sign In Link */}
+          <div className="pt-2 text-center">
+            <p className="text-xs text-gray-600 sm:text-sm">
               Already have an account?{' '}
-              <Link href="/login" className="font-medium text-black hover:underline">
+              <Link 
+                href="/login" 
+                className="font-medium text-black hover:underline"
+              >
                 Sign in
               </Link>
             </p>
