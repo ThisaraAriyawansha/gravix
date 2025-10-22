@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ShoppingBag, Search, ChevronRight } from 'lucide-react';
+import HeroImage from '../public/assets/images/pexels-photo-1884584.jpeg';
 
 export default function GravixHomepage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function GravixHomepage() {
       <section className="relative flex items-center justify-center h-screen overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=80" 
+            src={HeroImage.src}
             alt="Hero"
             className="object-cover w-full h-full opacity-60"
           />
