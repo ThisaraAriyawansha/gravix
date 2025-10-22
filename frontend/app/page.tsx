@@ -39,7 +39,7 @@ export default function GravixHomepage() {
         </div>
         
         <div className="relative z-10 max-w-4xl px-4 text-center">
-          <h2 className="mb-4 text-4xl font-light tracking-tight font-palmsprings text-gravix-white md:text-6xl lg:text-7xl animate-fade-in-up ">
+          <h2 className="mb-4 text-4xl font-light tracking-tight text-gravix-white md:text-6xl lg:text-7xl animate-fade-in-up ">
             MINIMALIST<br /><span className="text-gravix-gray-200">ELEGANCE</span>
           </h2>
           
@@ -48,7 +48,7 @@ export default function GravixHomepage() {
           </p>
           
           <Link href="/products">
-            <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500 text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
+            <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500  text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
               EXPLORE COLLECTION
               <ChevronRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={16} />
             </button>
