@@ -15,21 +15,39 @@ export default function LoginPage() {
   const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
-      const response = await login(formData.email, formData.password)
-      localStorage.setItem('token', response.token)
-      localStorage.setItem('user', JSON.stringify(response.user))
-      router.push('/dashboard')
+      const response = await login(formData.email, formData.password);
+
+      // Save auth info
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+
+      // ✅ Check user role and navigate accordingly
+      const role = response.user.role;
+
+      if (role === 'admin') {
+        router.push('/admin/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
+
+      // ✅ Refresh the page after a short delay
+      setTimeout(() => {
+        window.location.reload();
+      }, 500); // refresh after 0.5s to ensure route change completes
+
     } catch (error: any) {
-      setError(error.response?.data?.error || 'Login failed')
+      setError(error.response?.data?.error || 'Login failed');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -39,15 +57,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center py-12">
-      <div className="max-w-md w-full space-y-8">
+    <div className="flex items-center justify-center min-h-screen py-12 bg-white">
+      <div className="w-full max-w-md space-y-8">
         <div>
           <h2 className="text-3xl font-light text-center">Sign in to GRAVIX</h2>
         </div>
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <div className="px-4 py-3 text-red-700 border border-red-200 rounded bg-red-50">
               {error}
             </div>
           )}
@@ -63,7 +81,7 @@ export default function LoginPage() {
               required
               value={formData.email}
               onChange={handleChange}
-              className="input-field mt-1"
+              className="mt-1 input-field"
               placeholder="Enter your email"
             />
           </div>
@@ -79,7 +97,7 @@ export default function LoginPage() {
               required
               value={formData.password}
               onChange={handleChange}
-              className="input-field mt-1"
+              className="mt-1 input-field"
               placeholder="Enter your password"
             />
           </div>
@@ -88,7 +106,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3"
+              className="w-full py-3 btn-primary"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
