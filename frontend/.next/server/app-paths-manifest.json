@@ -1,9 +1,11 @@
 {
-  "/(auth)/login/page": "app/(auth)/login/page.js",
   "/(customer)/orders/page": "app/(customer)/orders/page.js",
-  "/cart/page": "app/cart/page.js",
-  "/products/[slug]/page": "app/products/[slug]/page.js",
-  "/checkout/page": "app/checkout/page.js",
-  "/(customer)/profile/page": "app/(customer)/profile/page.js",
-  "/(customer)/dashboard/page": "app/(customer)/dashboard/page.js"
+  "/(customer)/dashboard/page": "app/(customer)/dashboard/page.js",
+  "/products/page": "app/products/page.js",
+  "/page": "app/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(admin)/admin/dashboard/page": "app/(admin)/admin/dashboard/page.js",
+  "/(admin)/admin/users/page": "app/(admin)/admin/users/page.js",
+  "/(admin)/admin/orders/page": "app/(admin)/admin/orders/page.js",
+  "/(admin)/admin/products/page": "app/(admin)/admin/products/page.js"
 }

@@ -92,7 +92,7 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
   return (
     <form onSubmit={handleSubmit} className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
       {/* Shipping Information */}
-      <div className="p-4 bg-white border border-gray-300">
+      <div className="p-4 bg-white border border-gray-100">
         <h2 className="mb-3 text-base font-medium text-black">Shipping Information</h2>
         
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -235,7 +235,7 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
       </div>
 
       {/* Payment Method */}
-      <div className="p-4 bg-white border border-gray-300">
+      <div className="p-4 bg-white border border-gray-100">
         <h2 className="mb-3 text-base font-medium text-black">Payment Method</h2>
         
         <div className="space-y-2">
@@ -334,7 +334,7 @@ export default function CheckoutForm({ cartItems, totalAmount, onOrderComplete }
       </div>
 
       {/* Order Summary */}
-      <div className="p-4 bg-white border border-gray-300 lg:col-span-2">
+      <div className="p-4 bg-white border border-gray-100 lg:col-span-2">
         <h2 className="mb-2 text-base font-medium text-black">Order Summary</h2>
         
         <div className="mb-3 space-y-2">
