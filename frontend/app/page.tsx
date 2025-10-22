@@ -48,7 +48,7 @@ export default function GravixHomepage() {
           </p>
           
           <Link href="/products">
-            <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500  text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
+            <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500 text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
               EXPLORE COLLECTION
               <ChevronRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={16} />
             </button>
