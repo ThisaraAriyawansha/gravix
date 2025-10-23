@@ -11,6 +11,7 @@ import OUTERWEAR from '../public/assets/images/photo-1551028719-00167b16eac5.jpe
 import ACCESSORIES from '../public/assets/images/photo-1523398002811-999ca8dec234.jpeg';
 import MEN from '../public/assets/images/photo-1621072156002-e2fccdc0b176.jpeg';
 import WOMEN from '../public/assets/images/sexy-young-brunette-with-bright-party-makeup-wellbuilt-body-long-silk-dress-resting-outdoors-black-chair-against-peach-wall-background_197531-28187.jpg';
+import Logo from '../public/assets/logo/g logo.png';
 
 export default function GravixHomepage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -172,6 +173,9 @@ export default function GravixHomepage() {
         </div>
       </section>
 
+
+
+
       {/* Newsletter */}
       <section className="px-6 py-20 text-black bg-white">
         <div className="max-w-2xl mx-auto text-center">
@@ -190,6 +194,57 @@ export default function GravixHomepage() {
         </div>
       </section>
 
+
+        {/* Logo & About Section with Backgrounds */}
+<section className="relative h-screen bg-gray-50">
+  <div className="grid h-full md:grid-cols-2">
+    
+    {/* Left Side - Logo */}
+    <div className="relative overflow-hidden bg-white group">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-center">
+          <img 
+            src={Logo.src}
+            alt="GRAVIX Logo"
+            className="w-48 h-48 mx-auto mb-8 transition-transform duration-700 group-hover:scale-110"
+          />
+          <p className="text-lg font-light tracking-widest text-black">SINCE 2024</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Side - About Company */}
+    <div className="flex items-center justify-center p-8 text-white md:p-16 bg-gradient-to-br from-black to-gray-900">
+      <div className="max-w-md space-y-6 text-center md:text-left">
+        <h2 className="text-5xl font-bold tracking-tight md:text-6xl font-kugile">
+          GRAVIX
+        </h2>
+        <p className="text-lg leading-relaxed text-gray-300 md:text-xl">
+          Premium Clothing Store
+        </p>
+        <div className="w-20 h-px mx-auto bg-white/50 md:mx-0" />
+        <p className="text-sm leading-relaxed text-gray-400 md:text-base">
+          At GRAVIX, we believe style is a statement. Crafted with precision and passion, 
+          our collections blend timeless elegance with modern edge. From tailored essentials 
+          to bold statements — elevate your wardrobe with clothing designed to inspire confidence.
+        </p>
+        
+        <div className="flex flex-col justify-center gap-4 mt-8 sm:flex-row md:justify-start">
+          <Link href="/products">
+            <button className="px-8 py-3 text-sm font-medium tracking-widest transition-all duration-300 border-2 border-white hover:bg-white hover:text-black">
+              SHOP COLLECTION
+            </button>
+          </Link>
+          <Link href="/about">
+            <button className="px-8 py-3 text-sm font-medium tracking-widest transition-all duration-300 border-2 border-white/50 hover:border-white hover:bg-white/10">
+              LEARN MORE
+            </button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
       
     </div>
   );
