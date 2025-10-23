@@ -981,6 +981,12 @@ video {
 .h-\[80vh\] {
   height: 80vh;
 }
+.h-\[500px\] {
+  height: 500px;
+}
+.h-\[60vh\] {
+  height: 60vh;
+}
 .max-h-\[95vh\] {
   max-height: 95vh;
 }
@@ -1321,6 +1327,11 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
 }
 .overflow-hidden {
   overflow: hidden;
@@ -1979,6 +1990,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(133 77 14 / var(--tw-text-opacity, 1));
 }
+.text-gravix-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(38 38 38 / var(--tw-text-opacity, 1));
+}
 .line-through {
   text-decoration-line: line-through;
 }
@@ -2390,6 +2405,11 @@ a {
 
 .focus\:border-transparent:focus {
   border-color: transparent;
+}
+
+.focus\:border-gravix-black:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 
 .focus\:outline-none:focus {
@@ -3144,6 +3164,11 @@ a {
 
   .md\:text-9xl {
     font-size: 8rem;
+    line-height: 1;
+  }
+
+  .md\:text-8xl {
+    font-size: 6rem;
     line-height: 1;
   }
 }
