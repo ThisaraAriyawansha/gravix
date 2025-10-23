@@ -25,6 +25,27 @@ export default function GravixHomepage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    elements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   const collections = [
     { title: 'ESSENTIALS', image: ESSENTIALS, desc: 'Timeless basics' },
     { title: 'OUTERWEAR', image: OUTERWEAR, desc: 'Premium jackets' },
@@ -81,7 +102,7 @@ export default function GravixHomepage() {
       <section className="px-6 py-20 text-black bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-12 md:grid-cols-2">
-            <div>
+            <div className="opacity-0 animate-on-scroll translate-x-[-50px]">
               <h3 className="mb-6 text-4xl md:text-5xl lg:text-6xl tracking-[0.1em] font-palmsprings">
                 FALL WINTER
               </h3>
@@ -95,7 +116,7 @@ export default function GravixHomepage() {
               </button>
             </Link>
             </div>
-            <div className="relative h-96 md:h-[500px]">
+            <div className="relative h-96 md:h-[500px] opacity-0 animate-on-scroll translate-x-[50px]">
               <img 
                 src={FallWinter.src}
                 alt="Featured"
@@ -109,10 +130,10 @@ export default function GravixHomepage() {
       {/* Collections Grid */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <h3 className="mb-12 text-4xl text-center font-Corigo tracking-[0.1em]">COLLECTIONS</h3>
+          <h3 className="mb-12 text-4xl text-center font-Corigo tracking-[0.1em] opacity-0 animate-on-scroll translate-y-[30px]">COLLECTIONS</h3>
           <div className="grid gap-6 md:grid-cols-3">
             {collections.map((item, idx) => (
-              <div key={idx} className="relative overflow-hidden cursor-pointer group">
+              <div key={idx} className="relative overflow-hidden cursor-pointer group opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: `${idx * 150}ms` }}>
                 <div className="aspect-[3/4] relative">
                   <Image
                     src={item.image}
@@ -180,7 +201,7 @@ export default function GravixHomepage() {
       <div className="flex flex-col md:grid md:grid-cols-2 md:h-screen">
         
         {/* Left Side - Logo - Mobile First */}
-        <div className="relative flex items-center justify-center h-64 p-4 bg-white md:h-full sm:p-6 md:p-8">
+        <div className="relative flex items-center justify-center h-64 p-4 scale-95 bg-white opacity-0 md:h-full sm:p-6 md:p-8 animate-on-scroll">
           <div className="w-full max-w-xs text-center sm:max-w-sm">
             {/* Logo with responsive sizing */}
             <div className="relative w-32 h-32 mx-auto mb-4 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 md:mb-6">
@@ -197,7 +218,7 @@ export default function GravixHomepage() {
         </div>
 
         {/* Right Side - Content - Mobile First */}
-        <div className="flex items-center justify-center p-6 text-white bg-gradient-to-br from-black to-gray-900 sm:p-10 md:p-16">
+        <div className="flex items-center justify-center p-6 text-white bg-gradient-to-br from-black to-gray-900 sm:p-10 md:p-16 opacity-0 animate-on-scroll translate-x-[50px]">
           <div className="max-w-md space-y-4 text-center md:text-left sm:space-y-6">
             <h2 className="text-3xl font-bold tracking-tight font-kugile sm:text-4xl md:text-5xl lg:text-6xl">
               GRAVIX
@@ -234,7 +255,7 @@ export default function GravixHomepage() {
     <section className="py-12 bg-white sm:py-16 md:py-20">
       <div className="container px-4 mx-auto sm:px-6">
         {/* Section Header */}
-        <div className="mb-10 text-center sm:mb-12 md:mb-16">
+        <div className="mb-10 text-center sm:mb-12 md:mb-16 opacity-0 animate-on-scroll translate-y-[30px]">
           <h2 className="mb-3 text-2xl text-gray-900 font-kugile sm:text-3xl md:text-3xl ">
             WHY CHOOSE GRAVIX
           </h2>
@@ -246,7 +267,7 @@ export default function GravixHomepage() {
         {/* Values Grid */}
         <div className="grid grid-cols-1 gap-8 sm:gap-10 md:gap-12 md:grid-cols-3">
           {/* Value 1 */}
-          <div className="text-center group">
+          <div className="text-center group opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: '0ms' }}>
             <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-white transition-all duration-300 bg-black rounded-full group-hover:bg-gray-100 group-hover:text-black sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
               <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -259,7 +280,7 @@ export default function GravixHomepage() {
           </div>
 
           {/* Value 2 */}
-          <div className="text-center group">
+          <div className="text-center group opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: '150ms' }}>
             <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-white transition-all duration-300 bg-black rounded-full group-hover:bg-gray-100 group-hover:text-black sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
               <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -272,7 +293,7 @@ export default function GravixHomepage() {
           </div>
 
           {/* Value 3 */}
-          <div className="text-center group">
+          <div className="text-center group opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: '300ms' }}>
             <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-white transition-all duration-300 bg-black rounded-full group-hover:bg-gray-100 group-hover:text-black sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
               <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -291,7 +312,7 @@ export default function GravixHomepage() {
     {/* Testimonials Section */}
     <section className="py-12 bg-gray-100 sm:py-16 md:py-20">
       <div className="container px-4 mx-auto sm:px-6">
-        <div className="mb-10 text-center sm:mb-12 md:mb-16">
+        <div className="mb-10 text-center sm:mb-12 md:mb-16 opacity-0 animate-on-scroll translate-y-[30px]">
           <h2 className="mb-3 text-2xl font-bold text-gray-900 font-kugile sm:text-3xl md:text-4xl">
             WHAT OUR CUSTOMERS SAY
           </h2>
@@ -302,7 +323,7 @@ export default function GravixHomepage() {
 
         <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Testimonial 1 */}
-          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md">
+          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: '0ms' }}>
             <div className="flex items-center mb-3 sm:mb-4">
               <img
                 src="https://ui-avatars.com/api/?name=Sarah+M&background=1f2937&color=fff&size=48&rounded=true&bold=true"
@@ -320,7 +341,7 @@ export default function GravixHomepage() {
           </div>
 
           {/* Testimonial 2 */}
-          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md">
+          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: '150ms' }}>
             <div className="flex items-center mb-3 sm:mb-4">
               <img
                 src="https://ui-avatars.com/api/?name=James+L&background=1f2937&color=fff&size=48&rounded=true&bold=true"
@@ -338,7 +359,7 @@ export default function GravixHomepage() {
           </div>
 
           {/* Testimonial 3 */}
-          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md lg:col-span-1">
+          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md lg:col-span-1 opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: '300ms' }}>
             <div className="flex items-center mb-3 sm:mb-4">
               <img
                 src="https://ui-avatars.com/api/?name=Emma+K&background=1f2937&color=fff&size=48&rounded=true&bold=true"
@@ -360,7 +381,7 @@ export default function GravixHomepage() {
       
     {/* Newsletter */}
     <section className="px-4 py-16 text-black bg-white sm:px-6 sm:py-20 lg:py-24">
-      <div className="max-w-4xl mx-auto text-center">
+      <div className="max-w-4xl mx-auto text-center opacity-0 animate-on-scroll translate-y-[30px]">
         {/* Heading */}
         <h3 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl font-Break">
           STAY CONNECTED
@@ -389,6 +410,25 @@ export default function GravixHomepage() {
         </p>
       </div>
     </section>
+
+    <style jsx>{`
+      .animate-on-scroll {
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+
+      .animate-on-scroll.animate-in {
+        opacity: 1 !important;
+        transform: translate(0, 0) scale(1) !important;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animate-on-scroll {
+          transition: none;
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    `}</style>
       
     </div>
   );
