@@ -9,7 +9,8 @@ import Image from 'next/image';
 import ESSENTIALS from '../public/assets/images/130BT212032F_3_compressed_1_f3255966-5812-45bb-a8fb-dbf33fc7b1aa.webp';
 import OUTERWEAR from '../public/assets/images/photo-1551028719-00167b16eac5.jpeg';
 import ACCESSORIES from '../public/assets/images/photo-1523398002811-999ca8dec234.jpeg';
-
+import MEN from '../public/assets/images/photo-1621072156002-e2fccdc0b176.jpeg';
+import WOMEN from '../public/assets/images/sexy-young-brunette-with-bright-party-makeup-wellbuilt-body-long-silk-dress-resting-outdoors-black-chair-against-peach-wall-background_197531-28187.jpg';
 
 export default function GravixHomepage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -136,31 +137,35 @@ export default function GravixHomepage() {
         <div className="grid h-full md:grid-cols-2">
           <div className="relative overflow-hidden group">
             <img 
-              src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1000&q=80"
+              src={MEN.src}
               alt="Men's Collection"
               className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/40">
               <div className="text-center">
-                <h4 className="mb-4 text-5xl font-bold font-Break">MEN</h4>
+                <h4 className="mb-4 text-5xl font-bold font-kugile">MEN</h4>
+              <Link href="/products?category=men">
                 <button className="px-6 py-2 text-sm tracking-widest transition-all border-2 border-white hover:bg-white hover:text-black">
                   DISCOVER
                 </button>
+              </Link>
               </div>
             </div>
           </div>
           <div className="relative overflow-hidden group">
             <img 
-              src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1000&q=80"
+              src={WOMEN.src}
               alt="Women's Collection"
               className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/40">
               <div className="text-center">
-                <h4 className="mb-4 text-5xl font-bold">WOMEN</h4>
+                <h4 className="mb-4 text-5xl font-kugile">WOMEN</h4>
+                <Link href="/products">
                 <button className="px-6 py-2 text-sm tracking-widest transition-all border-2 border-white hover:bg-white hover:text-black">
                   DISCOVER
                 </button>
+                </Link>
               </div>
             </div>
           </div>
