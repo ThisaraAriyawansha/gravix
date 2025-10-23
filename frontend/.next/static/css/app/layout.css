@@ -1653,6 +1653,9 @@ video {
 .font-Break {
   font-family: Break, sans-serif;
 }
+.font-Corigo {
+  font-family: Corigo, sans-serif;
+}
 .font-kugile {
   font-family: Kugile, sans-serif;
 }
@@ -1661,9 +1664,6 @@ video {
 }
 .font-sans {
   font-family: Inter, system-ui, sans-serif;
-}
-.font-Corigo {
-  font-family: Corigo, sans-serif;
 }
 .text-2xl {
   font-size: 1.5rem;
@@ -1731,6 +1731,12 @@ video {
 .leading-relaxed {
   line-height: 1.625;
 }
+.tracking-\[0\.1em\] {
+  letter-spacing: 0.1em;
+}
+.tracking-\[0\.3em\] {
+  letter-spacing: 0.3em;
+}
 .tracking-tight {
   letter-spacing: -0.025em;
 }
@@ -1741,21 +1747,6 @@ video {
   letter-spacing: 0.05em;
 }
 .tracking-widest {
-  letter-spacing: 0.1em;
-}
-.tracking-\[0\.3em\] {
-  letter-spacing: 0.3em;
-}
-.tracking-\[0\.25em\] {
-  letter-spacing: 0.25em;
-}
-.tracking-\[0\.2em\] {
-  letter-spacing: 0.2em;
-}
-.tracking-\[0\.em\] {
-  letter-spacing: 0.em;
-}
-.tracking-\[0\.1em\] {
   letter-spacing: 0.1em;
 }
 .text-black {

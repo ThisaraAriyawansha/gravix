@@ -50,7 +50,7 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="text-2xl font-light text-black hover:opacity-70">
+          <Link href="/" className="mt-4 text-2xl font-light text-black hover:opacity-70 font-kugile">
             GRAVIX
           </Link>
 
