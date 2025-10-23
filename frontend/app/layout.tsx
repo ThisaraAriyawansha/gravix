@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import './globals.css'
+import Logo from '../public/assets/logo/g logo.png'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,8 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* ✅ Favicon (title icon) */}
+        <link rel="icon" href="/assets/logo/g logo.png" type="image/jpeg" />
+      </head>
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
+        <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-1">
             {children}
