@@ -161,7 +161,7 @@ export default function GravixHomepage() {
             <div className="absolute inset-0 flex items-center justify-center bg-black/40">
               <div className="text-center">
                 <h4 className="mb-4 text-5xl font-kugile">WOMEN</h4>
-                <Link href="/products">
+                <Link href="/products?category=women">
                 <button className="px-6 py-2 text-sm tracking-widest transition-all border-2 border-white hover:bg-white hover:text-black">
                   DISCOVER
                 </button>
