@@ -175,7 +175,177 @@ export default function GravixHomepage() {
 
 
 
+    {/* Logo & About Section with Backgrounds */}
+    <section className="min-h-screen bg-gray-50">
+      <div className="flex flex-col md:grid md:grid-cols-2 md:h-screen">
+        
+        {/* Left Side - Logo - Mobile First */}
+        <div className="relative flex items-center justify-center h-64 p-4 bg-white md:h-full sm:p-6 md:p-8">
+          <div className="w-full max-w-xs text-center sm:max-w-sm">
+            {/* Logo with responsive sizing */}
+            <div className="relative w-32 h-32 mx-auto mb-4 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 md:mb-6">
+              <img 
+                src={Logo.src}
+                alt="GRAVIX Logo"
+                className="object-contain w-full h-full transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <p className="text-xs font-light tracking-widest text-gray-600 sm:text-sm md:text-base">
+              SINCE 2024
+            </p>
+          </div>
+        </div>
 
+        {/* Right Side - Content - Mobile First */}
+        <div className="flex items-center justify-center p-6 text-white bg-gradient-to-br from-black to-gray-900 sm:p-10 md:p-16">
+          <div className="max-w-md space-y-4 text-center md:text-left sm:space-y-6">
+            <h2 className="text-3xl font-bold tracking-tight font-kugile sm:text-4xl md:text-5xl lg:text-6xl">
+              GRAVIX
+            </h2>
+            <p className="text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
+              Premium Clothing Store
+            </p>
+            <div className="w-16 h-px mx-auto bg-white/50 md:mx-0 sm:w-20" />
+            <p className="text-xs leading-relaxed text-gray-400 sm:text-sm md:text-base">
+              At GRAVIX, we believe style is a statement. Crafted with precision and passion, 
+              our collections blend timeless elegance with modern edge. From tailored essentials 
+              to bold statements — elevate your wardrobe with clothing designed to inspire confidence.
+            </p>
+            
+            <div className="flex flex-col gap-3 mt-6 sm:flex-row sm:gap-4 md:justify-start md:mt-8">
+              <Link href="/products">
+                <button className="w-full px-6 py-2.5 text-xs font-medium tracking-widest transition-all duration-300 border-2 border-white hover:bg-white hover:text-black sm:w-auto sm:px-8 sm:py-3 sm:text-sm">
+                  SHOP COLLECTION
+                </button>
+              </Link>
+              <Link href="/about">
+                <button className="w-full px-6 py-2.5 text-xs font-medium tracking-widest transition-all duration-300 border-2 border-white/50 hover:border-white hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3 sm:text-sm">
+                  LEARN MORE
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    {/* Brand Values Section */}
+    <section className="py-12 bg-white sm:py-16 md:py-20">
+      <div className="container px-4 mx-auto sm:px-6">
+        {/* Section Header */}
+        <div className="mb-10 text-center sm:mb-12 md:mb-16">
+          <h2 className="mb-3 text-2xl font-bold text-gray-900 font-kugile sm:text-3xl md:text-4xl">
+            WHY CHOOSE GRAVIX
+          </h2>
+          <p className="max-w-xl mx-auto text-sm text-gray-600 sm:text-base md:text-lg">
+            Our commitment to excellence in every detail
+          </p>
+        </div>
+
+        {/* Values Grid */}
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 md:gap-12 md:grid-cols-3">
+          {/* Value 1 */}
+          <div className="text-center group">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-all duration-300 bg-gray-100 rounded-full group-hover:bg-black group-hover:text-white sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h3 className="mb-3 text-lg font-semibold text-gray-900 sm:text-xl md:mb-4">Premium Quality</h3>
+            <p className="text-xs leading-relaxed text-gray-600 sm:text-sm">
+              Crafted from the finest materials with exceptional attention to detail and durability.
+            </p>
+          </div>
+
+          {/* Value 2 */}
+          <div className="text-center group">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-all duration-300 bg-gray-100 rounded-full group-hover:bg-black group-hover:text-white sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="mb-3 text-lg font-semibold text-gray-900 sm:text-xl md:mb-4">Sustainable Fashion</h3>
+            <p className="text-xs leading-relaxed text-gray-600 sm:text-sm">
+              Ethically sourced materials and responsible manufacturing processes for a better future.
+            </p>
+          </div>
+
+          {/* Value 3 */}
+          <div className="text-center group">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-all duration-300 bg-gray-100 rounded-full group-hover:bg-black group-hover:text-white sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="mb-3 text-lg font-semibold text-gray-900 sm:text-xl md:mb-4">Modern Design</h3>
+            <p className="text-xs leading-relaxed text-gray-600 sm:text-sm">
+              Contemporary styles that blend timeless elegance with current fashion trends.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    {/* Testimonials Section */}
+    <section className="py-12 bg-white sm:py-16 md:py-20">
+      <div className="container px-4 mx-auto sm:px-6">
+        <div className="mb-10 text-center sm:mb-12 md:mb-16">
+          <h2 className="mb-3 text-2xl font-bold text-gray-900 font-kugile sm:text-3xl md:text-4xl">
+            WHAT OUR CUSTOMERS SAY
+          </h2>
+          <p className="max-w-xl mx-auto text-sm text-gray-600 sm:text-base md:text-lg">
+            Join thousands of satisfied customers worldwide
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {/* Testimonial 1 */}
+          <div className="p-6 rounded-lg bg-gray-50 sm:p-8">
+            <div className="flex items-center mb-3 sm:mb-4">
+              <div className="w-10 h-10 mr-3 bg-gray-300 rounded-full sm:w-12 sm:h-12 sm:mr-4"></div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 sm:text-base">Sarah M.</h4>
+                <p className="text-xs text-gray-600 sm:text-sm">New York</p>
+              </div>
+            </div>
+            <p className="text-xs italic text-gray-700 sm:text-sm">
+              "The quality of GraVIX clothing is exceptional. I've never felt more confident in my outfits."
+            </p>
+          </div>
+
+          {/* Testimonial 2 */}
+          <div className="p-6 rounded-lg bg-gray-50 sm:p-8">
+            <div className="flex items-center mb-3 sm:mb-4">
+              <div className="w-10 h-10 mr-3 bg-gray-300 rounded-full sm:w-12 sm:h-12 sm:mr-4"></div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 sm:text-base">James L.</h4>
+                <p className="text-xs text-gray-600 sm:text-sm">London</p>
+              </div>
+            </div>
+            <p className="text-xs italic text-gray-700 sm:text-sm">
+              "Attention to detail is remarkable. Every piece feels like it was made just for me."
+            </p>
+          </div>
+
+          {/* Testimonial 3 */}
+          <div className="p-6 rounded-lg bg-gray-50 sm:p-8 lg:col-span-1">
+            <div className="flex items-center mb-3 sm:mb-4">
+              <div className="w-10 h-10 mr-3 bg-gray-300 rounded-full sm:w-12 sm:h-12 sm:mr-4"></div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 sm:text-base">Emma K.</h4>
+                <p className="text-xs text-gray-600 sm:text-sm">Tokyo</p>
+              </div>
+            </div>
+            <p className="text-xs italic text-gray-700 sm:text-sm">
+              "Sustainable fashion that doesn't compromise on style. GraVIX is my go-to brand."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+      
       {/* Newsletter */}
       <section className="px-6 py-20 text-black bg-white">
         <div className="max-w-2xl mx-auto text-center">
@@ -193,58 +363,6 @@ export default function GravixHomepage() {
           </div>
         </div>
       </section>
-
-
-        {/* Logo & About Section with Backgrounds */}
-<section className="relative h-screen bg-gray-50">
-  <div className="grid h-full md:grid-cols-2">
-    
-    {/* Left Side - Logo */}
-    <div className="relative overflow-hidden bg-white group">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center">
-          <img 
-            src={Logo.src}
-            alt="GRAVIX Logo"
-            className="w-48 h-48 mx-auto mb-8 transition-transform duration-700 group-hover:scale-110"
-          />
-          <p className="text-lg font-light tracking-widest text-black">SINCE 2024</p>
-        </div>
-      </div>
-    </div>
-
-    {/* Right Side - About Company */}
-    <div className="flex items-center justify-center p-8 text-white md:p-16 bg-gradient-to-br from-black to-gray-900">
-      <div className="max-w-md space-y-6 text-center md:text-left">
-        <h2 className="text-5xl font-bold tracking-tight md:text-6xl font-kugile">
-          GRAVIX
-        </h2>
-        <p className="text-lg leading-relaxed text-gray-300 md:text-xl">
-          Premium Clothing Store
-        </p>
-        <div className="w-20 h-px mx-auto bg-white/50 md:mx-0" />
-        <p className="text-sm leading-relaxed text-gray-400 md:text-base">
-          At GRAVIX, we believe style is a statement. Crafted with precision and passion, 
-          our collections blend timeless elegance with modern edge. From tailored essentials 
-          to bold statements — elevate your wardrobe with clothing designed to inspire confidence.
-        </p>
-        
-        <div className="flex flex-col justify-center gap-4 mt-8 sm:flex-row md:justify-start">
-          <Link href="/products">
-            <button className="px-8 py-3 text-sm font-medium tracking-widest transition-all duration-300 border-2 border-white hover:bg-white hover:text-black">
-              SHOP COLLECTION
-            </button>
-          </Link>
-          <Link href="/about">
-            <button className="px-8 py-3 text-sm font-medium tracking-widest transition-all duration-300 border-2 border-white/50 hover:border-white hover:bg-white/10">
-              LEARN MORE
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
       
     </div>
   );
