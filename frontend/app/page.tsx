@@ -235,7 +235,7 @@ export default function GravixHomepage() {
       <div className="container px-4 mx-auto sm:px-6">
         {/* Section Header */}
         <div className="mb-10 text-center sm:mb-12 md:mb-16">
-          <h2 className="mb-3 text-2xl font-bold text-gray-900 font-kugile sm:text-3xl md:text-4xl">
+          <h2 className="mb-3 text-2xl text-gray-900 font-kugile sm:text-3xl md:text-3xl ">
             WHY CHOOSE GRAVIX
           </h2>
           <p className="max-w-xl mx-auto text-sm text-gray-600 sm:text-base md:text-lg">
@@ -247,7 +247,7 @@ export default function GravixHomepage() {
         <div className="grid grid-cols-1 gap-8 sm:gap-10 md:gap-12 md:grid-cols-3">
           {/* Value 1 */}
           <div className="text-center group">
-            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-all duration-300 bg-gray-100 rounded-full group-hover:bg-black group-hover:text-white sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-white transition-all duration-300 bg-black rounded-full group-hover:bg-gray-100 group-hover:text-black sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
               <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
@@ -260,7 +260,7 @@ export default function GravixHomepage() {
 
           {/* Value 2 */}
           <div className="text-center group">
-            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-all duration-300 bg-gray-100 rounded-full group-hover:bg-black group-hover:text-white sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-white transition-all duration-300 bg-black rounded-full group-hover:bg-gray-100 group-hover:text-black sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
               <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -273,7 +273,7 @@ export default function GravixHomepage() {
 
           {/* Value 3 */}
           <div className="text-center group">
-            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 transition-all duration-300 bg-gray-100 rounded-full group-hover:bg-black group-hover:text-white sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 text-white transition-all duration-300 bg-black rounded-full group-hover:bg-gray-100 group-hover:text-black sm:w-18 sm:h-18 sm:mb-5 md:w-20 md:h-20 md:mb-6">
               <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
@@ -289,7 +289,7 @@ export default function GravixHomepage() {
 
 
     {/* Testimonials Section */}
-    <section className="py-12 bg-white sm:py-16 md:py-20">
+    <section className="py-12 bg-gray-100 sm:py-16 md:py-20">
       <div className="container px-4 mx-auto sm:px-6">
         <div className="mb-10 text-center sm:mb-12 md:mb-16">
           <h2 className="mb-3 text-2xl font-bold text-gray-900 font-kugile sm:text-3xl md:text-4xl">
@@ -302,67 +302,93 @@ export default function GravixHomepage() {
 
         <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Testimonial 1 */}
-          <div className="p-6 rounded-lg bg-gray-50 sm:p-8">
+          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md">
             <div className="flex items-center mb-3 sm:mb-4">
-              <div className="w-10 h-10 mr-3 bg-gray-300 rounded-full sm:w-12 sm:h-12 sm:mr-4"></div>
+              <img
+                src="https://ui-avatars.com/api/?name=Sarah+M&background=1f2937&color=fff&size=48&rounded=true&bold=true"
+                alt="Sarah M. - Customer from New York"
+                className="object-cover w-10 h-10 mr-3 rounded-full sm:w-12 sm:h-12 sm:mr-4"
+              />
               <div>
                 <h4 className="text-sm font-semibold text-gray-900 sm:text-base">Sarah M.</h4>
                 <p className="text-xs text-gray-600 sm:text-sm">New York</p>
               </div>
             </div>
-            <p className="text-xs italic text-gray-700 sm:text-sm">
-              "The quality of GraVIX clothing is exceptional. I've never felt more confident in my outfits."
+            <p className="text-xs italic leading-relaxed text-gray-700 sm:text-sm">
+              "The quality of GRAVIX clothing is exceptional. I've never felt more confident in my outfits."
             </p>
           </div>
 
           {/* Testimonial 2 */}
-          <div className="p-6 rounded-lg bg-gray-50 sm:p-8">
+          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md">
             <div className="flex items-center mb-3 sm:mb-4">
-              <div className="w-10 h-10 mr-3 bg-gray-300 rounded-full sm:w-12 sm:h-12 sm:mr-4"></div>
+              <img
+                src="https://ui-avatars.com/api/?name=James+L&background=1f2937&color=fff&size=48&rounded=true&bold=true"
+                alt="James L. - Customer from London"
+                className="object-cover w-10 h-10 mr-3 rounded-full sm:w-12 sm:h-12 sm:mr-4"
+              />
               <div>
                 <h4 className="text-sm font-semibold text-gray-900 sm:text-base">James L.</h4>
                 <p className="text-xs text-gray-600 sm:text-sm">London</p>
               </div>
             </div>
-            <p className="text-xs italic text-gray-700 sm:text-sm">
+            <p className="text-xs italic leading-relaxed text-gray-700 sm:text-sm">
               "Attention to detail is remarkable. Every piece feels like it was made just for me."
             </p>
           </div>
 
           {/* Testimonial 3 */}
-          <div className="p-6 rounded-lg bg-gray-50 sm:p-8 lg:col-span-1">
+          <div className="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-sm sm:p-8 hover:shadow-md lg:col-span-1">
             <div className="flex items-center mb-3 sm:mb-4">
-              <div className="w-10 h-10 mr-3 bg-gray-300 rounded-full sm:w-12 sm:h-12 sm:mr-4"></div>
+              <img
+                src="https://ui-avatars.com/api/?name=Emma+K&background=1f2937&color=fff&size=48&rounded=true&bold=true"
+                alt="Emma K. - Customer from Tokyo"
+                className="object-cover w-10 h-10 mr-3 rounded-full sm:w-12 sm:h-12 sm:mr-4"
+              />
               <div>
                 <h4 className="text-sm font-semibold text-gray-900 sm:text-base">Emma K.</h4>
                 <p className="text-xs text-gray-600 sm:text-sm">Tokyo</p>
               </div>
             </div>
-            <p className="text-xs italic text-gray-700 sm:text-sm">
-              "Sustainable fashion that doesn't compromise on style. GraVIX is my go-to brand."
+            <p className="text-xs italic leading-relaxed text-gray-700 sm:text-sm">
+              "Sustainable fashion that doesn't compromise on style. GRAVIX is my go-to brand."
             </p>
           </div>
         </div>
       </div>
     </section>
       
-      {/* Newsletter */}
-      <section className="px-6 py-20 text-black bg-white">
-        <div className="max-w-2xl mx-auto text-center">
-          <h3 className="mb-4 text-4xl font-bold tracking-tight">STAY CONNECTED</h3>
-          <p className="mb-8 text-gray-600">Subscribe to receive updates on new arrivals and exclusive offers</p>
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <input 
-              type="email" 
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-4 border-2 border-black focus:outline-none"
-            />
-            <button className="px-8 py-4 font-semibold tracking-widest text-white transition-colors bg-black hover:bg-gray-800">
-              SUBSCRIBE
-            </button>
-          </div>
+    {/* Newsletter */}
+    <section className="px-4 py-16 text-black bg-white sm:px-6 sm:py-20 lg:py-24">
+      <div className="max-w-4xl mx-auto text-center">
+        {/* Heading */}
+        <h3 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl font-Break">
+          STAY CONNECTED
+        </h3>
+        
+        {/* Description */}
+        <p className="max-w-xl px-4 mx-auto mb-8 text-xs text-gray-600 sm:mb-10 lg:mb-12 sm:text-sm lg:text-base">
+          Subscribe to receive updates on new arrivals and exclusive offers
+        </p>
+        
+        {/* Form */}
+        <div className="flex flex-col max-w-md gap-3 px-4 mx-auto sm:flex-row sm:gap-4 sm:max-w-xl sm:px-0">
+          <input 
+            type="email" 
+            placeholder="Enter your email"
+            className="flex-1 px-4 py-3 text-sm transition-all duration-200 border-2 border-black sm:px-6 sm:py-4 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 sm:text-base"
+          />
+          <button className="px-6 py-3 text-sm font-semibold tracking-widest text-white transition-colors duration-200 bg-black sm:px-8 sm:py-4 hover:bg-gray-800 active:bg-gray-900 sm:text-base whitespace-nowrap">
+            SUBSCRIBE
+          </button>
         </div>
-      </section>
+        
+        {/* Additional Info */}
+        <p className="max-w-md mx-auto mt-4 text-xs text-gray-500">
+          By subscribing, you agree to our Privacy Policy
+        </p>
+      </div>
+    </section>
       
     </div>
   );
