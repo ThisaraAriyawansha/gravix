@@ -5,6 +5,10 @@ import Link from 'next/link'
 import { Menu, X, ShoppingBag, Search, ChevronRight } from 'lucide-react';
 import HeroImage from '../public/assets/images/pexels-photo-1884584.jpeg';
 import FallWinter from '../public/assets/images/8069-clothing-shopping-girl-woman-street-2560x1600.jpg';
+import Image from 'next/image';
+import ESSENTIALS from '../public/assets/images/130BT212032F_3_compressed_1_f3255966-5812-45bb-a8fb-dbf33fc7b1aa.webp';
+import OUTERWEAR from '../public/assets/images/photo-1551028719-00167b16eac5.jpeg';
+import ACCESSORIES from '../public/assets/images/photo-1523398002811-999ca8dec234.jpeg';
 
 
 export default function GravixHomepage() {
@@ -20,9 +24,9 @@ export default function GravixHomepage() {
   }, []);
 
   const collections = [
-    { title: 'ESSENTIALS', image: 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=800&q=80', desc: 'Timeless basics' },
-    { title: 'OUTERWEAR', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80', desc: 'Premium jackets' },
-    { title: 'ACCESSORIES', image: 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=800&q=80', desc: 'Complete the look' }
+    { title: 'ESSENTIALS', image: ESSENTIALS, desc: 'Timeless basics' },
+    { title: 'OUTERWEAR', image: OUTERWEAR, desc: 'Premium jackets' },
+    { title: 'ACCESSORIES', image: ACCESSORIES, desc: 'Complete the look' }
   ];
 
   return (
@@ -103,19 +107,20 @@ export default function GravixHomepage() {
       {/* Collections Grid */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <h3 className="mb-12 text-4xl  text-center font-Corigo tracking-[0.1em]">COLLECTIONS</h3>
+          <h3 className="mb-12 text-4xl text-center font-Corigo tracking-[0.1em]">COLLECTIONS</h3>
           <div className="grid gap-6 md:grid-cols-3">
             {collections.map((item, idx) => (
               <div key={idx} className="relative overflow-hidden cursor-pointer group">
                 <div className="aspect-[3/4] relative">
-                  <img 
+                  <Image
                     src={item.image}
                     alt={item.title}
-                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 transition-all duration-300 bg-black/40 group-hover:bg-black/60"></div>
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                    <h4 className="mb-2 text-3xl font-bold tracking-wider">{item.title}</h4>
+                    <h4 className="mb-2 text-3xl tracking-wider font-kugile">{item.title}</h4>
                     <p className="text-sm tracking-wide text-gray-300">{item.desc}</p>
                     <div className="mt-4 w-12 h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
                   </div>
@@ -137,7 +142,7 @@ export default function GravixHomepage() {
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/40">
               <div className="text-center">
-                <h4 className="mb-4 text-5xl font-bold">MEN</h4>
+                <h4 className="mb-4 text-5xl font-bold font-Break">MEN</h4>
                 <button className="px-6 py-2 text-sm tracking-widest transition-all border-2 border-white hover:bg-white hover:text-black">
                   DISCOVER
                 </button>
