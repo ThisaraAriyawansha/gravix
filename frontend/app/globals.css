@@ -42,11 +42,35 @@ a {
   @font-face {
     font-family: 'PalmSprings';
     src: url('/assets/font/PalmspringsPersonalUseRegular-d9VDV.ttf') format('truetype');
-    font-weight: 400;
+    font-weight: 100;
     font-style: normal;
     font-display: swap;
   }
 
+
+  @font-face {
+    font-family: 'Kugile';
+    src: url('/assets/font/Kugile_Demo.ttf') format('truetype');
+    font-weight: 100; 
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Corigo';
+    src: url('/assets/font/Corigo.otf') format('truetype');
+    font-weight: 100; 
+    font-style: normal;
+    font-display: swap;
+  }
+
+    @font-face {
+      font-family: 'Break';
+      src: url('/assets/font/break light.ttf') format('truetype');
+      font-weight: 100; 
+      font-style: normal;
+      font-display: swap;
+    }
 /* Custom utility classes */
 @layer components {
   .btn-primary {

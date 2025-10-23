@@ -27,7 +27,10 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        palmsprings: ['PalmSprings', 'sans-serif'], // Add PalmSprings font
+        palmsprings: ['PalmSprings', 'sans-serif'], 
+        kugile: ['Kugile', 'sans-serif'], 
+        Corigo: ['Corigo', 'sans-serif'], 
+        Break: ['Break', 'sans-serif'],
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.8s ease-out forwards',

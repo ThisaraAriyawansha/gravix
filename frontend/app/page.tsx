@@ -39,19 +39,23 @@ export default function GravixHomepage() {
         </div>
         
         <div className="relative z-10 max-w-4xl px-4 text-center">
-          <h2 className="mb-4 text-4xl font-light tracking-tight text-gravix-white md:text-6xl lg:text-7xl animate-fade-in-up ">
-            MINIMALIST<br /><span className="text-gravix-gray-200">ELEGANCE</span>
+          <h2 className="mb-4 text-3xl font-light tracking-widest text-white md:text-5xl lg:text-6xl animate-fade-in-up">
+            <span className="tracking-[0.3em] font-Break">GRAVIX</span><br />
+            <span className="font-Break text-gravix-gray-200">MINIMALIST ELEGANCE</span>
           </h2>
+
+
           
-          <p className="mb-8 text-sm tracking-wide text-gravix-gray-300 md:text-xl lg:text-xl animate-fade-in-up animation-delay-200">
+          <p className="mb-8 text-sm tracking-wide font-kugile text-gravix-gray-300 md:text-xl lg:text-xl animate-fade-in-up animation-delay-200">
             Discover premium clothing with timeless design
           </p>
           
           <Link href="/products">
-            <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest transition-all duration-500 text-gravix-black bg-gravix-white hover:bg-gravix-gray-100 hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
+            <button className="flex items-center px-6 py-3 mx-auto text-xs font-medium tracking-widest text-white transition-all duration-500 bg-transparent border border-white hover:bg-white hover:text-gravix-black hover:scale-105 group md:px-8 md:py-4 md:text-sm animate-fade-in-up animation-delay-400">
               EXPLORE COLLECTION
               <ChevronRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={16} />
             </button>
+
           </Link>
         </div>
 
@@ -70,7 +74,7 @@ export default function GravixHomepage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <h3 className="mb-6 text-5xl font-bold tracking-tight">FALL WINTER<br />2025</h3>
+              <h3 className="mb-6 text-5xl font-bold tracking-tight font-Break">FALL WINTER<br />2025</h3>
               <p className="mb-8 text-lg leading-relaxed text-gray-700">
                 A carefully curated collection that embodies sophistication and contemporary style. 
                 Each piece is designed with attention to detail and crafted from premium materials.
@@ -93,7 +97,7 @@ export default function GravixHomepage() {
       {/* Collections Grid */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <h3 className="mb-12 text-4xl font-bold tracking-tight text-center">COLLECTIONS</h3>
+          <h3 className="mb-12 text-4xl font-bold tracking-tight text-center font-palmsprings">COLLECTIONS</h3>
           <div className="grid gap-6 md:grid-cols-3">
             {collections.map((item, idx) => (
               <div key={idx} className="relative overflow-hidden cursor-pointer group">
