@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import ProductGrid from '@/components/product/ProductGrid'
 import ProductFilter from '@/components/product/ProductFilter'
 import { getProducts } from '@/lib/api'
+import { useSearchParams } from 'next/navigation'
 
 interface Product {
   id: number
@@ -15,15 +16,23 @@ interface Product {
 }
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams()
+
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState({
-    category: '',
-    search: '',
-    sort: 'newest',
-    priceRange: '' // Add priceRange to initial state
+  
+  // Initialize filters from URL on mount
+  const [filters, setFilters] = useState(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    return {
+      category: params.get('category') || '',
+      search: params.get('search') || '',
+      sort: params.get('sort') || 'newest',
+      priceRange: params.get('priceRange') || ''
+    }
   })
 
+  // Load products whenever filters change
   useEffect(() => {
     loadProducts()
   }, [filters])
@@ -40,7 +49,7 @@ export default function ProductsPage() {
     }
   }
 
-  const updateFilters = (newFilters: any) => {
+  const updateFilters = (newFilters: Partial<typeof filters>) => {
     setFilters(prev => ({ ...prev, ...newFilters }))
   }
 

@@ -11,8 +11,8 @@ import {
   setPrimaryImage,
   deleteProductImage,
   getProductImages,
-  toggleProductFeatured,  // ADD THIS
-  toggleProductActive     // ADD THIS
+  toggleProductFeatured,  
+  toggleProductActive     
 } from '../controllers/productController.js';
 import { authenticate, requireAdmin } from '../middleware/auth.js';
 import { uploadMultiple } from '../middleware/upload.js';

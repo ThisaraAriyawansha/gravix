@@ -1,5 +1,8 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+
 interface Filters {
   category: string
   search: string
@@ -13,6 +16,10 @@ interface ProductFilterProps {
 }
 
 export default function ProductFilter({ filters, onFilterChange }: ProductFilterProps) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
   const categories = [
     { value: '', label: 'All Categories' },
     { value: 'men', label: 'Men' },
@@ -34,17 +41,60 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
     { value: '100-', label: 'Over $100' }
   ]
 
-  const handlePriceRangeChange = (value: string) => {
-    onFilterChange({ priceRange: value })
+  // Sync URL → filters (on mount or navigation)
+  useEffect(() => {
+    const urlCategory = searchParams.get('category') ?? ''
+    const urlSearch = searchParams.get('search') ?? ''
+    const urlSort = searchParams.get('sort') ?? 'newest'
+    const urlPriceRange = searchParams.get('priceRange') ?? ''
+
+    const updatedFilters: Partial<Filters> = {}
+
+    if (urlCategory !== filters.category) updatedFilters.category = urlCategory
+    if (urlSearch !== filters.search) updatedFilters.search = urlSearch
+    if (urlSort !== filters.sort) updatedFilters.sort = urlSort
+    if (urlPriceRange !== filters.priceRange) updatedFilters.priceRange = urlPriceRange
+
+    if (Object.keys(updatedFilters).length > 0) {
+      onFilterChange(updatedFilters)
+    }
+  }, [searchParams, filters, onFilterChange])
+
+  // Helper: Update URL based on current filters
+  const updateUrl = (newFilters: Partial<Filters>) => {
+    const current = {
+      category: filters.category,
+      search: filters.search,
+      sort: filters.sort,
+      priceRange: filters.priceRange,
+      ...newFilters,
+    }
+
+    const params = new URLSearchParams()
+
+    if (current.category) params.set('category', current.category)
+    if (current.search) params.set('search', current.search)
+    if (current.sort && current.sort !== 'newest') params.set('sort', current.sort)
+    if (current.priceRange) params.set('priceRange', current.priceRange)
+
+    const queryString = params.toString()
+    router.push(`${pathname}${queryString ? `?${queryString}` : ''}`)
+  }
+
+  // Wrap onFilterChange to also update URL
+  const handleFilterChange = (newFilters: Partial<Filters>) => {
+    onFilterChange(newFilters)
+    updateUrl(newFilters)
   }
 
   const clearFilters = () => {
-    onFilterChange({ 
-      category: '', 
-      search: '', 
+    onFilterChange({
+      category: '',
+      search: '',
       sort: 'newest',
-      priceRange: '' 
+      priceRange: ''
     })
+    router.push(pathname) // Clear URL
   }
 
   return (
@@ -58,7 +108,7 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
           type="text"
           id="search"
           value={filters.search}
-          onChange={(e) => onFilterChange({ search: e.target.value })}
+          onChange={(e) => handleFilterChange({ search: e.target.value })}
           placeholder="Search products..."
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -72,7 +122,7 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
         <select
           id="category"
           value={filters.category}
-          onChange={(e) => onFilterChange({ category: e.target.value })}
+          onChange={(e) => handleFilterChange({ category: e.target.value })}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {categories.map(category => (
@@ -91,7 +141,7 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
         <select
           id="sort"
           value={filters.sort}
-          onChange={(e) => onFilterChange({ sort: e.target.value })}
+          onChange={(e) => handleFilterChange({ sort: e.target.value })}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {sortOptions.map(option => (
@@ -102,18 +152,18 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
         </select>
       </div>
 
-      {/* Price Range - Fixed */}
+      {/* Price Range */}
       <div>
         <h3 className="mb-3 text-sm font-medium text-gray-700">Price Range</h3>
         <div className="space-y-2">
           {priceRanges.map(range => (
             <label key={range.value} className="flex items-center">
-              <input 
-                type="radio" 
+              <input
+                type="radio"
                 name="price"
                 value={range.value}
                 checked={filters.priceRange === range.value}
-                onChange={(e) => handlePriceRangeChange(e.target.value)}
+                onChange={(e) => handleFilterChange({ priceRange: e.target.value })}
                 className="mr-2"
               />
               <span className="text-sm">{range.label}</span>
