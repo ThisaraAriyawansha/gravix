@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
 import { Menu, X, ShoppingBag, Search, ChevronRight } from 'lucide-react';
 import HeroImage from '../public/assets/images/pexels-photo-1884584.jpeg';
+import FallWinter from '../public/assets/images/8069-clothing-shopping-girl-woman-street-2560x1600.jpg';
+
 
 export default function GravixHomepage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -74,18 +76,22 @@ export default function GravixHomepage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <h3 className="mb-6 text-5xl font-bold tracking-tight font-Break">FALL WINTER<br />2025</h3>
-              <p className="mb-8 text-lg leading-relaxed text-gray-700">
+              <h3 className="mb-6 text-4xl md:text-5xl lg:text-6xl tracking-[0.1em] font-palmsprings">
+                FALL WINTER
+              </h3>
+              <p className="mb-8 text-lg leading-relaxed text-gray-700 ">
                 A carefully curated collection that embodies sophistication and contemporary style. 
                 Each piece is designed with attention to detail and crafted from premium materials.
               </p>
+            <Link href="/products">
               <button className="px-8 py-3 text-sm font-semibold tracking-widest transition-all duration-300 border-2 border-black hover:bg-black hover:text-white">
                 SHOP NOW
               </button>
+            </Link>
             </div>
             <div className="relative h-96 md:h-[500px]">
               <img 
-                src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80"
+                src={FallWinter.src}
                 alt="Featured"
                 className="object-cover w-full h-full"
               />
@@ -97,7 +103,7 @@ export default function GravixHomepage() {
       {/* Collections Grid */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <h3 className="mb-12 text-4xl font-bold tracking-tight text-center font-palmsprings">COLLECTIONS</h3>
+          <h3 className="mb-12 text-4xl  text-center font-Corigo tracking-[0.1em]">COLLECTIONS</h3>
           <div className="grid gap-6 md:grid-cols-3">
             {collections.map((item, idx) => (
               <div key={idx} className="relative overflow-hidden cursor-pointer group">
