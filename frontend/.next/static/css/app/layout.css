@@ -987,6 +987,9 @@ video {
 .h-\[60vh\] {
   height: 60vh;
 }
+.h-\[50vh\] {
+  height: 50vh;
+}
 .max-h-\[95vh\] {
   max-height: 95vh;
 }
@@ -1332,6 +1335,11 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+}
+.space-y-16 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(4rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(4rem * var(--tw-space-y-reverse));
 }
 .overflow-hidden {
   overflow: hidden;
@@ -1763,6 +1771,12 @@ video {
 .pt-8 {
   padding-top: 2rem;
 }
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+.pr-8 {
+  padding-right: 2rem;
+}
 .text-left {
   text-align: left;
 }
@@ -1993,6 +2007,10 @@ video {
 .text-gravix-gray-800 {
   --tw-text-opacity: 1;
   color: rgb(38 38 38 / var(--tw-text-opacity, 1));
+}
+.text-gravix-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 .line-through {
   text-decoration-line: line-through;
@@ -2318,6 +2336,11 @@ a {
   background-color: rgb(38 38 38 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-gravix-gray-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 245 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:text-black:hover {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
@@ -2376,6 +2399,11 @@ a {
 .hover\:text-yellow-800:hover {
   --tw-text-opacity: 1;
   color: rgb(133 77 14 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-gravix-gray-600:hover {
+  --tw-text-opacity: 1;
+  color: rgb(82 82 82 / var(--tw-text-opacity, 1));
 }
 
 .hover\:underline:hover {
