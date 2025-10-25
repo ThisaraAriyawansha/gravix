@@ -34,26 +34,26 @@ export default function Footer() {
     <>
       {/* FLOATING SCROLL TO TOP BUTTON */}
       {isVisible && (
-<button
-  onClick={scrollToTop}
-  className="fixed z-50 p-3 text-white bg-black rounded-full bottom-6 right-6 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white animate-fadeIn"
-  aria-label="Scroll to top"
->
-  <svg
-    className="w-5 h-5"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    strokeWidth={2}
-    aria-hidden="true"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M5 15l7-7 7 7"
-    />
-  </svg>
-</button>
+        <button
+          onClick={scrollToTop}
+          className="fixed z-50 p-3 text-white bg-black rounded-full bottom-6 right-6 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white animate-fadeIn"
+          aria-label="Scroll to top"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 15l7-7 7 7"
+            />
+          </svg>
+        </button>
       )}
 
       <footer className="text-white bg-gravix-black">
