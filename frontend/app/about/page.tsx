@@ -115,19 +115,20 @@ export default function AboutPage() {
       </motion.div>
 
       {/* Full Width Image Break */}
-      <motion.div
-        className="w-full h-[40vh] sm:h-[50vh] md:h-[70vh]"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={imageVariants}
-      >
-        <img
-          src="https://archello.com/thumbs/images/2022/12/20/sikora-interiors-minimalist-boutique-shops-archello.1671563227.7366.jpg?fit=crop&auto=compress"
-          alt="Craftsmanship"
-          className="object-cover w-full h-full"
-        />
-      </motion.div>
+<motion.div
+  className="relative w-full h-[70vh] bg-fixed bg-center bg-cover"
+  style={{
+    backgroundImage:
+      "url('https://archello.com/thumbs/images/2022/12/20/sikora-interiors-minimalist-boutique-shops-archello.1671563227.7366.jpg?fit=crop&auto=compress')",
+  }}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={imageVariants}
+>
+  <div className="absolute inset-0 bg-black/30"></div> {/* optional overlay */}
+</motion.div>
+
 
       {/* Craftsmanship Section */}
       <motion.div
