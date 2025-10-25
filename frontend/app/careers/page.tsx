@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
+import image from '../../public/assets/images/photo-1497215728101-856f4ea42174.jpeg'
 
 export default function CareersPage() {
   const [selectedDepartment, setSelectedDepartment] = useState('all')
+  const openPositionsRef = useRef<HTMLDivElement | null>(null) // Create a ref for the Open Positions section
 
   const jobs = [
     {
@@ -57,6 +59,14 @@ export default function CareersPage() {
     ? jobs
     : jobs.filter((job) => job.department === selectedDepartment)
 
+  // Function to handle smooth scrolling
+  const scrollToOpenPositions = () => {
+    openPositionsRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -89,7 +99,7 @@ export default function CareersPage() {
       <div className="relative h-screen">
         <div className="absolute inset-0 bg-gravix-gray-900">
           <img 
-            src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1600&q=80" 
+            src={image.src}
             alt="Team collaboration"
             className="object-cover w-full h-full opacity-40"
           />
@@ -118,6 +128,7 @@ export default function CareersPage() {
               variants={buttonVariants}
               whileHover="hover"
               whileTap="tap"
+              onClick={scrollToOpenPositions} // Add click handler
               aria-label="View open positions"
             >
               VIEW OPEN POSITIONS
@@ -266,6 +277,7 @@ export default function CareersPage() {
 
       {/* Open Positions */}
       <motion.div
+        ref={openPositionsRef} // Attach the ref here
         className="py-16 text-white sm:py-24 md:py-32 bg-gravix-black"
         initial="hidden"
         whileInView="visible"
