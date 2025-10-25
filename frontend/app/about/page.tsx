@@ -232,6 +232,13 @@ export default function AboutPage() {
             className="object-cover w-full h-full"
             variants={imageVariants}
           />
+          {/* Matte layer */}
+          <motion.div
+            className="absolute inset-0 bg-black/30" // Adjust opacity and color for matte effect
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          />
         </div>
         <div className="relative flex items-center justify-center h-full px-4">
           <motion.div

@@ -1,8 +1,8 @@
 {
+  "/about/page": "app/about/page.js",
+  "/careers/page": "app/careers/page.js",
+  "/products/[slug]/page": "app/products/[slug]/page.js",
   "/page": "app/page.js",
   "/products/page": "app/products/page.js",
-  "/products/[slug]/page": "app/products/[slug]/page.js",
-  "/cart/page": "app/cart/page.js",
-  "/(admin)/admin/products/page": "app/(admin)/admin/products/page.js",
-  "/(admin)/admin/products/[id]/edit/page": "app/(admin)/admin/products/[id]/edit/page.js"
+  "/(admin)/admin/dashboard/page": "app/(admin)/admin/dashboard/page.js"
 }
