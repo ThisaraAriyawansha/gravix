@@ -3,6 +3,13 @@
 
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import Banner from '../../public/assets/images/sikora-interiors-minimalist-boutique-shops-archello.1671563227.7366.webp';
+import Hero from '../../public/assets/images/photo-1490481651871-ab68de25d43d.jpeg';
+import Philosophy from '../../public/assets/images/photo-1434389677669-e08b4cac3105.jpeg';
+import Craftsmanship from '../../public/assets/images/photo-1515886657613-9f3515b0c78f.jpeg';
+import Commitment from '../../public/assets/images/photo-1469334031218-e382a71b716b.jpeg';
+
+
 
 export default function AboutPage() {
   // Variants for container staggering
@@ -45,7 +52,7 @@ export default function AboutPage() {
       >
         <div className="absolute inset-0 bg-gravix-gray-900">
           <motion.img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&q=80"
+            src={Hero.src}
             alt="Fashion atelier"
             className="object-cover w-full h-full opacity-40"
             initial={{ scale: 1.1 }}
@@ -87,7 +94,7 @@ export default function AboutPage() {
         <div className="grid items-center max-w-6xl grid-cols-1 gap-8 mx-auto sm:gap-12 md:gap-16 md:grid-cols-2">
           <motion.div variants={imageVariants}>
             <img
-              src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80"
+              src={Philosophy.src}
               alt="Fabric detail"
               className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover"
             />
@@ -115,19 +122,14 @@ export default function AboutPage() {
       </motion.div>
 
       {/* Full Width Image Break */}
-<motion.div
-  className="relative w-full h-[70vh] bg-fixed bg-center bg-cover"
-  style={{
-    backgroundImage:
-      "url('https://archello.com/thumbs/images/2022/12/20/sikora-interiors-minimalist-boutique-shops-archello.1671563227.7366.jpg?fit=crop&auto=compress')",
-  }}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, amount: 0.3 }}
-  variants={imageVariants}
->
-  <div className="absolute inset-0 bg-black/30"></div> {/* optional overlay */}
-</motion.div>
+      <div
+        className="relative w-full h-[70vh] bg-fixed bg-center bg-cover"
+        style={{
+          backgroundImage: `url(${Banner.src})`
+        }}
+      >
+        <div className="absolute inset-0 bg-black/30"></div> {/* optional overlay */}
+      </div>
 
 
       {/* Craftsmanship Section */}
@@ -161,7 +163,7 @@ export default function AboutPage() {
           </motion.div>
           <motion.div className="order-1 md:order-2" variants={imageVariants}>
             <img
-              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80"
+              src={Craftsmanship.src}
               alt="Design process"
               className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover"
             />
@@ -225,7 +227,7 @@ export default function AboutPage() {
       >
         <div className="absolute inset-0">
           <motion.img
-            src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1600&q=80"
+            src={Commitment.src}
             alt="Nature"
             className="object-cover w-full h-full"
             variants={imageVariants}
