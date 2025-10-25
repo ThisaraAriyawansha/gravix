@@ -158,31 +158,38 @@ export default function GravixHomepage() {
       </section>
 
       {/* Collections Grid */}
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <h3 className="mb-12 text-4xl text-center font-Corigo tracking-[0.1em] opacity-0 animate-on-scroll translate-y-[30px]">COLLECTIONS</h3>
-          <div className="grid gap-6 md:grid-cols-3">
-            {collections.map((item, idx) => (
-              <div key={idx} className="relative overflow-hidden cursor-pointer group opacity-0 animate-on-scroll translate-y-[30px]" style={{ animationDelay: `${idx * 150}ms` }}>
-                <div className="aspect-[3/4] relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 transition-all duration-300 bg-black/40 group-hover:bg-black/60"></div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                    <h4 className="mb-2 text-3xl tracking-wider font-kugile">{item.title}</h4>
-                    <p className="text-sm tracking-wide text-gray-300">{item.desc}</p>
-                    <div className="mt-4 w-12 h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                  </div>
-                </div>
+<section className="px-6 py-20">
+  <div className="mx-auto max-w-7xl">
+    <h3 className="mb-12 text-4xl text-center font-Corigo tracking-[0.1em] opacity-0 animate-on-scroll translate-y-[30px]">
+      COLLECTIONS
+    </h3>
+    <div className="grid gap-6 md:grid-cols-3">
+      {collections.map((item, idx) => (
+        <Link href="/products" key={idx}>
+          <div
+            className="relative overflow-hidden cursor-pointer group opacity-0 animate-on-scroll translate-y-[30px]"
+            style={{ animationDelay: `${idx * 150}ms` }}
+          >
+            <div className="aspect-[3/4] relative">
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 transition-all duration-300 bg-black/40 group-hover:bg-black/60"></div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                <h4 className="mb-2 text-3xl tracking-wider font-kugile">{item.title}</h4>
+                <p className="text-sm tracking-wide text-gray-300">{item.desc}</p>
+                <div className="mt-4 w-12 h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </Link>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Split Image Section */}
       <section className="relative h-screen">

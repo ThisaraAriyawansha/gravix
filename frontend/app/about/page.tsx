@@ -123,7 +123,7 @@ export default function AboutPage() {
 
       {/* Full Width Image Break */}
       <div
-        className="relative w-full h-[70vh] bg-fixed bg-center bg-cover"
+        className="relative w-full h-[70vh] bg-fixed bg-center bg-cover hidden sm:block"
         style={{
           backgroundImage: `url(${Banner.src})`
         }}

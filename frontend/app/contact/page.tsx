@@ -112,7 +112,7 @@ export default function ContactPage() {
           {/* Contact Form */}
           <motion.div variants={containerVariants}>
             <motion.h2
-              className="mb-8 text-3xl tracking-tight font-Break sm:text-4xl"
+              className="mb-8 text-3xl tracking-tight font-Corigo sm:text-4xl"
               variants={itemVariants}
             >
               SEND US A MESSAGE
@@ -191,7 +191,7 @@ export default function ContactPage() {
           <motion.div className="space-y-12" variants={containerVariants}>
             <motion.div variants={containerVariants}>
               <motion.h2
-                className="mb-8 text-3xl tracking-tight font-Break sm:text-4xl"
+                className="mb-8 text-3xl tracking-tight font-Corigo sm:text-4xl"
                 variants={itemVariants}
               >
                 CONTACT INFO
