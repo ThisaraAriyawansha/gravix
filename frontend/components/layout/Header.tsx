@@ -202,6 +202,13 @@ export default function Header() {
               >
                 CONTACT
               </Link>
+              <Link 
+                href="/careers" 
+                className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                CAREERS
+              </Link>
               {user?.role === 'admin' && (
                 <Link 
                   href="/admin/dashboard" 

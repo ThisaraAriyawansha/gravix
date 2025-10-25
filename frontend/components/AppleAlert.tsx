@@ -14,7 +14,7 @@ export default function AppleAlert({
   isOpen, 
   title, 
   message, 
-  onClose,
+  onClose, 
   type = 'success' 
 }: AppleAlertProps) {
   const [isVisible, setIsVisible] = useState(false)
@@ -23,71 +23,112 @@ export default function AppleAlert({
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true)
-      setIsAnimating(true)
-      const timer = setTimeout(() => {
-        setIsAnimating(false)
-      }, 150)
+      setTimeout(() => setIsAnimating(true), 10)
       
       const autoCloseTimer = setTimeout(() => {
         handleClose()
       }, 3000)
       
-      return () => {
-        clearTimeout(timer)
-        clearTimeout(autoCloseTimer)
-      }
-    } else {
-      handleClose()
+      return () => clearTimeout(autoCloseTimer)
     }
   }, [isOpen])
 
   const handleClose = () => {
-    setIsAnimating(true)
-    const timer = setTimeout(() => {
+    setIsAnimating(false)
+    setTimeout(() => {
       setIsVisible(false)
-      setIsAnimating(false)
       onClose()
-    }, 150)
-    return () => clearTimeout(timer)
+    }, 300)
   }
 
   if (!isVisible) return null
 
-  const icon = type === 'success' ? (
-    <div className="flex items-center justify-center w-8 h-8 bg-black rounded-full">
-      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-      </svg>
-    </div>
-  ) : (
-    <div className="flex items-center justify-center w-8 h-8 bg-black rounded-full">
-      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </div>
-  )
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+    <div 
+      className={`fixed inset-0 z-50 flex items-end justify-center px-2 py-4 pointer-events-none sm:items-start sm:justify-end sm:p-4 transition-opacity duration-300 ${
+        isAnimating ? 'opacity-100' : 'opacity-0'
+      }`}
+    >
       <div 
-        className={`bg-white rounded-xl shadow-xl p-4 mx-3 max-w-xs w-full transform transition-all duration-150 ${
-          isAnimating ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
+        className={`w-full max-w-xs overflow-hidden bg-white border border-gray-200 shadow-xl pointer-events-auto transform transition-all duration-300 ${
+          isAnimating ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
         }`}
       >
-        <div className="flex items-center space-x-2">
-          {icon}
-          <div className="flex-1">
-            <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
-            <p className="mt-0.5 text-xs text-gray-600">{message}</p>
+        <div className="p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              {type === 'success' ? (
+                <div className="flex items-center justify-center w-8 h-8 bg-black">
+                  <svg 
+                    className="w-4 h-4 text-white" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M5 13l4 4L19 7" 
+                    />
+                  </svg>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center w-8 h-8 bg-black">
+                  <svg 
+                    className="w-4 h-4 text-white" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M6 18L18 6M6 6l12 12" 
+                    />
+                  </svg>
+                </div>
+              )}
+            </div>
+            <div className="flex-1 ml-3">
+              <h3 className="text-xs font-medium tracking-wide text-black uppercase">
+                {title}
+              </h3>
+              <p className="mt-0.5 text-xs text-gray-600">
+                {message}
+              </p>
+            </div>
+            <div className="flex-shrink-0 ml-3">
+              <button
+                onClick={handleClose}
+                className="inline-flex text-gray-400 transition-colors duration-200 hover:text-black focus:outline-none"
+              >
+                <svg 
+                  className="w-4 h-4" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M6 18L18 6M6 6l12 12" 
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
-        <div className="flex justify-end mt-2 space-x-1">
-          <button
-            onClick={handleClose}
-            className="px-3 py-1 text-xs font-medium text-gray-900 transition-colors duration-200 bg-gray-100 rounded-md hover:bg-gray-200"
-          >
-            OK
-          </button>
+        
+        {/* Progress bar */}
+        <div className="h-0.5 bg-gray-100">
+          <div 
+            className={`h-full bg-black transition-all duration-[3000ms] ease-linear ${
+              isAnimating ? 'w-0' : 'w-full'
+            }`}
+          />
         </div>
       </div>
     </div>
