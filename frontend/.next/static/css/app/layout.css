@@ -2790,6 +2790,10 @@ a {
     margin-top: 2rem;
   }
 
+  .sm\:mb-16 {
+    margin-bottom: 4rem;
+  }
+
   .sm\:table {
     display: table;
   }
