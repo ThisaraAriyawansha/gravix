@@ -351,7 +351,7 @@ export default function ContactPage() {
 
       {/* Map Section */}
       <motion.div
-        className="h-[300px] sm:h-[400px] md:h-[500px] bg-gravix-gray-200"
+        className="h-[300px] sm:h-[400px] md:h-[500px] bg-gravix-gray-200 hidden"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
