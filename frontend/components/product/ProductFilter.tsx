@@ -41,7 +41,6 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
     { value: '100-', label: 'Over $100' }
   ]
 
-  // Sync URL → filters (on mount or navigation)
   useEffect(() => {
     const urlCategory = searchParams.get('category') ?? ''
     const urlSearch = searchParams.get('search') ?? ''
@@ -60,7 +59,6 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
     }
   }, [searchParams, filters, onFilterChange])
 
-  // Helper: Update URL based on current filters
   const updateUrl = (newFilters: Partial<Filters>) => {
     const current = {
       category: filters.category,
@@ -81,7 +79,6 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
     router.push(`${pathname}${queryString ? `?${queryString}` : ''}`)
   }
 
-  // Wrap onFilterChange to also update URL
   const handleFilterChange = (newFilters: Partial<Filters>) => {
     onFilterChange(newFilters)
     updateUrl(newFilters)
@@ -94,79 +91,96 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
       sort: 'newest',
       priceRange: ''
     })
-    router.push(pathname) // Clear URL
+    router.push(pathname)
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-fade-in-up">
       {/* Search */}
-      <div>
-        <label htmlFor="search" className="block mb-2 text-sm font-medium text-gray-700">
-          Search
-        </label>
+      <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '100ms', animationFillMode: 'forwards' }}>
         <input
           type="text"
           id="search"
           value={filters.search}
           onChange={(e) => handleFilterChange({ search: e.target.value })}
           placeholder="Search products..."
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-0 py-3 text-sm tracking-wide uppercase transition-all duration-300 bg-transparent border-b border-black placeholder:text-gray-400 focus:outline-none focus:border-gray-600 focus:placeholder:translate-x-1"
         />
       </div>
 
       {/* Category Filter */}
-      <div>
-        <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-700">
-          Category
-        </label>
-        <select
-          id="category"
-          value={filters.category}
-          onChange={(e) => handleFilterChange({ category: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
+      <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}>
+        <h3 className="mb-4 text-xs tracking-widest text-gray-500 uppercase">Category</h3>
+        <div className="space-y-3">
           {categories.map(category => (
-            <option key={category.value} value={category.value}>
-              {category.label}
-            </option>
+            <label key={category.value} className="flex items-center cursor-pointer group">
+              <input
+                type="radio"
+                name="category"
+                value={category.value}
+                checked={filters.category === category.value}
+                onChange={(e) => handleFilterChange({ category: e.target.value })}
+                className="hidden"
+              />
+              <span className={`text-sm transition-all duration-300 relative ${
+                filters.category === category.value 
+                  ? 'text-black font-medium translate-x-1' 
+                  : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
+              }`}>
+                {category.label}
+              </span>
+            </label>
           ))}
-        </select>
+        </div>
       </div>
 
       {/* Sort Options */}
-      <div>
-        <label htmlFor="sort" className="block mb-2 text-sm font-medium text-gray-700">
-          Sort By
-        </label>
-        <select
-          id="sort"
-          value={filters.sort}
-          onChange={(e) => handleFilterChange({ sort: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
+      <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}>
+        <h3 className="mb-4 text-xs tracking-widest text-gray-500 uppercase">Sort By</h3>
+        <div className="space-y-3">
           {sortOptions.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
+            <label key={option.value} className="flex items-center cursor-pointer group">
+              <input
+                type="radio"
+                name="sort"
+                value={option.value}
+                checked={filters.sort === option.value}
+                onChange={(e) => handleFilterChange({ sort: e.target.value })}
+                className="hidden"
+              />
+              <span className={`text-sm transition-all duration-300 ${
+                filters.sort === option.value 
+                  ? 'text-black font-medium translate-x-1' 
+                  : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
+              }`}>
+                {option.label}
+              </span>
+            </label>
           ))}
-        </select>
+        </div>
       </div>
 
       {/* Price Range */}
-      <div>
-        <h3 className="mb-3 text-sm font-medium text-gray-700">Price Range</h3>
-        <div className="space-y-2">
+      <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}>
+        <h3 className="mb-4 text-xs tracking-widest text-gray-500 uppercase">Price Range</h3>
+        <div className="space-y-3">
           {priceRanges.map(range => (
-            <label key={range.value} className="flex items-center">
+            <label key={range.value} className="flex items-center cursor-pointer group">
               <input
                 type="radio"
                 name="price"
                 value={range.value}
                 checked={filters.priceRange === range.value}
                 onChange={(e) => handleFilterChange({ priceRange: e.target.value })}
-                className="mr-2"
+                className="hidden"
               />
-              <span className="text-sm">{range.label}</span>
+              <span className={`text-sm transition-all duration-300 ${
+                filters.priceRange === range.value 
+                  ? 'text-black font-medium translate-x-1' 
+                  : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
+              }`}>
+                {range.label}
+              </span>
             </label>
           ))}
         </div>
@@ -175,9 +189,10 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
       {/* Clear Filters */}
       <button
         onClick={clearFilters}
-        className="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full py-3 text-xs tracking-widest uppercase transition-all duration-300 border border-black opacity-0 hover:bg-black hover:text-white animate-fade-in-up"
+        style={{ animationDelay: '500ms', animationFillMode: 'forwards' }}
       >
-        Clear All Filters
+        Clear Filters
       </button>
     </div>
   )

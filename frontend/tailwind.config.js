@@ -33,18 +33,38 @@ module.exports = {
         Break: ['Break', 'sans-serif'],
       },
       animation: {
-        'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
+        'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+        'fade-in': 'fade-in 0.5s ease-out forwards',
+        'slide-in-right': 'slide-in-right 0.5s ease-out forwards',
         'bounce-slow': 'bounce-slow 2s infinite',
       },
       keyframes: {
         'fade-in-up': {
           '0%': { 
             opacity: '0',
-            transform: 'translateY(30px)'
+            transform: 'translateY(20px)'
           },
           '100%': { 
             opacity: '1',
             transform: 'translateY(0)'
+          },
+        },
+        'fade-in': {
+          '0%': { 
+            opacity: '0',
+          },
+          '100%': { 
+            opacity: '1',
+          },
+        },
+        'slide-in-right': {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateX(-20px)'
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateX(0)'
           },
         },
         'bounce-slow': {
@@ -56,10 +76,6 @@ module.exports = {
           },
         }
       },
-      animationDelay: {
-        '200': '200ms',
-        '400': '400ms',
-      }
     },
   },
   plugins: [],

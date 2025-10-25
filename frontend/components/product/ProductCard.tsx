@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface ProductVariant {
   id: number;
@@ -23,48 +24,53 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const primaryVariant = product.variants[0];
   const displayPrice = primaryVariant.discount_price || primaryVariant.price;
   const originalPrice = primaryVariant.discount_price ? primaryVariant.price : null;
 
-  console.log('Primary Image:', primaryVariant.primary_image); // Debug
-
   return (
-    <div className="group">
+    <div className="opacity-0 group animate-fade-in-up">
       <Link href={`/products/${product.slug}`}>
-        <div className="relative mb-4 overflow-hidden bg-gray-100 aspect-square">
+        <div className="relative mb-4 overflow-hidden bg-gray-50 aspect-square">
           {primaryVariant.primary_image ? (
             <Image
               src={`http://localhost:5000${primaryVariant.primary_image}`}
               alt={product.name}
               width={400}
               height={400}
-              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+              className={`object-cover w-full h-full transition-all duration-700 group-hover:scale-110 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoadingComplete={() => setImageLoaded(true)}
               onError={() => console.error('Image failed to load:', primaryVariant.primary_image)}
             />
           ) : (
-            <div className="flex items-center justify-center w-full h-full text-gray-500">
-              No Image Available
+            <div className="flex items-center justify-center w-full h-full text-xs tracking-widest text-gray-400 uppercase">
+              No Image
             </div>
           )}
           {originalPrice && (
-            <div className="absolute px-2 py-1 text-sm text-white bg-red-600 top-2 left-2">
+            <div className="absolute px-3 py-1 text-xs tracking-wider text-white uppercase transition-opacity duration-300 bg-black opacity-0 top-3 left-3 group-hover:opacity-100">
               Sale
             </div>
           )}
+          <div className="absolute inset-0 transition-opacity duration-500 bg-black opacity-0 group-hover:opacity-5"></div>
         </div>
 
-        <div className="text-center">
-          <h3 className="mb-2 text-lg font-light transition-colors group-hover:text-gray-600">
+        <div className="space-y-1">
+          <h3 className="text-sm tracking-wide uppercase transition-all duration-300 group-hover:text-gray-600 group-hover:translate-x-1">
             {product.name}
           </h3>
-          <div className="flex items-center justify-center space-x-2">
+          <div className="flex items-center space-x-2 text-sm transition-all duration-300 group-hover:translate-x-1">
             {originalPrice && (
-              <span className="text-sm text-gray-500 line-through">
+              <span className="text-gray-400 line-through transition-colors duration-300">
                 ${originalPrice}
               </span>
             )}
-            <span className="font-medium">${displayPrice}</span>
+            <span className={`transition-colors duration-300 ${originalPrice ? 'text-black font-medium' : 'text-gray-700'}`}>
+              ${displayPrice}
+            </span>
           </div>
         </div>
       </Link>
