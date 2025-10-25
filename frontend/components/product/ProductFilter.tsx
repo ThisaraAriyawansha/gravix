@@ -1,63 +1,63 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 interface Filters {
-  category: string
-  search: string
-  sort: string
-  priceRange: string
+  category: string;
+  search: string;
+  sort: string;
+  priceRange: string;
 }
 
 interface ProductFilterProps {
-  filters: Filters
-  onFilterChange: (filters: Partial<Filters>) => void
+  filters: Filters;
+  onFilterChange: (filters: Partial<Filters>) => void;
 }
 
-export default function ProductFilter({ filters, onFilterChange }: ProductFilterProps) {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+function ProductFilterContent({ filters, onFilterChange }: ProductFilterProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const categories = [
     { value: '', label: 'All Categories' },
     { value: 'men', label: 'Men' },
     { value: 'women', label: 'Women' },
-    { value: 'kids', label: 'Kids' }
-  ]
+    { value: 'kids', label: 'Kids' },
+  ];
 
   const sortOptions = [
     { value: 'newest', label: 'Newest First' },
     { value: 'price-low', label: 'Price: Low to High' },
     { value: 'price-high', label: 'Price: High to Low' },
-    { value: 'name', label: 'Name: A to Z' }
-  ]
+    { value: 'name', label: 'Name: A to Z' },
+  ];
 
   const priceRanges = [
     { value: '', label: 'All Prices' },
     { value: '0-50', label: 'Under $50' },
     { value: '50-100', label: '$50 - $100' },
-    { value: '100-', label: 'Over $100' }
-  ]
+    { value: '100-', label: 'Over $100' },
+  ];
 
   useEffect(() => {
-    const urlCategory = searchParams.get('category') ?? ''
-    const urlSearch = searchParams.get('search') ?? ''
-    const urlSort = searchParams.get('sort') ?? 'newest'
-    const urlPriceRange = searchParams.get('priceRange') ?? ''
+    const urlCategory = searchParams.get('category') ?? '';
+    const urlSearch = searchParams.get('search') ?? '';
+    const urlSort = searchParams.get('sort') ?? 'newest';
+    const urlPriceRange = searchParams.get('priceRange') ?? '';
 
-    const updatedFilters: Partial<Filters> = {}
+    const updatedFilters: Partial<Filters> = {};
 
-    if (urlCategory !== filters.category) updatedFilters.category = urlCategory
-    if (urlSearch !== filters.search) updatedFilters.search = urlSearch
-    if (urlSort !== filters.sort) updatedFilters.sort = urlSort
-    if (urlPriceRange !== filters.priceRange) updatedFilters.priceRange = urlPriceRange
+    if (urlCategory !== filters.category) updatedFilters.category = urlCategory;
+    if (urlSearch !== filters.search) updatedFilters.search = urlSearch;
+    if (urlSort !== filters.sort) updatedFilters.sort = urlSort;
+    if (urlPriceRange !== filters.priceRange) updatedFilters.priceRange = urlPriceRange;
 
     if (Object.keys(updatedFilters).length > 0) {
-      onFilterChange(updatedFilters)
+      onFilterChange(updatedFilters);
     }
-  }, [searchParams, filters, onFilterChange])
+  }, [searchParams, filters, onFilterChange]);
 
   const updateUrl = (newFilters: Partial<Filters>) => {
     const current = {
@@ -66,33 +66,33 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
       sort: filters.sort,
       priceRange: filters.priceRange,
       ...newFilters,
-    }
+    };
 
-    const params = new URLSearchParams()
+    const params = new URLSearchParams();
 
-    if (current.category) params.set('category', current.category)
-    if (current.search) params.set('search', current.search)
-    if (current.sort && current.sort !== 'newest') params.set('sort', current.sort)
-    if (current.priceRange) params.set('priceRange', current.priceRange)
+    if (current.category) params.set('category', current.category);
+    if (current.search) params.set('search', current.search);
+    if (current.sort && current.sort !== 'newest') params.set('sort', current.sort);
+    if (current.priceRange) params.set('priceRange', current.priceRange);
 
-    const queryString = params.toString()
-    router.push(`${pathname}${queryString ? `?${queryString}` : ''}`)
-  }
+    const queryString = params.toString();
+    router.push(`${pathname}${queryString ? `?${queryString}` : ''}`);
+  };
 
   const handleFilterChange = (newFilters: Partial<Filters>) => {
-    onFilterChange(newFilters)
-    updateUrl(newFilters)
-  }
+    onFilterChange(newFilters);
+    updateUrl(newFilters);
+  };
 
   const clearFilters = () => {
     onFilterChange({
       category: '',
       search: '',
       sort: 'newest',
-      priceRange: ''
-    })
-    router.push(pathname)
-  }
+      priceRange: '',
+    });
+    router.push(pathname);
+  };
 
   return (
     <div className="space-y-8 animate-fade-in-up">
@@ -112,7 +112,7 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
       <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}>
         <h3 className="mb-4 text-xs tracking-widest text-gray-500 uppercase">Category</h3>
         <div className="space-y-3">
-          {categories.map(category => (
+          {categories.map((category) => (
             <label key={category.value} className="flex items-center cursor-pointer group">
               <input
                 type="radio"
@@ -122,11 +122,13 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
                 onChange={(e) => handleFilterChange({ category: e.target.value })}
                 className="hidden"
               />
-              <span className={`text-sm transition-all duration-300 relative ${
-                filters.category === category.value 
-                  ? 'text-black font-medium translate-x-1' 
-                  : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
-              }`}>
+              <span
+                className={`text-sm transition-all duration-300 relative ${
+                  filters.category === category.value
+                    ? 'text-black font-medium translate-x-1'
+                    : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
+                }`}
+              >
                 {category.label}
               </span>
             </label>
@@ -138,7 +140,7 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
       <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}>
         <h3 className="mb-4 text-xs tracking-widest text-gray-500 uppercase">Sort By</h3>
         <div className="space-y-3">
-          {sortOptions.map(option => (
+          {sortOptions.map((option) => (
             <label key={option.value} className="flex items-center cursor-pointer group">
               <input
                 type="radio"
@@ -148,11 +150,13 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
                 onChange={(e) => handleFilterChange({ sort: e.target.value })}
                 className="hidden"
               />
-              <span className={`text-sm transition-all duration-300 ${
-                filters.sort === option.value 
-                  ? 'text-black font-medium translate-x-1' 
-                  : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
-              }`}>
+              <span
+                className={`text-sm transition-all duration-300 ${
+                  filters.sort === option.value
+                    ? 'text-black font-medium translate-x-1'
+                    : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
+                }`}
+              >
                 {option.label}
               </span>
             </label>
@@ -164,7 +168,7 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
       <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}>
         <h3 className="mb-4 text-xs tracking-widest text-gray-500 uppercase">Price Range</h3>
         <div className="space-y-3">
-          {priceRanges.map(range => (
+          {priceRanges.map((range) => (
             <label key={range.value} className="flex items-center cursor-pointer group">
               <input
                 type="radio"
@@ -174,11 +178,13 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
                 onChange={(e) => handleFilterChange({ priceRange: e.target.value })}
                 className="hidden"
               />
-              <span className={`text-sm transition-all duration-300 ${
-                filters.priceRange === range.value 
-                  ? 'text-black font-medium translate-x-1' 
-                  : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
-              }`}>
+              <span
+                className={`text-sm transition-all duration-300 ${
+                  filters.priceRange === range.value
+                    ? 'text-black font-medium translate-x-1'
+                    : 'text-gray-500 group-hover:text-black group-hover:translate-x-1'
+                }`}
+              >
                 {range.label}
               </span>
             </label>
@@ -195,5 +201,13 @@ export default function ProductFilter({ filters, onFilterChange }: ProductFilter
         Clear Filters
       </button>
     </div>
-  )
+  );
+}
+
+export default function ProductFilter({ filters, onFilterChange }: ProductFilterProps) {
+  return (
+    <Suspense fallback={<div>Loading filters...</div>}>
+      <ProductFilterContent filters={filters} onFilterChange={onFilterChange} />
+    </Suspense>
+  );
 }

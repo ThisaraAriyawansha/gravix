@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import ContactUs from '../../public/assets/images/photo-1423666639041-f56000c27a9a.jpeg'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -68,7 +69,7 @@ export default function ContactPage() {
       >
         <div className="absolute inset-0">
           <motion.img
-            src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1600&q=80"
+            src={ContactUs.src}
             alt="Contact"
             className="object-cover w-full h-full opacity-30"
             variants={imageVariants}

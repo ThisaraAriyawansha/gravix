@@ -1,55 +1,55 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import ProductGrid from '@/components/product/ProductGrid'
-import ProductFilter from '@/components/product/ProductFilter'
-import { getProducts } from '@/lib/api'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react';
+import ProductGrid from '@/components/product/ProductGrid';
+import ProductFilter from '@/components/product/ProductFilter';
+import { getProducts } from '@/lib/api';
+import { useSearchParams } from 'next/navigation';
 
 interface Product {
-  id: number
-  name: string
-  slug: string
-  description: string
-  category_name: string
-  variants: any[]
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  category_name: string;
+  variants: any[];
 }
 
-export default function ProductsPage() {
-  const searchParams = useSearchParams()
+function ProductsContent() {
+  const searchParams = useSearchParams();
 
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [filters, setFilters] = useState(() => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams.toString());
     return {
       category: params.get('category') || '',
       search: params.get('search') || '',
       sort: params.get('sort') || 'newest',
-      priceRange: params.get('priceRange') || ''
-    }
-  })
+      priceRange: params.get('priceRange') || '',
+    };
+  });
 
   useEffect(() => {
-    loadProducts()
-  }, [filters])
+    loadProducts();
+  }, [filters]);
 
   const loadProducts = async () => {
     try {
-      setLoading(true)
-      const data = await getProducts(filters)
-      setProducts(data)
+      setLoading(true);
+      const data = await getProducts(filters);
+      setProducts(data);
     } catch (error) {
-      console.error('Error loading products:', error)
+      console.error('Error loading products:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const updateFilters = (newFilters: Partial<typeof filters>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }))
-  }
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -61,7 +61,7 @@ export default function ProductsPage() {
               <ProductFilter filters={filters} onFilterChange={updateFilters} />
             </div>
           </div>
-          
+
           {/* Products Grid */}
           <div className="flex-1">
             <div className="flex items-end justify-between pb-6 mb-10 border-b border-gray-200 opacity-0 animate-fade-in-up">
@@ -70,16 +70,16 @@ export default function ProductsPage() {
                 {products.length} {products.length === 1 ? 'Item' : 'Items'}
               </div>
             </div>
-            
+
             {loading ? (
               <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {[...Array(6)].map((_, i) => (
-                  <div 
-                    key={i} 
+                  <div
+                    key={i}
                     className="opacity-0 animate-fade-in-up"
-                    style={{ 
+                    style={{
                       animationDelay: `${i * 100}ms`,
-                      animationFillMode: 'forwards'
+                      animationFillMode: 'forwards',
                     }}
                   >
                     <div className="mb-4 bg-gray-100 aspect-square animate-pulse"></div>
@@ -95,5 +95,13 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
-  )
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div>Loading products...</div>}>
+      <ProductsContent />
+    </Suspense>
+  );
 }
