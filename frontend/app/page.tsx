@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { Menu, X, ShoppingBag, Search, ChevronRight } from 'lucide-react';
 import HeroImage from '../public/assets/images/pexels-photo-1884584.jpeg';
@@ -12,6 +13,7 @@ import ACCESSORIES from '../public/assets/images/photo-1523398002811-999ca8dec23
 import MEN from '../public/assets/images/photo-1621072156002-e2fccdc0b176.jpeg';
 import WOMEN from '../public/assets/images/sexy-young-brunette-with-bright-party-makeup-wellbuilt-body-long-silk-dress-resting-outdoors-black-chair-against-peach-wall-background_197531-28187.jpg';
 import Logo from '../public/assets/logo/g logo.png';
+import Commitment from '../public/assets/images/photo-1469334031218-e382a71b716b.jpeg';
 
 export default function GravixHomepage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -52,6 +54,34 @@ export default function GravixHomepage() {
     { title: 'ACCESSORIES', image: ACCESSORIES, desc: 'Complete the look' }
   ];
 
+  // Variants for container staggering
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  }
+
+  // Variants for individual items
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  }
+
+  // Variants for images
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 1.05 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } },
+  }
+
+  // Variants for button
+  const buttonVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+    tap: { scale: 0.95 },
+  }
   return (
     <div className="min-h-screen font-sans text-white bg-black">
       
@@ -307,6 +337,48 @@ export default function GravixHomepage() {
         </div>
       </div>
     </section>
+
+
+      <motion.div
+        className="relative h-[60vh] sm:h-[70vh] md:h-[80vh]"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={containerVariants}
+      >
+        <div className="absolute inset-0">
+          <motion.img
+            src={Commitment.src}
+            alt="Nature"
+            className="object-cover w-full h-full"
+            variants={imageVariants}
+          />
+        </div>
+        <div className="relative flex items-center justify-center h-full px-4">
+          <motion.div
+            className="max-w-3xl p-8 text-center bg-white/95 sm:p-12"
+            variants={{
+              hidden: { opacity: 0, scale: 0.95 },
+              visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+            }}
+          >
+            <motion.h2
+              className="mb-4 text-2xl tracking-tight text-black font-Break sm:text-3xl md:text-4xl lg:text-5xl"
+              variants={itemVariants}
+            >
+              OUR COMMITMENT
+            </motion.h2>
+            <motion.p
+              className="text-sm leading-relaxed text-gravix-gray-700 sm:text-base md:text-lg "
+              variants={itemVariants}
+            >
+              We're committed to creating clothing that respects both people and the planet.
+              This means fair working conditions, sustainable materials, and a transparent
+              supply chain. Every piece tells a story of conscious creation.
+            </motion.p>
+          </motion.div>
+        </div>
+      </motion.div>
 
 
     {/* Testimonials Section */}
