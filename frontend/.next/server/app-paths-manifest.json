@@ -3,6 +3,8 @@
   "/careers/page": "app/careers/page.js",
   "/products/page": "app/products/page.js",
   "/products/[slug]/page": "app/products/[slug]/page.js",
+  "/about/page": "app/about/page.js",
+  "/contact/page": "app/contact/page.js",
   "/cart/page": "app/cart/page.js",
   "/(admin)/admin/dashboard/page": "app/(admin)/admin/dashboard/page.js"
 }
