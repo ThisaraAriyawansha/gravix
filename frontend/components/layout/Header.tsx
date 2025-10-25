@@ -65,6 +65,9 @@ export default function Header() {
             <Link href="/contact" className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black">
               CONTACT
             </Link>
+            <Link href="/careers" className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black">
+              CAREERS
+            </Link>
             {user?.role === 'admin' && (
               <Link href="/admin/dashboard" className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black">
                 ADMIN
