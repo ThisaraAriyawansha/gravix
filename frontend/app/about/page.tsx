@@ -7,7 +7,7 @@ import Banner from '../../public/assets/images/sikora-interiors-minimalist-bouti
 import Hero from '../../public/assets/images/photo-1490481651871-ab68de25d43d.jpeg';
 import Philosophy from '../../public/assets/images/photo-1434389677669-e08b4cac3105.jpeg';
 import Craftsmanship from '../../public/assets/images/photo-1515886657613-9f3515b0c78f.jpeg';
-import Commitment from '../../public/assets/images/photo-1469334031218-e382a71b716b.jpeg';
+import Commitment from '../../public/assets/images/pexels-photo-1536619.jpeg';
 
 
 
@@ -245,15 +245,15 @@ export default function AboutPage() {
               className="mb-4 text-2xl tracking-tight font-Break sm:text-3xl md:text-4xl lg:text-5xl"
               variants={itemVariants}
             >
-              OUR COMMITMENT
+              OUR PROMISE
             </motion.h2>
             <motion.p
               className="text-sm leading-relaxed text-gravix-gray-700 sm:text-base md:text-lg"
               variants={itemVariants}
             >
-              We're committed to creating clothing that respects both people and the planet.
-              This means fair working conditions, sustainable materials, and a transparent
-              supply chain. Every piece tells a story of conscious creation.
+              Every garment we craft reflects a deep respect for the artisans behind it and the
+              environment around us. Through fair trade, mindful sourcing, and lasting quality, we aim
+              to create fashion that truly makes a difference.
             </motion.p>
           </motion.div>
         </div>
