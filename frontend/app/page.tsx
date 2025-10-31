@@ -233,59 +233,7 @@ export default function GravixHomepage() {
 
 
 
-    {/* Logo & About Section with Backgrounds */}
-    <section className="min-h-screen bg-gray-50">
-      <div className="flex flex-col md:grid md:grid-cols-2 md:h-screen">
-        
-        {/* Left Side - Logo - Mobile First */}
-        <div className="relative flex items-center justify-center h-64 p-4 scale-95 bg-white opacity-0 md:h-full sm:p-6 md:p-8 animate-on-scroll">
-          <div className="w-full max-w-xs text-center sm:max-w-sm">
-            {/* Logo with responsive sizing */}
-            <div className="relative w-32 h-32 mx-auto mb-4 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 md:mb-6">
-              <img 
-                src={Logo.src}
-                alt="GRAVIX Logo"
-                className="object-contain w-full h-full transition-transform duration-500 hover:scale-105"
-              />
-            </div>
-            <p className="text-xs font-light tracking-widest text-gray-600 sm:text-sm md:text-base">
-              SINCE 2024
-            </p>
-          </div>
-        </div>
 
-        {/* Right Side - Content - Mobile First */}
-        <div className="flex items-center justify-center p-6 text-white bg-gradient-to-br from-black to-gray-900 sm:p-10 md:p-16 opacity-0 animate-on-scroll translate-x-[50px]">
-          <div className="max-w-md space-y-4 text-center md:text-left sm:space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight font-kugile sm:text-4xl md:text-5xl lg:text-6xl">
-              GRAVIX
-            </h2>
-            <p className="text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
-              Premium Clothing Store
-            </p>
-            <div className="w-16 h-px mx-auto bg-white/50 md:mx-0 sm:w-20" />
-            <p className="text-xs leading-relaxed text-gray-400 sm:text-sm md:text-base">
-              At GRAVIX, we believe style is a statement. Crafted with precision and passion, 
-              our collections blend timeless elegance with modern edge. From tailored essentials 
-              to bold statements — elevate your wardrobe with clothing designed to inspire confidence.
-            </p>
-            
-            <div className="flex flex-col gap-3 mt-6 sm:flex-row sm:gap-4 md:justify-start md:mt-8">
-              <Link href="/products">
-                <button className="w-full px-6 py-2.5 text-xs font-medium tracking-widest transition-all duration-300 border-2 border-white hover:bg-white hover:text-black sm:w-auto sm:px-8 sm:py-3 sm:text-sm">
-                  SHOP COLLECTION
-                </button>
-              </Link>
-              <Link href="/about">
-                <button className="w-full px-6 py-2.5 text-xs font-medium tracking-widest transition-all duration-300 border-2 border-white/50 hover:border-white hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3 sm:text-sm">
-                  LEARN MORE
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
 
     {/* Brand Values Section */}
@@ -453,6 +401,61 @@ export default function GravixHomepage() {
             <p className="text-xs italic leading-relaxed text-gray-700 sm:text-sm">
               "Sustainable fashion that doesn't compromise on style. GRAVIX is my go-to brand."
             </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    {/* Logo & About Section with Backgrounds */}
+    <section className="min-h-screen bg-gray-50">
+      <div className="flex flex-col md:grid md:grid-cols-2 md:h-screen">
+        
+        {/* Left Side - Logo - Mobile First */}
+        <div className="relative flex items-center justify-center h-64 p-4 scale-95 bg-white opacity-0 md:h-full sm:p-6 md:p-8 animate-on-scroll">
+          <div className="w-full max-w-xs text-center sm:max-w-sm">
+            {/* Logo with responsive sizing */}
+            <div className="relative w-32 h-32 mx-auto mb-4 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 md:mb-6">
+              <img 
+                src={Logo.src}
+                alt="GRAVIX Logo"
+                className="object-contain w-full h-full transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <p className="text-xs font-light tracking-widest text-gray-600 sm:text-sm md:text-base">
+              SINCE 2024
+            </p>
+          </div>
+        </div>
+
+        {/* Right Side - Content - Mobile First */}
+        <div className="flex items-center justify-center p-6 text-white bg-gradient-to-br from-black to-gray-900 sm:p-10 md:p-16 opacity-0 animate-on-scroll translate-x-[50px]">
+          <div className="max-w-md space-y-4 text-center md:text-left sm:space-y-6">
+            <h2 className="text-3xl font-bold tracking-tight font-kugile sm:text-4xl md:text-5xl lg:text-6xl">
+              GRAVIX
+            </h2>
+            <p className="text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
+              Premium Clothing Store
+            </p>
+            <div className="w-16 h-px mx-auto bg-white/50 md:mx-0 sm:w-20" />
+            <p className="text-xs leading-relaxed text-gray-400 sm:text-sm md:text-base">
+              At GRAVIX, we believe style is a statement. Crafted with precision and passion, 
+              our collections blend timeless elegance with modern edge. From tailored essentials 
+              to bold statements — elevate your wardrobe with clothing designed to inspire confidence.
+            </p>
+            
+            <div className="flex flex-col gap-3 mt-6 sm:flex-row sm:gap-4 md:justify-start md:mt-8">
+              <Link href="/products">
+                <button className="w-full px-6 py-2.5 text-xs font-medium tracking-widest transition-all duration-300 border-2 border-white hover:bg-white hover:text-black sm:w-auto sm:px-8 sm:py-3 sm:text-sm">
+                  SHOP COLLECTION
+                </button>
+              </Link>
+              <Link href="/about">
+                <button className="w-full px-6 py-2.5 text-xs font-medium tracking-widest transition-all duration-300 border-2 border-white/50 hover:border-white hover:bg-white/10 sm:w-auto sm:px-8 sm:py-3 sm:text-sm">
+                  LEARN MORE
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
