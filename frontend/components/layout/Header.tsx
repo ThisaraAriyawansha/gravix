@@ -68,6 +68,9 @@ export default function Header() {
             <Link href="/careers" className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black">
               CAREERS
             </Link>
+            <Link href="/sustainability" className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black">
+              SUSTAINABILITY
+            </Link>
             {user?.role === 'admin' && (
               <Link href="/admin/dashboard" className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black">
                 ADMIN
@@ -209,6 +212,16 @@ export default function Header() {
               >
                 CAREERS
               </Link>
+              <Link 
+                href="/sustainability" 
+                className="text-sm tracking-wide text-gray-600 transition-colors hover:text-black"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                SUSTAINABILITY
+              </Link>
+
+
+              
               {user?.role === 'admin' && (
                 <Link 
                   href="/admin/dashboard" 
